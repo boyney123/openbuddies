@@ -130,6 +130,25 @@ const hillside: { class: string; hill: string; w: string; buddies: Wanderer[] }[
           See the code
         </a>
       </div>
+      <!-- The one-line installer, to paste into Terminal on the home computer. -->
+      <div class="mx-auto mt-6 flex max-w-xl items-center gap-2 rounded-2xl bg-navy py-2 pr-2 pl-4 text-left shadow-lg">
+        <code class="min-w-0 flex-1 overflow-x-auto font-mono text-[13px] whitespace-nowrap text-white/90 [scrollbar-width:none]"
+          ><span class="text-white/40 select-none">$ </span>{SITE.install}</code
+        >
+        <button
+          type="button"
+          data-copy-install={SITE.install}
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2 text-[13px] font-bold text-white transition hover:bg-white/20"
+          aria-label="Copy the install command"
+        >
+          <svg data-icon="copy" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            ><rect x="8" y="8" width="12" height="12" rx="2.5"></rect><path d="M16 8V6.5Q16 4 13.5 4H6.5Q4 4 4 6.5V13.5Q4 16 6.5 16H8"></path></svg
+          >
+          <span data-icon="done" class="hidden"><Glyph name="check" class="size-4" /></span>
+          <span data-label>Copy</span>
+        </button>
+      </div>
+      <p class="mt-2 text-sm text-muted">Paste it into Terminal on the computer that stays at home (macOS or Linux).</p>
       <ul class="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[15px] font-medium text-navy/80">
         {
           ["Self-hosted", "Read every chat", "Your data stays at home"].map((t) => (
@@ -182,3 +201,26 @@ const hillside: { class: string; hill: string; w: string; buddies: Wanderer[] }[
     }
   </div>
 </section>
+
+<script>
+  // Copy the install command, and show a tick for a moment.
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy-install]")) {
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyInstall ?? "");
+      } catch {
+        return;
+      }
+      const parts = ["copy", "done"].map((n) => button.querySelector<HTMLElement | SVGElement>(`[data-icon="${n}"]`));
+      const label = button.querySelector<HTMLElement>("[data-label]");
+      parts[0]?.classList.add("hidden");
+      parts[1]?.classList.remove("hidden");
+      if (label) label.textContent = "Copied";
+      setTimeout(() => {
+        parts[0]?.classList.remove("hidden");
+        parts[1]?.classList.add("hidden");
+        if (label) label.textContent = "Copy";
+      }, 1600);
+    });
+  }
+</script>

@@ -9,6 +9,8 @@ export const SITE = {
   github: "https://github.com/boyney123/openbuddies",
   // Where the site is hosted. Share images need a full address, so set this before launch.
   url: "https://openbuddies.example",
+  // The one-line installer (install.sh at the repo root). Once the site is live, serve install.sh from it and use that.
+  install: "curl -fsSL https://raw.githubusercontent.com/boyney123/openbuddies/main/install.sh | bash",
 };
 
 // The eight buddy colours from the app (../src/shared/protocol.ts). `ink` draws the face, `on` is text on the colour.

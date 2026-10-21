@@ -19,7 +19,7 @@ Each child has one help level, which every subject follows unless you give a sub
 ## Change a child's help level
 
 ```sh
-npx openbuddies children mode <child> strict
+openbuddies children mode <child> strict
 ```
 
 Or open your parent page, go to **Children**, and pick a level.
@@ -33,11 +33,11 @@ Or open your parent page, go to **Children**, and pick a level.
 ## Give one subject its own level
 
 ```sh
-npx openbuddies subjects add <child> history --mode relaxed
-npx openbuddies subjects mode <child> maths strict
+openbuddies subjects add <child> history --mode relaxed
+openbuddies subjects mode <child> maths strict
 ```
 
 Children can add subjects themselves when they make a buddy. A new subject starts as **Strict**, and you can change
-or remove it under **Children**. See every subject with `npx openbuddies subjects list <child>`.
+or remove it under **Children**. See every subject with `openbuddies subjects list <child>`.
 
 To understand how the levels work turn by turn, read [Help levels and the hint ladder](/docs/explanation/help-levels/).

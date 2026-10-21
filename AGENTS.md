@@ -20,7 +20,8 @@ This changes once OpenBuddies has real users. That will be stated here.
 Every code change includes a docs review. Before you finish, check what the change touches and update it in the same
 piece of work:
 
-- `README.md`: commands, the household folder layout, the pipeline, the security model and the decisions list.
+- `docs/technical-reference.md`: commands, the household folder layout, the pipeline, the security model and the
+  decisions list. `README.md` stays high level: what OpenBuddies is, what it aims to do and how it works.
 - The website docs in `website/src/content/docs/`: tutorials, how-to guides, the settings, commands and environment
   references, and the explanations.
 - The website's landing page copy in `website/src/components/` (the FAQ, "How it works", the parent and safety
@@ -29,4 +30,4 @@ piece of work:
 Search the docs for the names you changed (settings, commands, env vars, features) and remove anything that's gone.
 
 The safety rules still apply in full: the child never gets answers, rules or prompts; the API key never leaves the box.
-See README.md for the security model.
+See docs/technical-reference.md for the security model.

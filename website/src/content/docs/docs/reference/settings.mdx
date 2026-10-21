@@ -35,7 +35,7 @@ apps:
 The two models can come from different providers. Each provider needs its key in `.env` (see
 [Environment variables](/docs/reference/environment/)). OpenBuddies is tuned for the Anthropic and OpenAI models above. With any
 other model, `openbuddies status` shows a warning: the safety checks depend on the check model, so try it with the evals
-(`pnpm eval -- --tutor <model> --check <model>`) before your child uses it.
+in a copy of the [OpenBuddies repo](https://github.com/boyney123/openbuddies) (`pnpm eval -- --tutor <model> --check <model>`) before your child uses it.
 | `port` | `4747` | The port the server listens on. |
 | `budget.daily_tokens_per_child` | `400000` | Each child's daily allowance, unless their `rules.yaml` sets one. |
 | `session_idle_minutes` | `30` | Minutes without a message before a new sitting starts. |

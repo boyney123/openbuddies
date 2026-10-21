@@ -14,9 +14,9 @@ Everything OpenBuddies knows lives in one folder, `~/openbuddies` by default. Co
 Stop OpenBuddies, copy the folder somewhere safe, and start it again:
 
 ```sh
-npx openbuddies stop
+openbuddies stop
 cp -R ~/openbuddies ~/openbuddies-backup
-npx openbuddies start
+openbuddies start
 ```
 
 <BuddyAside type="caution">
@@ -28,7 +28,7 @@ npx openbuddies start
 1. Install OpenBuddies on the new computer (see the [setup tutorial](/docs/tutorials/set-up-your-household/), but skip
    `init`).
 2. Copy the folder across to the same place.
-3. Run `npx openbuddies start`.
+3. Run `openbuddies start`.
 
 If you keep the folder somewhere else, point OpenBuddies at it with `--home <dir>` or the `OPENBUDDIES_HOME`
 environment variable.

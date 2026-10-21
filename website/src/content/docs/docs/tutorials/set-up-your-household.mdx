@@ -16,7 +16,6 @@ It takes about 15 minutes.
 ## What you'll need
 
 - **A computer that stays at home**, running macOS or Linux. An old laptop is fine. Your child never needs to touch it.
-- **Node.js 22 or newer** and **pnpm** on that computer.
 - **An AI key** from [Anthropic](https://console.anthropic.com) or [OpenAI](https://platform.openai.com), which
   OpenBuddies is tuned for, or another provider such as Google or OpenRouter. You pay them
   for what your family uses.
@@ -32,18 +31,19 @@ It takes about 15 minutes.
 
 <Steps>
 
-1. Open a terminal on the home computer and download OpenBuddies:
+1. On the home computer, open **Terminal** (on a Mac, press Cmd+Space and type "Terminal").
+
+2. Paste this and press Enter:
 
    ```sh
-   git clone https://github.com/boyney123/openbuddies.git
-   cd openbuddies
+   curl -fsSL https://raw.githubusercontent.com/boyney123/openbuddies/main/install.sh | bash
    ```
 
-2. Install and build it:
+   It installs OpenBuddies in a folder of its own (`~/.openbuddies`), along with Node.js if the computer needs it, then
+   starts the setup below. Nothing needs your computer password. Run the same command again any time to update.
 
-   ```sh
-   pnpm install && pnpm build
-   ```
+   Already use Node.js 22 or newer? You can install with `npm install -g openbuddies` instead, then run
+   `openbuddies init`.
 
 </Steps>
 
@@ -51,11 +51,7 @@ It takes about 15 minutes.
 
 <Steps>
 
-1. Start the setup:
-
-   ```sh
-   npx openbuddies init
-   ```
+1. The installer starts the setup for you. (If you installed with npm, or closed it, run `openbuddies init`.)
 
 2. Tell it about you: your name, what your child calls you (say, "Dad"), and a parent PIN of 4 to 8 digits. The PIN
    protects your parent page.
@@ -86,13 +82,13 @@ You've now got a **household folder**: everything OpenBuddies knows about your f
 1. Start OpenBuddies:
 
    ```sh
-   npx openbuddies start
+   openbuddies start
    ```
 
    Your parent page opens in the browser, and the terminal shows a QR code for each child.
 
 2. On your child's phone, open the camera and scan their QR code. The code works once and expires in 10 minutes. If it
-   runs out, make a new one with `npx openbuddies pair <child>`.
+   runs out, make a new one with `openbuddies pair <child>`.
 
 3. Hand the phone over. Your child hatches their first buddy: they give it a name and a colour, and can say what it's
    like ("a funny pirate") and what it's best at.

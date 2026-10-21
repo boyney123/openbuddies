@@ -12,11 +12,15 @@ import { appsAdd, appsGallery, appsList, appsRemove, appsSwitch } from "./apps.j
 import { writeChild, type ChildSpec } from "../server/children.js";
 import { Db } from "../server/db.js";
 import { childBaseUrl, tailscaleStatus } from "../server/network.js";
-import { codeVersion, householdId } from "../server/paths.js";
+import { codeVersion, householdId, packageRoot } from "../server/paths.js";
 import { runningServer, serverLogPath, serviceInstalled, serviceKind, staleReason, startBackground, stopServer } from "./service.js";
 
 const program = new Command();
-program.name("openbuddies").description("A self-hosted homework tutor that guides, not gives answers.").option("--home <dir>", "household folder (default ~/openbuddies)");
+program
+  .name("openbuddies")
+  .description("Self-hosted AI study buddies for families: they guide with questions and hints, never handing over answers.")
+  .version(JSON.parse(readFileSync(join(packageRoot(), "package.json"), "utf8")).version)
+  .option("--home <dir>", "household folder (default ~/openbuddies)");
 
 const home = () => resolveHome(program.opts().home);
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));

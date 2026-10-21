@@ -177,7 +177,7 @@ export const SUBSCRIPTION_PROVIDERS = new Set(["github-copilot", "openai-codex"]
 /** A warning for models OpenBuddies isn't tuned for, or null. */
 export function untestedModels(models: { tutor: string; check: string }): string | null {
   const odd = [models.tutor, models.check].filter((m) => !RECOMMENDED_MODELS.has(m));
-  return odd.length ? `${odd.join(" and ")} ${odd.length === 1 ? "isn't a model" : "aren't models"} OpenBuddies is tuned for. Run \`pnpm eval\` with ${odd.length === 1 ? "it" : "them"} before your child uses it.` : null;
+  return odd.length ? `${odd.join(" and ")} ${odd.length === 1 ? "isn't a model" : "aren't models"} OpenBuddies is tuned for. Test ${odd.length === 1 ? "it" : "them"} with the evals before your child uses it (\`pnpm eval\` in a copy of the OpenBuddies repo).` : null;
 }
 
 export const DEFAULT_RULES: ChildRules = {

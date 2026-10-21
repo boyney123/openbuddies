@@ -15,7 +15,7 @@ computer. [Tailscale](https://tailscale.com) gives you a private HTTPS address t
 1. On the home computer, run:
 
    ```sh
-   npx openbuddies tailscale setup
+   openbuddies tailscale setup
    ```
 
    It asks before installing anything. It then signs you in (it shows a QR code, so a computer with no screen can be
@@ -24,10 +24,10 @@ computer. [Tailscale](https://tailscale.com) gives you a private HTTPS address t
 2. Install the Tailscale app on each phone and tablet, and sign in with the same account. OpenBuddies shows a QR code
    for the download.
 
-3. Make new pairing codes with `npx openbuddies pair <child>`. They now use the HTTPS address.
+3. Make new pairing codes with `openbuddies pair <child>`. They now use the HTTPS address.
 
 </Steps>
 
 HTTPS also lets devices add OpenBuddies to the home screen properly and turn on reminder notifications.
 
-Check it with `npx openbuddies tailscale status`, and turn it off with `npx openbuddies tailscale off`.
+Check it with `openbuddies tailscale status`, and turn it off with `openbuddies tailscale off`.
