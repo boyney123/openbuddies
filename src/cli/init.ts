@@ -1,4 +1,5 @@
 import * as p from "@clack/prompts";
+import { spawnSync } from "node:child_process";
 import { existsSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
@@ -124,11 +125,10 @@ export async function runInit(opts: { home?: string }) {
   // 6. More children
   while (ask(await p.confirm({ message: "Add another child?", initialValue: false }))) children.push(await askChild(children.length + 1));
 
-  // 7. Folder
-  const defaultDir = opts.home ?? join(homedir(), "openbuddies");
-  const dir = resolve(ask(await p.text({ message: "Where should OpenBuddies keep its folder?", initialValue: defaultDir })).trim().replace(/^~(?=$|\/)/, homedir()));
+  // 7. The household folder: ~/openbuddies, or wherever --home says. Not asked: one less thing to get wrong.
+  const dir = resolve(opts.home ?? join(homedir(), "openbuddies"));
   if (existsSync(join(dir, "openbuddies.yaml"))) {
-    const overwrite = ask(await p.confirm({ message: `A household already exists in ${dir}. Overwrite its settings? (History is kept.)`, initialValue: false }));
+    const overwrite = ask(await p.confirm({ message: `OpenBuddies is already set up in ${dir}. Replace its settings? (Chats and history are kept.)`, initialValue: false }));
     if (!overwrite) {
       p.cancel("Nothing was changed.");
       process.exit(1);
@@ -179,13 +179,22 @@ export async function runInit(opts: { home?: string }) {
       `1. Set a monthly spending limit in your ${providerName} account${CONSOLES[provider] ? ` (${CONSOLES[provider]})` : ""}.`,
       `2. Read ${providerName}'s usage policy for products used by under-18s.`,
       "",
-      "Next:",
-      "  openbuddies start      open the parent page and show pairing QR codes",
-      "  openbuddies pair <child>   pair another device later",
+      `Your household: ${tilde(dir)}`,
+      "  Settings, chats and files. Copy this folder to back everything up.",
       "",
-      `Rules live in ${join(dir, "children", "<child>", "rules.yaml")} and reload when saved.`,
+      "Handy commands:",
+      "  openbuddies start          open the parent page and show the codes to scan",
+      "  openbuddies pair <child>   pair another phone or tablet",
+      "  openbuddies update         move to the newest version",
+      "  openbuddies stop           stop OpenBuddies",
     ].join("\n"),
     "All set",
   );
-  p.outro("Run `openbuddies start` when you're ready.");
+  p.outro("Starting OpenBuddies…");
+
+  // Finish where the parent wants to be: OpenBuddies running, the parent page open and a code to scan. A fresh CLI
+  // process runs `start`, as if typed, so it finds the server the service just started.
+  spawnSync(process.execPath, [...process.execArgv, process.argv[1], "start", "--home", dir], { stdio: "inherit" });
 }
+
+const tilde = (path: string) => (path.startsWith(homedir() + "/") ? `~${path.slice(homedir().length)}` : path);

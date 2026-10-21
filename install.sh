@@ -3,9 +3,11 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/boyney123/openbuddies/main/install.sh | bash
 #
-# Everything goes in ~/.openbuddies: OpenBuddies itself, and Node.js too if this computer doesn't have version 22 or
-# newer. Nothing needs sudo and nothing else on the computer changes, apart from one PATH line in your shell's startup
-# file. Then it runs `openbuddies init` to set up your household. Run it again any time to update.
+# The program goes in ~/.openbuddies: OpenBuddies itself, and Node.js too if this computer doesn't have version 22 or
+# newer. Nothing needs sudo. The `openbuddies` command is a small launcher in a folder already on your PATH (such as
+# /opt/homebrew/bin), or, if none can be written, one PATH line in your shell's startup file. Then `openbuddies init`
+# sets up your household, kept in ~/openbuddies (settings, chats and files: the folder to back up), and starts it.
+# Run it again any time to update; `openbuddies update` does that too, keeping a copy of the household first.
 #
 # Options (pass them with `| bash -s -- --no-init`):
 #   --no-init    install or update only
@@ -81,30 +83,46 @@ npm install --global --prefix "$INSTALL_DIR" --no-fund --no-audit --no-update-no
 version="$(node -p 'require(process.argv[1]).version' "$INSTALL_DIR/lib/node_modules/openbuddies/package.json")"
 say "OpenBuddies $version is installed."
 
-# 3. Put `openbuddies` on the PATH for new terminals.
-case "$(basename "${SHELL:-sh}")" in
-  zsh) rc="$HOME/.zshrc" ;;
-  bash) if [ "$os" = darwin ]; then rc="$HOME/.bash_profile"; else rc="$HOME/.bashrc"; fi ;;
-  *) rc="$HOME/.profile" ;;
-esac
+# 3. Make the `openbuddies` command work, in this terminal too. Best: a small launcher in a folder that's already on the
+#    PATH and writable without sudo. Otherwise: add $INSTALL_DIR/bin to the shell's startup file, for new terminals.
+cli="$INSTALL_DIR/lib/node_modules/openbuddies/dist/src/cli/index.js"
+node_path="$(command -v node)"
+launcher=""
+for d in "$HOME/.local/bin" "$HOME/bin" "/opt/homebrew/bin" "/usr/local/bin"; do
+  case ":$ORIGINAL_PATH:" in
+    *":$d:"*) if [ -d "$d" ] && [ -w "$d" ]; then launcher="$d/openbuddies"; break; fi ;;
+  esac
+done
 new_path=0
-case ":$ORIGINAL_PATH:" in
-  *":$INSTALL_DIR/bin:"*) ;;
-  *)
-    if ! grep -qsF "$INSTALL_DIR/bin" "$rc"; then
-      printf '\n# OpenBuddies\nexport PATH="%s/bin:$PATH"\n' "$INSTALL_DIR" >>"$rc"
-      say "Added OpenBuddies to your PATH in $rc."
-    fi
-    new_path=1
-    ;;
-esac
+if [ -n "$launcher" ]; then
+  # The absolute Node path, so it runs with the Node it was installed for whatever else is on the PATH.
+  printf '#!/bin/sh\n# OpenBuddies launcher, made by its installer (%s/bin). Running the installer again remakes it.\nexec "%s" "%s" "$@"\n' "$INSTALL_DIR" "$node_path" "$cli" >"$launcher"
+  chmod +x "$launcher"
+else
+  case "$(basename "${SHELL:-sh}")" in
+    zsh) rc="$HOME/.zshrc" ;;
+    bash) if [ "$os" = darwin ]; then rc="$HOME/.bash_profile"; else rc="$HOME/.bashrc"; fi ;;
+    *) rc="$HOME/.profile" ;;
+  esac
+  case ":$ORIGINAL_PATH:" in
+    *":$INSTALL_DIR/bin:"*) ;;
+    *)
+      if ! grep -qsF "$INSTALL_DIR/bin" "$rc"; then
+        printf '\n# OpenBuddies\nexport PATH="%s/bin:$PATH"\n' "$INSTALL_DIR" >>"$rc"
+      fi
+      new_path=1
+      ;;
+  esac
+fi
 
-# 4. Set up a household, the first time. (A household already set up just needs restarting on the new version.)
+# 4. The first time: set up a household, which ends by starting OpenBuddies and showing the code to scan. After that:
+#    restart the household's server on the new version.
 has_household=0
 { [ -f "$HOME/.openbuddiesrc" ] || [ -f "$HOME/openbuddies/openbuddies.yaml" ]; } && has_household=1
 if [ "$has_household" = 1 ]; then
-  say "Your household is already set up. Run 'openbuddies start' to restart OpenBuddies on the new version."
-  say "(Next time, 'openbuddies update' does all of this, and keeps a copy of your household first.)"
+  say "Restarting OpenBuddies on the new version…"
+  "$INSTALL_DIR/bin/openbuddies" start --no-open --no-qr || true
+  say "Next time, 'openbuddies update' does this for you, and keeps a copy of your household first."
 elif [ "$RUN_INIT" = 1 ] && { true </dev/tty; } 2>/dev/null; then
   echo
   "$INSTALL_DIR/bin/openbuddies" init </dev/tty
@@ -113,5 +131,6 @@ else
 fi
 if [ "$new_path" = 1 ]; then
   echo
-  say "Open a new terminal to use the 'openbuddies' command (or run: export PATH=\"$INSTALL_DIR/bin:\$PATH\")."
+  say "The 'openbuddies' command works in new terminals. In this one, run this first:"
+  echo "  export PATH=\"$INSTALL_DIR/bin:\$PATH\""
 fi

@@ -68,24 +68,20 @@ It takes about 15 minutes.
 
    Pick **Strict** if you're not sure. You can change it any time. Add more children if you have them.
 
-5. Accept the suggested folder (`~/openbuddies`), and say yes to starting OpenBuddies automatically when the computer
-   starts.
+5. Say yes to starting OpenBuddies automatically when the computer starts.
 
 </Steps>
 
-You've now got a **household folder**: everything OpenBuddies knows about your family lives there.
+You've now got a **household folder**, `~/openbuddies`: everything OpenBuddies knows about your family lives there.
+Copy it to back everything up. (The program itself is in `~/.openbuddies`, which you never need to open. To keep the
+household somewhere else, set up with `openbuddies init --home <folder>`.)
 
 ## Start it and pair your child's phone
 
 <Steps>
 
-1. Start OpenBuddies:
-
-   ```sh
-   openbuddies start
-   ```
-
-   Your parent page opens in the browser, and the terminal shows a QR code for each child.
+1. When the setup finishes, it starts OpenBuddies for you: your parent page opens in the browser, and the terminal shows
+   a QR code for each child. (Any time later, `openbuddies start` does the same.)
 
 2. On your child's phone, open the camera and scan their QR code. The code works once and expires in 10 minutes. If it
    runs out, make a new one with `openbuddies pair <child>`.

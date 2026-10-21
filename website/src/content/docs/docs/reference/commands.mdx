@@ -12,7 +12,7 @@ a household folder somewhere other than the default (see [The household folder](
 
 | Command | What it does |
 |---|---|
-| `init` | Interactive setup: you and your PIN, AI provider, models and key (checked), children and their help levels, and the folder. Installs a background service (launchd on macOS, a systemd user service on Linux). |
+| `init` | Interactive setup: you and your PIN, AI provider, models and key (checked), children and their help levels. Keeps the household in `~/openbuddies` (or `--home <dir>`). Installs a background service (launchd on macOS, a systemd user service on Linux), then starts OpenBuddies and shows the codes to scan. |
 | `start` | Starts the server, prints the parent and child addresses and a pairing QR code per child, and opens the parent page. Restarts an older version that's already running. |
 | `stop` | Stops the server. |
 | `status` | Shows whether it's running and which models it uses, with a warning for models OpenBuddies isn't tuned for. `status --check` runs the self-test: it lists every session's tools and fails if anything beyond the six tutor tools is present. |

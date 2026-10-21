@@ -15,9 +15,15 @@ OpenBuddies, see the docs on the website (`website/`).
    `~/.openbuddies/bin`.
 2. **OpenBuddies:** `npm install --global --prefix ~/.openbuddies openbuddies@latest` (`OPENBUDDIES_PACKAGE` takes a
    tarball, for testing). Re-running it updates; `openbuddies update` is the safer way (copy first, rollback).
-3. **PATH:** adds `~/.openbuddies/bin` to `~/.zshrc`, `~/.bash_profile` (macOS bash), `~/.bashrc` or `~/.profile`, once.
-4. **Setup:** runs `openbuddies init` on the terminal (`/dev/tty`, since the script itself arrives on stdin), unless a
-   household already exists (`~/.openbuddiesrc` or `~/openbuddies`), `--no-init` was passed or there's no terminal.
+3. **The command:** writes a small `openbuddies` launcher (absolute Node and CLI paths) into the first of
+   `~/.local/bin`, `~/bin`, `/opt/homebrew/bin` or `/usr/local/bin` that's on the PATH and writable, so it works in the
+   same terminal. If none is, it adds `~/.openbuddies/bin` to `~/.zshrc`, `~/.bash_profile` (macOS bash), `~/.bashrc`
+   or `~/.profile`, once, and says how to use it in the current terminal.
+4. **Setup:** runs `openbuddies init` on the terminal (`/dev/tty`, since the script itself arrives on stdin), unless
+   `--no-init` was passed or there's no terminal. `init` doesn't ask for a folder (`~/openbuddies`, or `--home`), and
+   ends by running `openbuddies start`, which opens the parent page and prints the pairing codes. If a household already
+   exists (`~/.openbuddiesrc` or `~/openbuddies`), it runs `openbuddies start --no-open --no-qr` instead, which restarts
+   the server on the new version.
 
 The background service records the absolute Node and CLI paths, so it keeps working whichever Node the shell finds
 later. `npm install -g openbuddies` works too, for people who manage Node themselves. The package ships `dist/src`,
@@ -27,7 +33,7 @@ later. `npm install -g openbuddies` works too, for people who manage Node themse
 
 | Command | What it does |
 |---|---|
-| `openbuddies init` | Interactive setup: parent and PIN, AI provider, models and key (validated), children and per-subject strictness, folder. Installs a launchd (macOS) or systemd user (Linux) service. |
+| `openbuddies init` | Interactive setup: parent and PIN, AI provider, models and key (validated), children and per-subject strictness; the household goes in `~/openbuddies` (or `--home`), not asked. Installs a launchd (macOS) or systemd user (Linux) service, then runs `start`. |
 | `openbuddies start` | Starts the server, prints the parent and child URLs and a pairing QR per child, opens the parent page. If a server is already running but it's an older version, or a previous setup of this folder, it's restarted first. |
 | `openbuddies stop` / `status` | Stop, or show state (including the models, with a warning for ones OpenBuddies isn't tuned for). `status --check` is the self-test: lists every session's tools and fails if anything beyond the six tutor tools is present. |
 | `openbuddies pair <child>` | Fresh single-use QR code (expires in 10 minutes). |
