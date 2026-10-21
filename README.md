@@ -1,9 +1,22 @@
-# OpenBuddies
+<p align="center">
+  <img src="website/public/banner.png" alt="OpenBuddies: AI study buddies for kids. You're in control." width="100%">
+</p>
 
-Open-source AI study buddies for families, self-hosted at home. A parent installs it on a home machine; a child makes
-their buddies and uses them from their phone and laptop.
-It is a **pair tutor, not an answer machine**: it guides with questions, hints and worked examples of *similar* problems,
-and the parent can read every message.
+<p align="center">
+  <b>Open-source AI study buddies for families, self-hosted at home.</b><br>
+  A pair tutor, not an answer machine.
+</p>
+
+## What it is
+
+- **Kids make their own buddies** to chat, draw pictures, take quizzes and get homework help, from their phone or laptop.
+- **A tutor, not an answer machine.** Buddies guide with questions, hints and worked examples of *similar* problems, so
+  children work it out themselves.
+- **Parents stay in control.** Read every message, and set each child's help level, daily AI allowance and apps.
+- **It all stays at home.** A parent installs it on a computer in the house, and the chats are kept there, not on an app
+  company's servers.
+
+## Quick start
 
 ```
 pnpm install && pnpm build
