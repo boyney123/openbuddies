@@ -16,6 +16,34 @@
 - **It all stays at home.** A parent installs it on a computer in the house, and the chats are kept there, not on an app
   company's servers.
 
+## Screenshots
+
+**For kids**: their own buddies to chat, draw and learn with.
+
+<table>
+  <tr>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-make-buddy.png" width="190" alt="Making a buddy called Pip, who is best at maths"><br><sub>Kids make their own buddy</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-home.png" width="190" alt="The child's home screen with Pip and their apps"><br><sub>Their home screen</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-chat-hint.png" width="190" alt="Pip giving a hint about fractions instead of the answer"><br><sub>Hints, not answers</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-chat-solved.png" width="190" alt="That's right! You solved it!"><br><sub>They work it out themselves</sub></td>
+  </tr>
+  <tr>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-picture-studio.png" width="190" alt="Pip painting a picture of a dragon at the seaside"><br><sub>Picture Studio</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-quiz-made.png" width="190" alt="Pip offering a quiz about adding fractions"><br><sub>Quizzes on anything</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-quiz-take.png" width="190" alt="A multiple choice quiz question"><br><sub>Taking a quiz</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/kid-reminder.png" width="190" alt="A reminder to drink some water"><br><sub>Reminders</sub></td>
+  </tr>
+</table>
+
+**For parents**: see how each child is getting on, and read every chat.
+
+<table>
+  <tr>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/parent-overview.png" width="400" alt="The parent page overview, with a card for each child and their latest sessions"><br><sub>Every child at a glance</sub></td>
+    <td align="center" valign="top"><img src="website/src/assets/screenshots/parent-conversation.png" width="400" alt="A chat, with what the child saw and what happened behind the scenes"><br><sub>Read every message, and why the buddy said it</sub></td>
+  </tr>
+</table>
+
 ## Quick start
 
 ```
