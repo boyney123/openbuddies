@@ -1,0 +1,34 @@
+---
+title: "Back up or move to a new computer"
+description: "Copy the household folder to back up everything, or to move OpenBuddies to another computer."
+sidebar:
+  order: 11
+---
+
+import BuddyAside from "../../../../../components/BuddyAside.astro";
+
+Everything OpenBuddies knows lives in one folder, `~/openbuddies` by default. Copying it is the whole backup.
+
+## Back up
+
+Stop OpenBuddies, copy the folder somewhere safe, and start it again:
+
+```sh
+npx openbuddies stop
+cp -R ~/openbuddies ~/openbuddies-backup
+npx openbuddies start
+```
+
+<BuddyAside type="caution">
+  The folder holds your AI key (in `.env`) and every chat. Keep backups somewhere private.
+</BuddyAside>
+
+## Move to a new computer
+
+1. Install OpenBuddies on the new computer (see the [setup tutorial](/docs/tutorials/set-up-your-household/), but skip
+   `init`).
+2. Copy the folder across to the same place.
+3. Run `npx openbuddies start`.
+
+If you keep the folder somewhere else, point OpenBuddies at it with `--home <dir>` or the `OPENBUDDIES_HOME`
+environment variable.

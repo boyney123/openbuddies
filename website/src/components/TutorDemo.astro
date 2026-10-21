@@ -1,0 +1,106 @@
+---
+// A pretend chat that plays itself when it scrolls into view: the buddy won't hand over the answer, it helps the child
+// get there. Lines are revealed one by one by scripts/site.ts.
+import Buddy from "./Buddy.astro";
+import Glyph from "./Glyph.astro";
+import Icon from "./Icon.astro";
+
+const chat: { who: "kid" | "buddy" | "hint"; text: string }[] = [
+  { who: "kid", text: "what's 2/3 + 1/4?? just tell me the answer pls" },
+  { who: "buddy", text: "Ha, nice try! I think you can crack this one. Can we add the bottom numbers straight away, or do they need to match first?" },
+  { who: "kid", text: "match? so like 12?" },
+  { who: "hint", text: "Hint 1 · Find a number both 3 and 4 go into" },
+  { who: "buddy", text: "Yes! 12 works for both. So what's 2/3 as twelfths?" },
+  { who: "kid", text: "8/12!!" },
+  { who: "buddy", text: "Brilliant 🎉 Now do the same with 1/4 and you're nearly there." },
+];
+
+const points = [
+  {
+    icon: "bulb" as const,
+    title: "Hints before answers",
+    body: "Questions first, then hints, then a worked example of a similar problem. Help steps up only as your child puts the effort in.",
+  },
+  {
+    icon: "dial" as const,
+    title: "You set the help level",
+    body: "Strict never gives answers. Balanced shows the answer after real effort. Relaxed explains freely. Set it per child, or per subject.",
+  },
+  {
+    icon: "shield" as const,
+    title: "Every reply is checked",
+    body: "Before your child sees a reply, a separate check makes sure it doesn't give the homework answer away. If it does, it's rewritten.",
+  },
+];
+---
+
+<section class="relative overflow-hidden bg-white px-4 py-20 md:py-28">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
+    <div class="reveal">
+      <p class="text-sm font-bold tracking-wider text-coral uppercase">Homework help that teaches</p>
+      <h2 class="mt-2 text-4xl tracking-tight md:text-5xl">It helps them think, not copy.</h2>
+      <p class="mt-4 text-lg text-muted">On homework, buddies guide like a patient tutor instead of handing over answers.</p>
+      <ul class="mt-8 space-y-5">
+        {
+          points.map((p) => (
+            <li class="flex gap-4">
+              <span class="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-blue-soft">
+                <Icon name={p.icon} class="size-9" />
+              </span>
+              <div>
+                <h3 class="text-lg">{p.title}</h3>
+                <p class="mt-1 leading-relaxed text-muted">{p.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    {/* The phone. */}
+    <div class="reveal relative mx-auto w-full max-w-[380px]">
+      <div class="absolute -inset-10 -z-0 rounded-full bg-blue-soft blur-3xl" aria-hidden="true"></div>
+      <div class="relative rounded-[2.75rem] border-[10px] border-navy bg-[color-mix(in_oklab,#2F80FF_9%,#F5F7FB)] shadow-[0_30px_60px_-25px_rgb(16_42_92/0.5)]">
+        <div class="flex items-center gap-3 border-b border-[#dfe7f5] px-5 pt-6 pb-3">
+          <Buddy color="blue" wear={["glasses"]} mood="happy" class="size-12" label="" />
+          <div>
+            <p class="font-bold text-navy">Professor Pip</p>
+            <p class="text-xs font-medium text-muted">Maths · Strict</p>
+          </div>
+        </div>
+        <ol class="flex h-[440px] flex-col justify-end gap-2.5 overflow-hidden px-4 py-4" data-demo-chat aria-label="An example chat between a child and their buddy">
+          {
+            chat.map((m) =>
+              m.who === "hint" ? (
+                <li data-line class="mx-auto flex items-center gap-1.5 rounded-full bg-sunny-soft px-3 py-1.5 text-xs font-bold text-[#8a5a00]">
+                  <Icon name="bulb" class="size-4" />
+                  {m.text}
+                </li>
+              ) : (
+                <li
+                  data-line
+                  data-who={m.who}
+                  class:list={[
+                    "max-w-[82%] rounded-3xl px-4 py-2.5 text-[15px] leading-snug",
+                    m.who === "kid" ? "ml-auto rounded-br-md bg-white font-medium text-ink shadow-sm" : "rounded-bl-md bg-tutor-blue font-semibold text-white",
+                  ]}
+                >
+                  {m.text}
+                </li>
+              ),
+            )
+          }
+          <li data-typing class="hidden w-16 items-center justify-center gap-1 rounded-3xl rounded-bl-md bg-tutor-blue px-4 py-3" aria-hidden="true">
+            {[0, 1, 2].map((i) => <span class="size-2 rounded-full bg-white" style={`animation:typing 1s ease-in-out infinite;animation-delay:${i * 0.15}s`} />)}
+          </li>
+        </ol>
+        <div class="mx-4 mb-5 flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm text-muted shadow-sm">
+          Message Professor Pip…
+          <span class="ml-auto flex size-8 items-center justify-center rounded-full bg-tutor-blue text-white">
+            <Glyph name="arrow-up" class="size-4" />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

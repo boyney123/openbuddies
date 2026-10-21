@@ -1,0 +1,49 @@
+---
+title: "Share an app"
+description: "Package an app you wrote as a single file, or publish a catalogue of apps for other families."
+sidebar:
+  order: 6
+---
+
+## As one file
+
+An app bundle is a JSON file with the app's id and its files:
+
+```json
+{
+  "id": "times-tables",
+  "files": {
+    "app.yaml": "name: Times Tables\n...",
+    "SKILL.md": "# Times Tables\n..."
+  }
+}
+```
+
+Put it anywhere with an `https://` link. Other parents add it with `npx openbuddies apps add <link>` or under
+**Apps → Add an app by link**.
+
+## In a catalogue
+
+A catalogue is an `index.json` that lists bundles. Each one carries the SHA-256 fingerprint of its bundle file, so a
+download that's been changed is refused:
+
+```json
+{
+  "name": "Mrs Smith's class apps",
+  "apps": [
+    {
+      "id": "times-tables",
+      "name": "Times Tables",
+      "description": "Quick-fire times tables.",
+      "author": "Mrs Smith",
+      "version": "1.0.0",
+      "bundle": "times-tables.json",
+      "sha256": "…"
+    }
+  ]
+}
+```
+
+Bundle links are relative to the catalogue. Parents add the catalogue's link under **Apps → Catalogues**.
+
+See the [app format reference](/docs/reference/app-format/) for every field.

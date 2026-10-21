@@ -1,0 +1,305 @@
+---
+// "A buddy for everything": a child's phone, and their buddies out on a hill beside it. Tap one (on the hill, or in the
+// switcher at the top of the phone, as in the app) and it steps up beside the phone to answer in its own way: Coco
+// paints and Ziggy writes a quiz, with the same painting and quiz-making cards as the app (web/src/child/
+// PaintingCanvas.tsx and QuizMaking.tsx). Tap it again for its next question. Played by scripts/site.ts, which runs
+// through the buddies by itself until someone joins in.
+import { BUDDY_COLORS, type Accessory, type BuddyColor } from "../site";
+import Buddy from "./Buddy.astro";
+import Cloud from "./Cloud.astro";
+import Glyph from "./Glyph.astro";
+
+type Card = { kind: "painting" | "quiz"; title: string; done: string };
+type Cast = { id: string; name: string; color: BuddyColor; wear: Accessory[]; role: string; home: number; chats: { q: string; a: string; card?: Card }[] };
+// `home` is where each one stands on the hill (%, across the space beside the phone).
+const cast: Cast[] = [
+  {
+    id: "pip",
+    name: "Pip",
+    color: "blue",
+    wear: ["wizard", "glasses"],
+    role: "Maths wizard",
+    home: 30,
+    chats: [
+      { q: "What's 7 × 8?", a: "Let's crack it! You know 7 × 7 = 49. What do you get if you add one more 7?" },
+      { q: "Why do fractions need the same bottom?", a: "Picture two pizzas, one cut in halves and one in quarters. Are the slices the same size?" },
+    ],
+  },
+  {
+    id: "coco",
+    name: "Coco",
+    color: "coral",
+    wear: ["party"],
+    role: "Picture maker",
+    home: 47,
+    chats: [
+      { q: "Draw me a cat astronaut!", a: "Ooh, on it! 🎨", card: { kind: "painting", title: "Cat astronaut", done: "Ta-da! It's saved in your files. Want me to change anything?" } },
+      { q: "Can you add a rainbow?", a: "A rainbow, coming up 🌈", card: { kind: "painting", title: "Cat astronaut with a rainbow", done: "How's that? I put it right behind the rocket." } },
+    ],
+  },
+  {
+    id: "ziggy",
+    name: "Ziggy",
+    color: "sunny",
+    wear: ["crown"],
+    role: "Quiz master",
+    home: 63,
+    chats: [
+      { q: "Quiz me on capital cities!", a: "A quiz about capital cities! Let me write it…", card: { kind: "quiz", title: "Capital Cities Challenge", done: "Ready when you are! 🏆" } },
+      { q: "Test my 6 times table", a: "Yes! Writing your questions now…", card: { kind: "quiz", title: "Six Times Showdown", done: "Good luck, you've got this ⏱️" } },
+    ],
+  },
+  {
+    id: "luna",
+    name: "Luna",
+    color: "grape",
+    wear: ["headphones"],
+    role: "Story writer",
+    home: 78,
+    chats: [
+      { q: "Help me start a story about a dragon", a: "Ooh, I love dragons! Where does yours live, and what does it want more than anything?" },
+      { q: "What's a better word for 'big'?", a: "Is it big like a mountain, or big like a whale? That changes which word fits best!" },
+    ],
+  },
+  {
+    id: "rex",
+    name: "Rex",
+    color: "mint",
+    wear: ["beanie"],
+    role: "Science explorer",
+    home: 92,
+    chats: [
+      { q: "Why is the sky blue?", a: "Sunlight is every colour mixed up, and the air bounces blue around the most. So why might sunsets look orange?" },
+      { q: "Do plants need sunlight?", a: "They do: plants make their food from it! What do you think happens to one left in a dark cupboard?" },
+    ],
+  },
+];
+const play = cast.map(({ id, name, role, color, chats }) => ({ id, name, role, main: BUDDY_COLORS[color].main, on: BUDDY_COLORS[color].on, chats }));
+
+// The painting card (as PaintingCanvas.tsx): strokes on a 100x100 canvas, painted in turn, with a brush and sparkles.
+const strokes: [string, string, number][] = [
+  ["M8 78 Q30 60 50 74 T92 70", "#34C98A", 9],
+  ["M14 22 Q36 8 58 20 T90 26", "#2F80FF", 7],
+  ["M70 34 m-10 0 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0", "#FFB020", 6],
+  ["M22 52 Q34 34 46 50 T70 48", "var(--buddy)", 8],
+  ["M30 88 Q50 80 70 90", "#FF6B5E", 6],
+  ["M12 40 L20 30 L28 40 L36 30", "#8B5CF6", 4],
+];
+const sparkles = [
+  { x: "14%", y: "16%", d: 0 },
+  { x: "80%", y: "14%", d: 600 },
+  { x: "72%", y: "78%", d: 1100 },
+  { x: "24%", y: "70%", d: 1600 },
+];
+// The quiz-making card (as QuizMaking.tsx): question cards written one after another and dealt onto a pile.
+const QUIZ_CARDS = 3;
+const floaters = [
+  { text: "?", left: "6%", delay: 0 },
+  { text: "✓", left: "84%", delay: 900 },
+  { text: "A", left: "16%", delay: 1800 },
+  { text: "!", left: "74%", delay: 2700 },
+];
+const ink = "#102A5C";
+---
+
+<section id="buddies" class="relative px-4 py-20 md:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-sm font-bold tracking-wider text-coral uppercase">For kids</p>
+      <h2 class="mt-2 text-4xl tracking-tight md:text-5xl">A buddy for everything</h2>
+      <p class="mt-4 text-lg text-muted">
+        Kids make their own buddies: a maths wizard, a picture maker, a quiz master. Tap one to see what it does.
+      </p>
+    </div>
+
+    <div
+      class="reveal cast-field relative mx-auto mt-12 grid max-w-5xl overflow-hidden rounded-[2rem] border border-line bg-gradient-to-b from-[#dbe8ff] to-[#f3f7ff] md:grid-cols-[22rem_1fr]"
+      data-cast={JSON.stringify(play)}
+    >
+      <Cloud class="cloud-drift-local absolute top-8 w-24" style="--dur:60s;--delay:-20s" />
+      <Cloud class="cloud-drift-local absolute top-24 w-16 opacity-80" style="--dur:75s;--delay:-50s" />
+      <svg viewBox="0 0 1000 200" preserveAspectRatio="none" class="absolute inset-x-0 bottom-0 h-40 w-full md:h-48" aria-hidden="true">
+        <path d="M0 80Q250 30 520 70T1000 60V200H0Z" fill="#cfe0fd"></path>
+        <path d="M0 120Q300 80 640 115T1000 110V200H0Z" fill="#b9d3fb"></path>
+      </svg>
+
+      {/* The phone, on the left. */}
+      <div class="cast-phone relative z-10 mx-auto my-8 w-full max-w-[20rem] md:my-10 md:ml-10">
+        <div class="relative rounded-[2.5rem] border-[9px] border-navy bg-[#f5f7fb] shadow-[0_30px_60px_-25px_rgb(16_42_92/0.55)]">
+          <div class="relative border-b border-[#dfe7f5] px-4 pt-5 pb-3">
+            <button
+              type="button"
+              class="flex w-full items-center gap-3 rounded-2xl p-1 text-left transition hover:bg-white"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-label="Choose who to talk to"
+              data-cast-switch
+            >
+              <span class="relative size-11 shrink-0">
+                {
+                  cast.map((b) => (
+                    <span class="absolute inset-0 hidden" data-cast-face={b.id}>
+                      <Buddy color={b.color} wear={b.wear} mood="happy" class="size-11" label="" />
+                    </span>
+                  ))
+                }
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block font-bold text-navy" data-cast-name></span>
+                <span class="block text-xs font-medium text-muted" data-cast-role></span>
+              </span>
+              <Glyph name="chevron-down" class="size-4 text-muted" />
+            </button>
+            <ul class="absolute inset-x-3 top-full z-20 mt-1 hidden rounded-2xl border border-line bg-white p-1.5 shadow-xl" role="listbox" aria-label="Your buddies" data-cast-menu>
+              {
+                cast.map((b) => (
+                  <li>
+                    <button type="button" role="option" class="flex w-full items-center gap-3 rounded-xl px-2 py-1.5 text-left hover:bg-cloud" data-cast-pick={b.id}>
+                      <Buddy color={b.color} wear={b.wear} class="size-9" label="" />
+                      <span>
+                        <span class="block text-sm font-bold text-navy">{b.name}</span>
+                        <span class="block text-xs text-muted">{b.role}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <ol class="flex h-[24rem] flex-col justify-end gap-2 overflow-hidden px-3.5 py-3" aria-live="polite" aria-label="The chat" data-cast-chat></ol>
+          <div class="mx-3.5 mb-4 flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm text-muted shadow-sm">
+            <span data-cast-placeholder></span>
+            <span class="ml-auto flex size-7 items-center justify-center rounded-full text-white" data-cast-send>
+              <Glyph name="arrow-up" class="size-4" />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* The buddies on the hill, on the right. The one picked steps up onto a cloud beside the phone. */}
+      <div class="cast-hill relative z-20 flex flex-col items-center gap-2 pb-6 md:block md:p-0">
+        <p class="z-10 rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-navy shadow-sm md:absolute md:top-8 md:right-8">Tap a buddy to ask it something</p>
+        <div class="flex justify-center gap-3 md:contents">
+          {
+            cast.map((b) => (
+              <button type="button" class="cast-buddy flex flex-col items-center" style={`--home:${b.home}%`} data-cast-buddy={b.id} aria-label={`Ask ${b.name}, the ${b.role.toLowerCase()}`}>
+                <Buddy color={b.color} wear={b.wear} class="w-full cursor-pointer" label="" />
+                <span class="cast-buddy__name -mt-1 rounded-full bg-white/90 px-2 py-0.5 text-[11px] font-bold whitespace-nowrap text-navy shadow-sm">{b.name}</span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Coco painting, as in the app. */}
+      <template data-cast-card="painting">
+        <li class="flex w-[72%] shrink-0 flex-col gap-1.5" style={`--buddy:${BUDDY_COLORS.coral.main}`}>
+          <div class="relative aspect-square w-full overflow-hidden rounded-3xl border-4 border-white bg-[#fffbf3] shadow-lg">
+            <svg viewBox="0 0 100 100" class="absolute inset-0 size-full" aria-hidden="true">
+              {strokes.map(([d, color, width], i) => <path d={d} pathLength="1" fill="none" stroke={color} stroke-width={width} stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1" class="paint-stroke" style={`animation-delay:${i * 0.75}s`} />)}
+            </svg>
+            {
+              sparkles.map((s) => (
+                <svg viewBox="0 0 24 24" class="absolute size-5 animate-twinkle text-sunny" style={`left:${s.x};top:${s.y};animation-delay:${s.d}ms`} aria-hidden="true">
+                  <path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z" fill="currentColor" />
+                </svg>
+              ))
+            }
+            <div class="paint-brush absolute inset-0" aria-hidden="true">
+              <svg viewBox="0 0 40 120" class="h-[38%] drop-shadow-md">
+                <rect x="15" y="40" width="10" height="70" rx="5" fill="#FFB020" stroke={ink} stroke-width="3" />
+                <rect x="13" y="30" width="14" height="14" rx="2" fill="#C9D6EE" stroke={ink} stroke-width="3" />
+                <path d="M13 32 Q20 0 27 32 Z" fill="var(--buddy)" stroke={ink} stroke-width="3" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <div class="absolute right-2 bottom-2 animate-float">
+              <Buddy color="coral" wear={["party"]} mood="thinking" class="size-12" label="" />
+            </div>
+          </div>
+          <p class="px-1 text-xs"><span class="font-bold text-navy" data-card-title></span> <span class="text-muted" data-card-line></span></p>
+        </li>
+      </template>
+
+      {/* Ziggy writing a quiz, as in the app: question cards written and dealt onto a pile. */}
+      <template data-cast-card="quiz">
+        <li class="flex w-[80%] shrink-0 flex-col gap-1.5" style={`--buddy:${BUDDY_COLORS.sunny.main}`}>
+          <div class="relative aspect-[5/4] w-full overflow-hidden rounded-3xl border-4 border-white bg-[#fff3d9] shadow-lg">
+            <div class="absolute top-2.5 left-1/2 flex -translate-x-1/2 gap-1.5" aria-hidden="true">
+              {Array.from({ length: QUIZ_CARDS }, () => <span class="size-2 rounded-full bg-[var(--buddy)] opacity-25 transition-opacity duration-500" data-quiz-dot />)}
+            </div>
+            {
+              floaters.map((f) => (
+                <span class="quiz-float absolute bottom-2 flex size-6 items-center justify-center rounded-full bg-white text-xs font-extrabold text-[#b77900] shadow" style={`left:${f.left};animation-delay:${f.delay}ms`} aria-hidden="true">
+                  {f.text}
+                </span>
+              ))
+            }
+            <div class="absolute top-[17%] left-1/2 aspect-[100/82] w-[60%] -translate-x-1/2">
+              {
+                Array.from({ length: QUIZ_CARDS }, (_, n) => {
+                  const right = (n * 3 + 1) % 4;
+                  return (
+                    <div class="absolute inset-0 hidden rounded-2xl bg-white p-1 shadow-lg ring-1 ring-line" data-quiz-card>
+                      <svg viewBox="0 0 100 82" class="size-full" aria-hidden="true">
+                        <rect x="6" y="6" width="30" height="12" rx="6" fill="var(--buddy)" />
+                        <text x="21" y="14.6" text-anchor="middle" font-size="7.5" font-weight="800" fill={ink}>
+                          Q{n + 1}
+                        </text>
+                        <g stroke={ink} stroke-opacity="0.7" stroke-linecap="round" fill="none">
+                          <path d="M8 28H90" stroke-width="3.5" pathLength="1" stroke-dasharray="1" class="quiz-write" style="animation-delay:.2s" />
+                          <path d="M8 36H64" stroke-width="3.5" pathLength="1" stroke-dasharray="1" class="quiz-write" style="animation-delay:.55s" />
+                        </g>
+                        {[0, 1, 2, 3].map((i) => {
+                          const y = 48 + i * 9;
+                          return (
+                            <g class="quiz-choice" style={`animation-delay:${0.9 + i * 0.18}s`}>
+                              <circle cx="12" cy={y} r="3.4" fill="none" stroke="#9aa8c0" stroke-width="2" />
+                              <path d={`M20 ${y}H${[62, 48, 70, 54][(i + n) % 4]}`} stroke="#c4d0e4" stroke-width="3" stroke-linecap="round" />
+                              {i === right && (
+                                <g class="quiz-tick" style="transform-box:fill-box;transform-origin:center;animation-delay:1.8s">
+                                  <circle cx="12" cy={y} r="4.6" fill="#34C98A" />
+                                  <path d={`M9.6 ${y}l1.7 1.8 3.2-3.4`} stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                                </g>
+                              )}
+                            </g>
+                          );
+                        })}
+                      </svg>
+                    </div>
+                  );
+                })
+              }
+              <div class="pointer-events-none absolute inset-0 hidden" aria-hidden="true" data-quiz-pencil>
+                <svg viewBox="0 0 30 90" class="h-[70%] -translate-y-full drop-shadow-md" style="transform:rotate(28deg);transform-origin:0 100%">
+                  <path d="M9 74L15 88L21 74Z" fill="#F6D7A8" stroke={ink} stroke-width="2.5" stroke-linejoin="round" />
+                  <path d="M13.2 84L15 88L16.8 84Z" fill={ink} />
+                  <rect x="9" y="16" width="12" height="58" fill="#FFB020" stroke={ink} stroke-width="2.5" />
+                  <rect x="9" y="8" width="12" height="9" fill="#C9D6EE" stroke={ink} stroke-width="2.5" />
+                  <rect x="9" y="1.5" width="12" height="7.5" rx="3.5" fill="#FF6B5E" stroke={ink} stroke-width="2.5" />
+                </svg>
+              </div>
+            </div>
+            <div class="absolute right-2 bottom-2 animate-float">
+              <Buddy color="sunny" wear={["crown"]} mood="thinking" class="size-12" label="" />
+            </div>
+          </div>
+          <p class="px-1 text-xs"><span class="font-bold text-navy" data-card-title></span> <span class="text-muted" data-card-line></span></p>
+        </li>
+      </template>
+
+      {/* The quiz, written and ready to take, as in the app's chat. */}
+      <template data-cast-card="quiz-ready">
+        <li class="flex w-full shrink-0 items-center gap-3 rounded-3xl bg-[#fff3d9] p-3 shadow-sm">
+          <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-sunny text-navy">
+            <Glyph name="list" class="size-5" />
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-[13px] leading-tight font-bold text-navy" data-card-title></span>
+            <span class="block text-xs text-muted">5 questions · multiple choice</span>
+          </span>
+          <span class="rounded-full bg-sunny px-3 py-1.5 text-xs font-bold text-navy">Take it</span>
+        </li>
+      </template>
+    </div>
+  </div>
+</section>

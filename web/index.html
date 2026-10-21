@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#F5F7FB" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D1626" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- The right background from the first frame, before the stylesheet arrives. -->
+    <style>
+      html { background: #f5f7fb; }
+      @media (prefers-color-scheme: dark) { html { background: #0d1626; } }
+      html[data-app="parent"] { background: #ffffff; }
+    </style>
+    <!-- The parent's page is always light, so mark it before the first frame. -->
+    <script>
+      if (location.pathname.startsWith("/parent")) document.documentElement.dataset.app = "parent";
+    </script>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="OpenBuddies" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon-180.png" />
+    <title>OpenBuddies</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

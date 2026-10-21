@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "types": [
+      "node"
+    ],
+    "noEmit": true,
+    "paths": {
+      "@/*": [
+        "./web/src/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "test",
+    "evals",
+    "scripts"
+  ]
+}

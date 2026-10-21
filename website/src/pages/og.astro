@@ -1,0 +1,119 @@
+---
+// The social share image, as a page. It's captured at 1200 x 630 into public/og.png by `pnpm images` (scripts/images.mjs).
+import "../styles/global.css";
+import { SITE, type Accessory, type BuddyColor } from "../site";
+import Buddy, { type Mood } from "../components/Buddy.astro";
+import Cloud from "../components/Cloud.astro";
+import Art from "../components/Art.astro";
+
+const riders: { color: BuddyColor; wear: Accessory[]; mood?: Mood; style: string; w: number }[] = [
+  { color: "coral", wear: ["party"], mood: "happy", style: "left:640px;top:60px", w: 170 },
+  { color: "grape", wear: ["wizard"], mood: "wink", style: "left:950px;top:28px", w: 150 },
+  { color: "mint", wear: ["headphones"], style: "left:985px;top:250px", w: 165 },
+];
+const walkers: { color: BuddyColor; wear: Accessory[]; mood?: Mood; left: number; w: number }[] = [
+  { color: "coral", wear: ["beanie"], mood: "happy", left: 70, w: 74 },
+  { color: "grape", wear: ["sunglasses"], left: 165, w: 64 },
+  { color: "mint", wear: ["party"], mood: "wink", left: 400, w: 60 },
+  { color: "sunny", wear: ["cap"], mood: "happy", left: 600, w: 84 },
+  { color: "berry", wear: ["glasses", "bowtie"], left: 930, w: 78 },
+  { color: "teal", wear: ["beanie"], mood: "wink", left: 1040, w: 70 },
+  { color: "navy", wear: ["crown"], mood: "happy", left: 1120, w: 66 },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <title>{SITE.name} share image</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      /* A still frame: no blinking or drifting mid-capture. */
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="relative h-[630px] w-[1200px] overflow-hidden bg-gradient-to-b from-[#cfe2ff] via-[#e3edff] to-[#f5f7fb] font-sans">
+      <div class="absolute -top-28 -right-28 size-96 rounded-full bg-sunny/30 blur-2xl"></div>
+      <Cloud class="absolute" style="left:300px;top:448px;width:130px;opacity:.9" />
+      <Cloud class="absolute" style="left:520px;top:20px;width:110px;opacity:.8" />
+      <Cloud class="absolute" style="left:820px;top:200px;width:80px;opacity:.7" />
+
+      {/* Hills along the bottom. */}
+      <svg viewBox="0 0 1200 200" preserveAspectRatio="none" class="absolute inset-x-0 bottom-0 h-[170px] w-full">
+        <path d="M0 80Q200 30 440 70T880 50T1200 70V200H0Z" fill="#D5E4FC"></path>
+        <path d="M0 125Q260 85 600 115T1200 105V200H0Z" fill="#BED6FC"></path>
+      </svg>
+
+      {/* The words. */}
+      <div class="absolute top-[64px] left-[72px] w-[600px]">
+        <div class="flex items-center gap-3 text-[34px] font-extrabold tracking-tight">
+          <Art name="logo" class="h-[52px] w-auto" />
+          <span><span class="text-navy">{SITE.wordmark[0]}</span><span class="text-coral">{SITE.wordmark[1]}</span></span>
+        </div>
+        <h1 class="mt-9 text-[84px] leading-[1.02] font-extrabold tracking-tight text-navy">
+          AI for kids.
+        </h1>
+        <p class="relative mt-4 inline-block text-[56px] leading-tight font-extrabold tracking-tight text-tutor-blue">
+          You're in control.
+          <svg class="absolute -bottom-2 left-0 h-3 w-full" viewBox="0 0 200 12" preserveAspectRatio="none">
+            <path d="M3 8Q50 2 100 7T197 5" stroke="#FF6B5E" stroke-width="5" fill="none" stroke-linecap="round"></path>
+          </svg>
+        </p>
+        <div class="mt-8 flex gap-2.5 text-[19px] font-bold text-navy">
+          {["Chat", "Pictures", "Quizzes", "Homework help"].map((t) => <span class="rounded-full bg-white/85 px-4 py-2 shadow-sm">{t}</span>)}
+        </div>
+      </div>
+
+      {/* Buddies riding clouds. */}
+      {
+        riders.map((r) => (
+          <div class="absolute" style={`${r.style};width:${r.w}px`}>
+            <Buddy color={r.color} wear={r.wear} mood={r.mood} class="relative z-10 mx-auto -mb-[22%] w-[62%]" label="" />
+            <Cloud seat class="relative w-full drop-shadow-[0_10px_14px_rgb(16_42_92/0.12)]" />
+          </div>
+        ))
+      }
+
+      {/* The main buddy with its star, and a bubble with news. */}
+      <div class="absolute" style="left:715px;top:262px;width:240px">
+        <div class="absolute -top-[46px] left-1/2 z-20 w-max -translate-x-1/2 rounded-3xl bg-tutor-blue px-5 py-3 text-[20px] font-bold text-white shadow-lg after:absolute after:-bottom-1.5 after:left-1/2 after:size-4 after:-translate-x-1/2 after:rotate-45 after:rounded-[3px] after:bg-tutor-blue">
+          Hi! Let's make something!
+        </div>
+        <Buddy color="blue" star mood="happy" class="relative z-10 mx-auto -mb-[22%] w-[62%]" label="" />
+        <Cloud seat class="relative w-full drop-shadow-[0_14px_18px_rgb(16_42_92/0.14)]" />
+      </div>
+
+      {/* A few out for a walk. */}
+      {
+        walkers.map((w) => (
+          <div class="absolute bottom-[18px]" style={`left:${w.left}px;width:${w.w}px`}>
+            <Buddy color={w.color} wear={w.wear} mood={w.mood} class="w-full" label="" />
+          </div>
+        ))
+      }
+      {
+        [
+          { l: 700, t: 40, s: 22 },
+          { l: 920, t: 200, s: 16 },
+          { l: 1140, t: 190, s: 18 },
+          { l: 600, t: 330, s: 14 },
+        ].map((s) => (
+          <svg class="absolute" style={`left:${s.l}px;top:${s.t}px;width:${s.s}px`} viewBox="0 0 20 20">
+            <path d="M10 0Q11 9 20 10Q11 11 10 20Q9 11 0 10Q9 9 10 0Z" fill="#FFB020" />
+          </svg>
+        ))
+      }
+    </div>
+  </body>
+</html>

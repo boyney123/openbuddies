@@ -1,0 +1,8 @@
+name: Story Planner
+description: Plan a story of your own, step by step.
+art: question
+icon: notebook-pen
+version: 1.0.0
+author: OpenBuddies
+kind: tutor
+needs: [hint_ladder, files]

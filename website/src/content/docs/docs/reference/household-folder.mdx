@@ -1,0 +1,48 @@
+---
+title: "The household folder"
+description: "What's in the household folder, where it lives, and which files reload when you save them."
+sidebar:
+  order: 2
+---
+
+import { FileTree } from "@astrojs/starlight/components";
+
+Everything OpenBuddies knows about your family lives in one folder. Copying it is the whole backup.
+
+## Where it is
+
+OpenBuddies looks for the folder in this order:
+
+1. `--home <dir>` on the command.
+2. The `OPENBUDDIES_HOME` environment variable.
+3. `~/.openbuddiesrc`, a pointer `init` writes if you chose a different place.
+4. `~/openbuddies`.
+
+## What's in it
+
+<FileTree>
+- openbuddies/
+  - openbuddies.yaml you, your PIN (hashed), models, port, daily budget
+  - .env your AI key and any other keys, readable only by you
+  - children/
+    - sam/
+      - profile.yaml name, age, school year, subjects
+      - rules.yaml help levels and other rules for this child
+      - CONTEXT.md made from the two files above, regenerated when they change
+      - sessions/ one file per sitting
+  - apps/ apps you added: app.yaml and SKILL.md
+  - data/
+    - openbuddies.db sessions, turns, blocked drafts, problems, alerts, devices
+    - files/ each buddy's photos and notes
+    - memory/ each buddy's notes, as Markdown
+  - logs/
+    - server.log
+</FileTree>
+
+## Files that reload on save
+
+Edit these and OpenBuddies picks up the change without a restart: `openbuddies.yaml`, `.env`, each child's
+`profile.yaml` and `rules.yaml`, and each app's `app.yaml` and `SKILL.md`.
+
+Buddy memory notes are plain Markdown in `data/memory/<child>/<buddy>.md`. You can read or edit them by hand; the
+previous version is kept as `.md.bak`.

@@ -1,0 +1,70 @@
+---
+// Small marks for buttons, labels and the parent page mock-up: thick, rounded strokes in the current text colour, so
+// they sit with Inter's bold weights. The illustrated icons are in Icon.astro.
+export type GlyphName = "arrow-right" | "arrow-up" | "check" | "plus" | "chevron-down" | "bell" | "alert" | "home" | "users" | "list" | "grid" | "phone";
+
+interface Props {
+  name: GlyphName;
+  class?: string;
+}
+const { name, class: className } = Astro.props;
+const s = { stroke: "currentColor", "stroke-width": 2.75, "stroke-linecap": "round", "stroke-linejoin": "round", fill: "none" } as const;
+// A pretend pairing code: three finder squares and a scatter of dots.
+const qrDots = [
+  [10, 2], [12, 4], [10, 6], [14, 8], [10, 10], [12, 12], [2, 10], [4, 12], [6, 10], [8, 12], [14, 14], [16, 12], [18, 10], [20, 14],
+  [16, 16], [18, 18], [20, 20], [12, 16], [10, 18], [12, 20], [14, 20], [22, 12], [22, 16], [16, 20],
+];
+---
+
+<svg viewBox="0 0 24 24" class={className} aria-hidden="true">
+  {name === "arrow-right" && <path d="M4 12H19M13 6L19 12L13 18" {...s} />}
+  {name === "arrow-up" && <path d="M12 20V5M6 11L12 5L18 11" {...s} />}
+  {name === "check" && <path d="M5 12.5L10 17.5L19 7" {...s} stroke-width="3.25" />}
+  {name === "plus" && <path d="M12 5V19M5 12H19" {...s} stroke-width="3.25" />}
+  {name === "chevron-down" && <path d="M6 9L12 15L18 9" {...s} />}
+  {
+    name === "bell" && (
+      <>
+        <path d="M6 16V11Q6 5 12 5Q18 5 18 11V16L19.5 18H4.5Z" {...s} />
+        <path d="M10 21H14" {...s} />
+      </>
+    )
+  }
+  {
+    name === "alert" && (
+      <>
+        <path d="M12 3.5L21.5 20H2.5Z" {...s} />
+        <path d="M12 10V14" {...s} />
+        <circle cx="12" cy="17" r="1.3" fill="currentColor" />
+      </>
+    )
+  }
+  {name === "home" && <path d="M4 11L12 4L20 11V19Q20 20 19 20H15V14H9V20H5Q4 20 4 19Z" {...s} />}
+  {
+    name === "users" && (
+      <>
+        <circle cx="9" cy="8.5" r="3.5" {...s} />
+        <path d="M3 20Q3 14 9 14Q15 14 15 20M16 5Q19 5.5 19 8.5Q19 11.5 16 12M18 14.5Q21 15.5 21 20" {...s} />
+      </>
+    )
+  }
+  {name === "list" && <path d="M8 6H20M8 12H20M8 18H16M4 6H4.01M4 12H4.01M4 18H4.01" {...s} />}
+  {
+    name === "grid" && (
+      <>
+        <rect x="4" y="4" width="7" height="7" rx="2" {...s} />
+        <rect x="13" y="4" width="7" height="7" rx="2" {...s} />
+        <rect x="4" y="13" width="7" height="7" rx="2" {...s} />
+        <path d="M16.5 13.5V19.5M13.5 16.5H19.5" {...s} />
+      </>
+    )
+  }
+  {
+    name === "phone" && (
+      <>
+        <rect x="6.5" y="3" width="11" height="18" rx="3" {...s} />
+        <path d="M11 17.5H13" {...s} />
+      </>
+    )
+  }
+</svg>

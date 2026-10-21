@@ -1,0 +1,65 @@
+---
+import Art, { type ArtName } from "./Art.astro";
+
+const features: { art: ArtName; title: string; body: string; tint: string }[] = [
+  {
+    art: "chat",
+    title: "Chat",
+    body: "Ask anything: how volcanoes work, why the sky is blue, what to write a story about. Each buddy has its own voice and personality.",
+    tint: "bg-coral-soft",
+  },
+  {
+    art: "easel",
+    title: "Picture Studio",
+    body: "\"I want a picture of a hotdog.\" \"Now add a dog!\" Pictures build up over the conversation, with no real people and nothing scary.",
+    tint: "bg-mint-soft",
+  },
+  {
+    art: "quiz",
+    title: "Quizzes",
+    body: "\"Make me a quiz about that.\" Buddies turn what you've just worked on into a quick quiz, with a gold star at the end.",
+    tint: "bg-sunny-soft",
+  },
+  {
+    art: "books",
+    title: "Homework help",
+    body: "Snap a photo of the worksheet. The buddy guides with questions, hints and similar examples, so your child does the thinking.",
+    tint: "bg-blue-soft",
+  },
+  {
+    art: "folder",
+    title: "Buddy files",
+    body: "Keep homework photos and notes with each buddy. Mention one (\"our history homework\") and the buddy knows which you mean.",
+    tint: "bg-coral-soft",
+  },
+  {
+    art: "apps",
+    title: "More apps",
+    body: "Add Spelling Bee, Times Tables, Story Planner and more from the gallery, or apps other families share. You read each one before it's added.",
+    tint: "bg-grape-soft",
+  },
+];
+---
+
+<section id="kids" class="relative px-4 py-20 md:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-sm font-bold tracking-wider text-coral uppercase">What kids can do</p>
+      <h2 class="mt-2 text-4xl tracking-tight md:text-5xl">All the fun of AI, safely</h2>
+      <p class="mt-4 text-lg text-muted">Chat, pictures, quizzes and homework help come built in. Add more apps whenever you like.</p>
+    </div>
+    <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        features.map((f, i) => (
+          <li class="reveal group rounded-[2rem] border border-line bg-white p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-20px_rgb(16_42_92/0.3)]" style={`transition-delay:${(i % 3) * 80}ms`}>
+            <div class={`flex h-36 items-center justify-center rounded-3xl ${f.tint}`}>
+              <Art name={f.art} class="h-28 w-auto transition duration-300 group-hover:-rotate-3 group-hover:scale-105" />
+            </div>
+            <h3 class="mt-5 text-xl">{f.title}</h3>
+            <p class="mt-2 leading-relaxed text-muted">{f.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

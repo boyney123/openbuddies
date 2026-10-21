@@ -1,0 +1,10 @@
+name: Picture Studio
+description: Dream up pictures with your buddy.
+art: easel
+icon: palette
+version: 1.0.0
+author: OpenBuddies
+# studio: asking for a picture in the chat draws it; asking for a change changes it.
+kind: studio
+needs: [pictures, files]
+default: on

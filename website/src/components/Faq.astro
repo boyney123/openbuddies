@@ -1,0 +1,67 @@
+---
+import { SITE } from "../site";
+import Glyph from "./Glyph.astro";
+
+const faqs = [
+  {
+    q: "What can my child do with it?",
+    a: "Chat with their buddies about anything, create pictures, take quizzes, and get help with homework. You can add more apps from the gallery, like Spelling Bee, Times Tables and Story Planner. Whatever they're doing, the same rules apply and you can see it.",
+  },
+  {
+    q: "Can I add other apps?",
+    a: "Yes. An app is a short piece of text that tells the buddy how to help, never code, so it can't get round your rules. You read each app in full before adding it, then switch it on for the children you choose.",
+  },
+  {
+    q: "How much does it cost?",
+    a: `${SITE.name} itself is free and open source. You use your own key from an AI provider (Anthropic, OpenAI or another you choose) and pay them for what your family uses. Each child has a daily allowance you set, so there are no surprises. We'd also suggest setting a monthly limit in your provider's console.`,
+  },
+  {
+    q: "Will it just give my child the answers?",
+    a: "Not unless you want it to. On Strict, it never gives homework answers. On Balanced, it shows the answer after your child has really tried. On Relaxed, it explains freely. Every reply is checked before your child sees it, and anything that gives the answer away is rewritten.",
+  },
+  {
+    q: "What if my child says something worrying?",
+    a: "You get an alert on your parent page before the buddy even replies. The alert is a short summary, not your child's words, and you can open the full chat from it.",
+  },
+  {
+    q: "Do I need to be technical?",
+    a: "You'll need to be comfortable running a few commands on a Mac or Linux computer. After that, the setup asks you simple questions, and day-to-day everything is on your parent page.",
+  },
+  {
+    q: "Where are the chats kept?",
+    a: "In one folder on your home computer. Copy the folder and you've backed up everything. Nothing is kept on our servers, because there aren't any.",
+  },
+  {
+    q: "Can my child use it away from home?",
+    a: "Yes, if you set up Tailscale (the setup offers it). It gives a private address that only your own devices can reach. Without it, it works on your home Wi-Fi.",
+  },
+  {
+    q: "Is it OK with the AI providers' rules?",
+    a: `AI providers have rules for products used by under-18s. ${SITE.name} is a private family tool with a parent supervising every conversation, but please read your provider's usage policy before your child starts.`,
+  },
+];
+---
+
+<section id="faq" class="px-4 py-20 md:py-28">
+  <div class="mx-auto max-w-3xl">
+    <div class="reveal text-center">
+      <p class="text-sm font-bold tracking-wider text-coral uppercase">Questions</p>
+      <h2 class="mt-2 text-4xl tracking-tight md:text-5xl">Things parents ask</h2>
+    </div>
+    <div class="mt-12 space-y-3">
+      {
+        faqs.map((f) => (
+          <details class="reveal group rounded-3xl border border-line bg-white px-6 open:shadow-[0_16px_30px_-20px_rgb(16_42_92/0.35)]">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-lg font-semibold text-navy [&::-webkit-details-marker]:hidden">
+              {f.q}
+              <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-soft text-tutor-blue transition group-open:rotate-45">
+                <Glyph name="plus" class="size-4" />
+              </span>
+            </summary>
+            <p class="-mt-1 pb-5 leading-relaxed text-muted">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

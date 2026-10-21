@@ -1,0 +1,22 @@
+---
+// Screenshots of the app in the docs (captured from `pnpm demo`, kept in src/assets/screenshots/): phone screens side
+// by side, or one wide screen of the parent page. Styled in styles/docs.css.
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  shots: { src: ImageMetadata; alt: string }[];
+  caption?: string;
+  /** Phone screens of the child's app, or the parent page on a computer. */
+  device?: "phone" | "desktop";
+}
+
+const { shots, caption, device = "phone" } = Astro.props;
+---
+
+<figure class={`screenshots screenshots--${device} not-content`}>
+  <div class="screenshots__row">
+    {shots.map((s) => <Image src={s.src} alt={s.alt} widths={device === "phone" ? [260, 520] : [760, 1520]} sizes={device === "phone" ? "260px" : "(max-width: 50rem) 100vw, 760px"} />)}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

@@ -1,0 +1,57 @@
+---
+import { SITE } from "../site";
+// The security model, in plain words, on a night sky.
+import Buddy from "./Buddy.astro";
+import Icon from "./Icon.astro";
+
+const points = [
+  { icon: "house" as const, title: "It runs in your home", body: "On your computer, not our servers. There's no account to sign up for, and nothing is stored in someone else's cloud." },
+  { icon: "key" as const, title: "Your key stays put", body: "Your AI key never leaves the home computer: not in replies, not in logs, not on your child's phone." },
+  { icon: "shield" as const, title: "Rules your child can't talk round", body: "The model never polices itself. Every message goes through checks in code, and they can't be switched off from a chat." },
+  { icon: "no-ads" as const, title: "No ads, no tracking", body: "Nothing leaves the house except the calls to your AI provider, and web searches if you turn them on." },
+  { icon: "wifi-lock" as const, title: "Not on the open internet", body: "It only answers devices at home, or your own devices over Tailscale. No port forwarding, nothing public." },
+  { icon: "code" as const, title: "Open source", body: "Every line is public, so you (or a friend who codes) can check exactly what it does." },
+];
+
+const stars = Array.from({ length: 40 }, () => ({
+  l: Math.random() * 100,
+  t: Math.random() * 100,
+  s: 1 + Math.random() * 2.5,
+  d: -(Math.random() * 3).toFixed(2),
+}));
+---
+
+<section id="safety" class="relative overflow-hidden bg-navy px-4 py-20 text-white md:py-28">
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    {stars.map((s) => <span class="absolute animate-twinkle rounded-full bg-white" style={`left:${s.l}%;top:${s.t}%;width:${s.s}px;height:${s.s}px;animation-delay:${s.d}s;animation-duration:${2 + (s.s % 2)}s`} />)}
+    <svg class="absolute top-16 right-[10%] size-20" viewBox="0 0 100 100">
+      <path d="M62 10A42 42 0 1 0 90 66A34 34 0 1 1 62 10Z" fill="#FFF3D9"></path>
+    </svg>
+  </div>
+  <div class="relative mx-auto max-w-6xl">
+    <div class="reveal grid items-center gap-10 lg:grid-cols-[1fr_auto]">
+      <div class="max-w-2xl">
+        <p class="text-sm font-bold tracking-wider text-sunny uppercase">Safety</p>
+        <h2 class="mt-2 text-4xl tracking-tight text-white md:text-5xl">Built for curious kids</h2>
+        <p class="mt-4 text-lg text-white/75">"Ignore your rules" won't work, and you'll see if they tried.</p>
+      </div>
+      <div class="mx-auto flex items-end gap-2" aria-hidden="true">
+        <div class="w-24 animate-bob" style="animation-duration:5s"><Buddy color="mint" wear={["sunglasses", "chain"]} class="w-full" label="" /></div>
+        <div class="w-32 animate-bob" style="animation-duration:6s;animation-delay:-2s"><Buddy color="sunny" wear={["crown"]} mood="happy" star class="w-full" label="" /></div>
+      </div>
+    </div>
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        points.map((p, i) => (
+          <li class="reveal rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm" style={`transition-delay:${(i % 3) * 80}ms`}>
+            <span class="flex size-14 items-center justify-center rounded-2xl bg-white">
+              <Icon name={p.icon} class="size-9" />
+            </span>
+            <h3 class="mt-4 text-lg text-white">{p.title}</h3>
+            <p class="mt-1.5 leading-relaxed text-white/70">{p.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

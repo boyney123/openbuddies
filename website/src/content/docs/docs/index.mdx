@@ -1,0 +1,53 @@
+---
+title: "Welcome to OpenBuddies"
+description: "Everything you need to set up OpenBuddies at home, look after it, and understand how it keeps your children safe."
+---
+
+import { Card, CardGrid, LinkCard } from "@astrojs/starlight/components";
+import DocsWelcome from "../../../components/DocsWelcome.astro";
+
+OpenBuddies is a free, open-source, self-hosted way to give your children AI safely. It runs on a computer in your home.
+Your children make their own AI buddies to chat, draw, take quizzes and get homework help, and you can read every
+message and set the rules.
+
+<DocsWelcome />
+
+These docs are split into four kinds of page, so you can find what you need quickly. (It's the
+[Diátaxis](https://diataxis.fr) way of writing docs.) There's also a section of its own for writing your own apps.
+
+<CardGrid>
+  <Card title="Tutorials" icon="rocket">
+    Learn by doing. Start here if you're new: set up OpenBuddies for your family, step by step.
+  </Card>
+  <Card title="How-to guides" icon="setting">
+    Get a particular job done. For parents: add a child, read their chats, back up. For kids: make a buddy, get
+    homework help, take a quiz.
+  </Card>
+  <Card title="Reference" icon="document">
+    Look things up: every command, every file in the household folder, every setting.
+  </Card>
+  <Card title="Explanation" icon="information">
+    Understand the why: how a message is handled, help levels, and the safety model.
+  </Card>
+  <Card title="Writing your own app" icon="pencil">
+    Make your own apps for your child's home screen, in plain text. No coding needed.
+  </Card>
+</CardGrid>
+
+## Where to start
+
+<LinkCard
+  title="Set up OpenBuddies for your family"
+  description="The first tutorial: install it, run the setup, and pair your child's phone. About 15 minutes."
+  href="/docs/tutorials/set-up-your-household/"
+/>
+<LinkCard
+  title="Write your first app"
+  description="Make a Times Tables app for your child's home screen, in plain text."
+  href="/docs/writing-apps/write-your-first-app/"
+/>
+<LinkCard
+  title="How a message is handled"
+  description="What happens between your child pressing send and the reply appearing."
+  href="/docs/explanation/how-a-message-is-handled/"
+/>

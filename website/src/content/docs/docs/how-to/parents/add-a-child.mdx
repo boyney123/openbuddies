@@ -1,0 +1,24 @@
+---
+title: "Add a child"
+description: "Add another child to your household, with their own help level."
+sidebar:
+  order: 1
+---
+
+Run:
+
+```sh
+npx openbuddies children add
+```
+
+It asks the same questions as the setup: their first name, age, school year, and how much help they get (**Strict**,
+**Balanced** or **Relaxed**). To skip the questions, pass the answers:
+
+```sh
+npx openbuddies children add --name Mia --age 8 --year "Year 3" --mode balanced
+```
+
+Then pair their device: see [Pair a phone or tablet](/docs/how-to/parents/pair-a-device/).
+
+You can also add and edit children on your parent page under **Children**. To see who's set up, run
+`npx openbuddies children list`.

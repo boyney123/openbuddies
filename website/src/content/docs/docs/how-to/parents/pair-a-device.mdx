@@ -1,0 +1,38 @@
+---
+title: "Pair a phone or tablet"
+description: "Connect a child's device with a QR code, add it to the home screen, or cut a device off."
+sidebar:
+  order: 2
+---
+
+import Screenshots from "../../../../../components/Screenshots.astro";
+import devices from "../../../../../assets/screenshots/parent-devices.png";
+import { Steps } from "@astrojs/starlight/components";
+
+## Pair a device
+
+<Steps>
+
+1. Make a fresh pairing code for the child:
+
+   ```sh
+   npx openbuddies pair <child>
+   ```
+
+2. Scan the QR code with the child's device. Each code works once and expires after 10 minutes.
+
+</Steps>
+
+The device needs to be on your home Wi-Fi, unless you've set up [access away from home](/docs/how-to/parents/use-away-from-home/).
+
+## Add it to the home screen
+
+On Chrome or Edge over HTTPS, the pairing page shows an **Add to my home screen** button. On an iPhone or iPad, tap
+**Share**, then **Add to Home Screen**. You'll need HTTPS (from Tailscale) for reminder notifications on the device.
+
+## Unpair a device
+
+Open your parent page and go to **Devices**, then tap **Revoke** beside the device. It's cut off straight away:
+anything it has open stops working at once. You can also pair a new device from here with **Pair a new device**.
+
+<Screenshots device="desktop" shots={[{ src: devices, alt: "Devices: each child's paired devices, with Pair a new device and Revoke buttons" }]} />

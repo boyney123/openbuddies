@@ -1,0 +1,51 @@
+---
+// The logo as standalone images, captured into public/ by `pnpm images` (scripts/images.mjs).
+import "../../styles/global.css";
+import { SITE } from "../../site";
+import Art from "../../components/Art.astro";
+
+export function getStaticPaths() {
+  return ["mark", "wordmark", "icon"].map((image) => ({ params: { image } }));
+}
+const { image } = Astro.params;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <title>{SITE.name} {image}</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: transparent !important;
+      }
+    </style>
+  </head>
+  <body>
+    {
+      image === "mark" && (
+        <div class="flex h-[512px] w-[512px] items-center justify-center">
+          <Art name="logo" class="w-[470px]" />
+        </div>
+      )
+    }
+    {
+      image === "wordmark" && (
+        <div class="flex h-[320px] w-[1400px] items-center justify-center gap-8 font-sans text-[150px] font-extrabold tracking-tight">
+          <Art name="logo" class="h-[230px] w-auto" />
+          <span><span class="text-navy">{SITE.wordmark[0]}</span><span class="text-coral">{SITE.wordmark[1]}</span></span>
+        </div>
+      )
+    }
+    {
+      image === "icon" && (
+        <div class="flex h-[512px] w-[512px] items-center justify-center bg-white">
+          <Art name="logo" class="w-[400px]" />
+        </div>
+      )
+    }
+  </body>
+</html>

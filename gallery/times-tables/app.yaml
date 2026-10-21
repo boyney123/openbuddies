@@ -1,0 +1,8 @@
+name: Times Tables
+description: Quick-fire times tables, at your own speed.
+art: chart
+icon: brain
+version: 1.0.0
+author: OpenBuddies
+kind: tutor
+needs: [reminders]

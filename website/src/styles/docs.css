@@ -1,0 +1,277 @@
+/*
+ * The docs (Starlight) in the OpenBuddies brand: Inter, Tutor Blue accents, navy ink, soft cloud backgrounds.
+ * Dark mode is the app's night palette (../web/src/styles.css).
+ */
+:root {
+  --sl-font: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --sl-content-width: 46rem;
+
+  /* Dark (Starlight's default theme). */
+  --sl-color-accent-low: #19294a;
+  --sl-color-accent: #4b92ff;
+  --sl-color-accent-high: #cfe0ff;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #e8eef8;
+  --sl-color-gray-2: #c4d0e4;
+  --sl-color-gray-3: #9aa8c0;
+  --sl-color-gray-4: #5b6a86;
+  --sl-color-gray-5: #2a3b5a;
+  --sl-color-gray-6: #152238;
+  --sl-color-black: #0d1626;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #e3eeff;
+  --sl-color-accent: #2f80ff;
+  --sl-color-accent-high: #102a5c;
+  --sl-color-white: #102a5c;
+  --sl-color-gray-1: #1b2430;
+  --sl-color-gray-2: #33405a;
+  --sl-color-gray-3: #5b6478;
+  --sl-color-gray-4: #8a94a8;
+  --sl-color-gray-5: #dbe2ee;
+  --sl-color-gray-6: #edf1f7;
+  --sl-color-gray-7: #f5f7fb;
+  --sl-color-black: #ffffff;
+}
+
+/* Headings bold and tight, like the site. */
+.sl-markdown-content :is(h1, h2, h3, h4),
+h1#_top {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Rounder, friendlier surfaces. (Code blocks are rounded in astro.config.mjs, so their title bars round too.) */
+.sl-markdown-content code:not(pre code) {
+  border-radius: 0.4rem;
+}
+.card,
+.sl-link-card {
+  border-radius: 1.25rem !important;
+}
+.starlight-aside {
+  border-radius: 1rem;
+}
+
+/* Callouts said by a buddy (components/BuddyAside.astro): the buddy on the left, a speech bubble pointing at it. */
+.buddy-aside {
+  --bubble-bg: var(--sl-color-blue-low);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.buddy-aside.starlight-aside--tip {
+  --bubble-bg: var(--sl-color-purple-low);
+}
+.buddy-aside.starlight-aside--caution {
+  --bubble-bg: var(--sl-color-orange-low);
+}
+.buddy-aside.starlight-aside--danger {
+  --bubble-bg: var(--sl-color-red-low);
+}
+.sl-markdown-content .buddy-aside > * {
+  margin-top: 0;
+}
+.buddy-aside__buddy {
+  flex: none;
+  width: 4.5rem;
+  overflow: visible;
+}
+.buddy-aside__bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--sl-color-asides-border);
+  border-radius: 1.25rem;
+  background: var(--bubble-bg);
+}
+/* The bubble's tail, pointing at the buddy's face. */
+.buddy-aside__bubble::before {
+  content: "";
+  position: absolute;
+  top: 1.5rem;
+  left: -0.5rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: inherit;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-radius: 0 0 0 0.2rem;
+  background: var(--bubble-bg);
+  transform: rotate(45deg);
+}
+@media (max-width: 30rem) {
+  .buddy-aside {
+    gap: 0.75rem;
+  }
+  .buddy-aside__buddy {
+    width: 3.25rem;
+  }
+  .buddy-aside__bubble::before {
+    top: 1rem;
+  }
+}
+
+/* David and Jackson's hello on the docs home (components/DocsWelcome.astro): their buddies, then a speech bubble. */
+.docs-welcome {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-block: 2rem;
+}
+.docs-welcome__buddies {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.docs-welcome__buddies figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+.docs-welcome__david {
+  width: 5.5rem;
+  overflow: visible;
+}
+.docs-welcome__jackson {
+  width: 4.5rem;
+  overflow: visible;
+}
+.docs-welcome__name {
+  margin-top: -0.4rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  color: #102a5c;
+  font-size: var(--sl-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.docs-welcome__name--mint {
+  background: #ddf6ea;
+}
+.docs-welcome__name--coral {
+  background: #ffe6e3;
+}
+.docs-welcome__bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 2px solid var(--sl-color-accent);
+  border-radius: 1.5rem;
+  background: var(--sl-color-accent-low);
+  color: var(--sl-color-gray-2);
+  line-height: var(--sl-line-height);
+}
+.docs-welcome__bubble::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -0.55rem;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.5rem;
+  border: inherit;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-radius: 0 0 0 0.2rem;
+  background: inherit;
+  transform: rotate(45deg);
+}
+.docs-welcome__bubble p + p {
+  margin-top: 0.75rem;
+}
+.docs-welcome__title {
+  margin-bottom: 0.5rem;
+  color: var(--sl-color-white);
+  font-size: var(--sl-text-h4);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.docs-welcome__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  background: var(--sl-color-white);
+  color: var(--sl-color-black);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+.docs-welcome__cta:hover {
+  color: var(--sl-color-black);
+  transform: translateY(-2px);
+}
+.docs-welcome__cta-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+/* On narrow screens the buddies sit above the bubble, which points up at them. */
+@media (max-width: 40rem) {
+  .docs-welcome {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .docs-welcome__bubble {
+    align-self: stretch;
+  }
+  .docs-welcome__bubble::before {
+    top: -0.55rem;
+    left: 50%;
+    margin: 0 0 0 -0.5rem;
+    transform: rotate(135deg);
+  }
+}
+
+/* Screenshots of the app (components/Screenshots.astro): phones side by side, or the parent page on a computer. */
+.screenshots {
+  margin-block: 1.5rem;
+}
+.screenshots__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.screenshots img {
+  height: auto;
+  border: 1px solid var(--sl-color-gray-5);
+  background: var(--sl-color-gray-6);
+  box-shadow: 0 18px 40px -24px rgb(16 42 92 / 0.45);
+}
+.screenshots--phone img {
+  width: min(13rem, calc(33.3% - 0.7rem));
+  border-radius: 1.75rem;
+}
+.screenshots--desktop img {
+  width: 100%;
+  border-radius: 1rem;
+}
+.screenshots figcaption {
+  margin-top: 0.75rem;
+  color: var(--sl-color-gray-3);
+  font-size: var(--sl-text-sm);
+  text-align: center;
+}
+
+.site-title img {
+  height: 2rem;
+  width: auto;
+}
+
+/* The docs' name in ink, like the site's wordmark, rather than link blue. */
+.site-title {
+  color: var(--sl-color-white);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}

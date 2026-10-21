@@ -1,0 +1,60 @@
+---
+title: "Add an app"
+description: "Add an app from the gallery, from a link or from a catalogue, and choose which children get it."
+sidebar:
+  order: 5
+---
+
+import Screenshots from "../../../../../components/Screenshots.astro";
+import apps from "../../../../../assets/screenshots/parent-apps.png";
+
+Homework help, Picture Studio and Quizzes come built in and are on for every child. Apps you add start switched off,
+so nothing reaches a child until you choose.
+
+Whichever way you add one, OpenBuddies shows you the whole app first (what it uses, and every word of its
+instructions) and asks before adding it. The copy installed is exactly the one you read.
+
+## On your parent page
+
+Open **Apps** to see every app and tick which children get it. Below them is the gallery: tap **Look at it** to read an
+app before adding it. You can also add a catalogue, or an app someone sent you a link to.
+
+<Screenshots device="desktop" shots={[{ src: apps, alt: "Apps: the built-in apps with a tick for each child, and the gallery below" }]} />
+
+## Other ways to add an app
+
+### From the gallery
+
+See what's there, then add one by its id:
+
+```sh
+npx openbuddies apps gallery
+npx openbuddies apps add spelling-bee
+```
+
+The gallery includes **Spelling Bee**, **Times Tables** and **Story Planner**.
+
+### From a link
+
+Someone may share an app as a single `.json` file at an `https://` link:
+
+```sh
+npx openbuddies apps add https://example.com/times-tables.json
+```
+
+Or on your parent page: **Apps → Add an app by link**.
+
+### From a catalogue
+
+A catalogue is a list of apps someone keeps, like a teacher's class apps. Add its link on your parent page under
+**Apps → Catalogues**, and its apps appear in your gallery.
+
+## Turn it on for a child
+
+```sh
+npx openbuddies apps on <child> spelling-bee
+npx openbuddies apps off <child> spelling-bee
+```
+
+Or switch it on and off under **Apps** on your parent page. To remove an app completely, run
+`npx openbuddies apps remove <app>`.

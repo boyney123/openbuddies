@@ -1,0 +1,5 @@
+# The website is its own project, separate from the app in the folder above (which has its own pnpm-workspace.yaml).
+packages: []
+allowBuilds:
+  # sharp ships prebuilt binaries; its install script only builds from source.
+  sharp: false

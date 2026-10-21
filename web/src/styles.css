@@ -1,0 +1,610 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+
+/*
+ * The child's buddy colours. Registered so they can animate: switching buddy fades every buddy-coloured thing,
+ * background included, from one theme to the next.
+ */
+@property --buddy {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2f80ff;
+}
+
+/* Dark mode follows the device setting, in the child's app. The parent's page is always light (see below). */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-app="parent"]) & {
+      @slot;
+    }
+  }
+}
+/* While the on-screen keyboard is open (see web/src/child/keyboard.ts). */
+@custom-variant keyboard (:root[data-keyboard] &);
+
+/*
+ * OpenBuddies brand (see the brand guide):
+ * Primary Navy #102A5C · Tutor Blue #2F80FF · Warm Coral #FF6B5E · Mint #34C98A · Soft Cloud #F5F7FB · Ink #1B2430
+ * Inter throughout: headings bold, subheadings semibold, body regular.
+ */
+:root {
+  --navy: #102a5c;
+  --tutor-blue: #2f80ff;
+  --coral: #ff6b5e;
+  --mint: #34c98a;
+  --cloud: #f5f7fb;
+  --ink: #1b2430;
+  --sunny: #ffb020;
+  --grape: #8b5cf6;
+
+  --background: var(--cloud);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--tutor-blue);
+  --primary-foreground: #ffffff;
+  --secondary: #e8f0fe;
+  --secondary-foreground: var(--navy);
+  --muted: #edf1f7;
+  --muted-foreground: #5b6478;
+  --accent: #e8f0fe;
+  --accent-foreground: var(--navy);
+  --destructive: #e5484d;
+  --border: #e2e8f1;
+  --input: #dbe2ee;
+  --ring: var(--tutor-blue);
+  --radius: 1rem;
+
+  /* Brand tints used by cards and states. */
+  --heading: var(--navy);
+  --coral-soft: #ffe6e3;
+  --mint-soft: #ddf6ea;
+  --sunny-soft: #fff3d9;
+  --blue-soft: #e3eeff;
+  --grape-soft: #ede5fe;
+  /* Icons drawn on the buddy colour; set at runtime with the buddy. */
+  --buddy-on: #ffffff;
+}
+
+/* Fade between buddy themes on a switch, but not on page load (data-theme-ready is set after the first paint). */
+:root[data-theme-ready] {
+  transition: --buddy 0.6s ease;
+}
+:root[data-theme-ready] body {
+  transition: background-color 0.5s ease;
+}
+
+/* Shades of whichever buddy colour applies to an element (the page's, or a buddy card's own). */
+*,
+::before,
+::after {
+  --buddy-soft: color-mix(in oklab, var(--buddy) 16%, var(--card));
+  /* Readable as text or an icon on the page, even for the light colours. */
+  --buddy-strong: color-mix(in oklab, var(--buddy) 72%, var(--heading));
+}
+
+/* A frosted card that picks up the buddy's theme, for tiles on the child's home screen. */
+@utility card-buddy {
+  background-color: color-mix(in oklab, color-mix(in oklab, var(--buddy) 6%, var(--card)) 82%, transparent);
+  border: 1px solid color-mix(in oklab, var(--buddy) 18%, var(--border));
+  backdrop-filter: blur(12px);
+}
+
+/* The child's app takes on their buddy's theme: a page tinted with its colour. */
+:root[data-buddy] {
+  --background: color-mix(in oklab, var(--buddy) 9%, var(--cloud));
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-buddy] {
+    --background: color-mix(in oklab, var(--buddy) 12%, #0d1626);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0d1626;
+    --foreground: #e8eef8;
+    --card: #152238;
+    --card-foreground: #e8eef8;
+    --popover: #152238;
+    --popover-foreground: #e8eef8;
+    --primary: #4b92ff;
+    --secondary: #1c2c4b;
+    --secondary-foreground: #dbe6fb;
+    --muted: #1a2740;
+    --muted-foreground: #9aa8c0;
+    --accent: #1c2c4b;
+    --accent-foreground: #dbe6fb;
+    --border: #243450;
+    --input: #2a3b5a;
+    --heading: #e3ebfb;
+    --coral-soft: #3d2225;
+    --mint-soft: #16352a;
+    --sunny-soft: #3a2f16;
+    --blue-soft: #19294a;
+    --grape-soft: #2a2347;
+  }
+}
+
+/*
+ * The parent's page: a plain, light dashboard on white, whatever the device setting. Neutral greys, with Tutor Blue as
+ * the only accent; buddy colours appear only as the buddies themselves. More specific than :root, so it wins over the
+ * dark-mode values above.
+ */
+:root[data-app="parent"] {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #1b2430;
+  --card: #ffffff;
+  --card-foreground: #1b2430;
+  --popover: #ffffff;
+  --popover-foreground: #1b2430;
+  --primary: var(--tutor-blue);
+  --primary-foreground: #ffffff;
+  --secondary: #f3f5f8;
+  --secondary-foreground: #1b2430;
+  --muted: #f3f5f8;
+  --muted-foreground: #646d7e;
+  --accent: #f3f5f8;
+  --accent-foreground: #1b2430;
+  --border: #e6e9ef;
+  --input: #dde2ea;
+  --heading: #111827;
+  --radius: 0.625rem;
+  --coral-soft: #ffe9e6;
+  --mint-soft: #e2f7ec;
+  --sunny-soft: #fff4dc;
+  --blue-soft: #e8f0ff;
+  --grape-soft: #efe8fe;
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Brand colours as utilities: text-navy, bg-coral, bg-mint-soft, ... */
+  --color-navy: var(--navy);
+  --color-heading: var(--heading);
+  --color-tutor-blue: var(--tutor-blue);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-sunny: var(--sunny);
+  --color-sunny-soft: var(--sunny-soft);
+  --color-blue-soft: var(--blue-soft);
+  --color-grape: var(--grape);
+  --color-grape-soft: var(--grape-soft);
+  --color-cloud: var(--cloud);
+  --color-ink: var(--ink);
+  --color-buddy: var(--buddy);
+  --color-buddy-soft: var(--buddy-soft);
+  --color-buddy-strong: var(--buddy-strong);
+  --color-buddy-on: var(--buddy-on);
+
+  --animate-blink: blink 4.5s infinite;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pop: pop 0.5s ease-out;
+  --animate-hop: hop 0.8s ease-in-out 2;
+  /* Keeps hopping for as long as a buddy's card is hovered. */
+  --animate-hop-loop: hop 0.8s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.7s ease-in-out 2;
+  --animate-look: look 2.2s ease-in-out;
+
+  /* A new buddy hatching (see child/Hatch.tsx). */
+  --animate-egg-wobble: egg-wobble 0.85s ease-in-out 2;
+  --animate-egg-shake: egg-shake 0.12s linear infinite;
+  --animate-crack: crack 0.45s ease-out both;
+  --animate-shell-fly: shell-fly 0.8s cubic-bezier(0.3, 0.7, 0.4, 1) both;
+  --animate-shell-drop: shell-drop 0.8s ease-in both;
+  --animate-hatch-pop: hatch-pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-confetti: confetti 1.2s cubic-bezier(0.1, 0.7, 0.3, 1) both;
+  /* The buddy painting a picture in Picture Studio (see child/PaintingCanvas.tsx). */
+  --animate-paint-stroke: paint-stroke 7s ease-in-out infinite both;
+  --animate-paint-brush: paint-brush 7s ease-in-out infinite;
+  --animate-twinkle: twinkle 1.8s ease-in-out infinite;
+  /* A file flying up into the buddy while it uploads (see child/UploadSplash.tsx). */
+  --animate-upload-fly: upload-fly 1.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  --animate-gulp: gulp 1.4s ease-in-out infinite;
+  /* The buddy writing a quiz (see child/QuizMaking.tsx). */
+  --animate-quiz-deal: quiz-deal 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+  --animate-quiz-write: quiz-write 0.6s ease-out both;
+  --animate-quiz-tick: quiz-tick 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  --animate-quiz-pencil: quiz-pencil 2.6s ease-in-out both;
+  --animate-quiz-float: quiz-float 4.2s ease-in infinite both;
+}
+
+@keyframes egg-wobble {
+  0%,
+  75%,
+  100% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(9deg);
+  }
+  45% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes egg-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px) rotate(-2deg);
+  }
+  75% {
+    transform: translateX(3px) rotate(2deg);
+  }
+}
+@keyframes crack {
+  from {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes shell-fly {
+  to {
+    transform: translate(-30px, -140px) rotate(-55deg);
+    opacity: 0;
+  }
+}
+@keyframes shell-drop {
+  to {
+    transform: translateY(26px);
+    opacity: 0;
+  }
+}
+@keyframes hatch-pop {
+  0% {
+    transform: translateY(40px) scale(0.2);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-18px) scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+/* Each stroke paints itself in, stays a while, then fades so the canvas can be painted again. */
+@keyframes paint-stroke {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+  }
+  22% {
+    stroke-dashoffset: 0;
+  }
+  86% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+/* The brush sweeping over the canvas, in time with the strokes. */
+@keyframes paint-brush {
+  0%,
+  100% {
+    transform: translate(18%, 62%) rotate(-12deg);
+  }
+  15% {
+    transform: translate(58%, 30%) rotate(8deg);
+  }
+  30% {
+    transform: translate(30%, 18%) rotate(-6deg);
+  }
+  45% {
+    transform: translate(62%, 58%) rotate(14deg);
+  }
+  60% {
+    transform: translate(20%, 40%) rotate(-10deg);
+  }
+  75% {
+    transform: translate(50%, 70%) rotate(6deg);
+  }
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+}
+/* Clouds over the buddy's hills (child/BuddyStage.tsx): across the sky and round again. */
+@keyframes cloud-drift {
+  from {
+    left: -20%;
+  }
+  to {
+    left: 110%;
+  }
+}
+@keyframes upload-fly {
+  0% {
+    transform: translateY(0) rotate(-8deg) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(-150px) rotate(6deg) scale(0.42);
+    opacity: 1;
+  }
+  85%,
+  100% {
+    transform: translateY(-170px) rotate(10deg) scale(0.15);
+    opacity: 0;
+  }
+}
+/* The buddy gulping each file as it arrives, in time with upload-fly. */
+@keyframes gulp {
+  0%,
+  65%,
+  100% {
+    transform: scale(1, 1);
+  }
+  78% {
+    transform: scale(1.1, 0.9);
+  }
+  90% {
+    transform: scale(0.96, 1.05);
+  }
+}
+@keyframes confetti {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 60px)) rotate(240deg);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  25% {
+    transform: translateY(2px) scale(1.06, 0.94);
+  }
+  50% {
+    transform: translateY(-14px) scale(0.97, 1.04);
+  }
+  75% {
+    transform: translateY(0) scale(1.04, 0.96);
+  }
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-9deg);
+  }
+  45% {
+    transform: rotate(8deg);
+  }
+  70% {
+    transform: rotate(-5deg);
+  }
+  85% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes look {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  40% {
+    transform: translateX(-5px);
+  }
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body,
+  #root {
+    @apply min-h-full;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-bold text-heading;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@keyframes quiz-deal {
+  from {
+    transform: translate(130%, -20%) rotate(24deg);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes quiz-write {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes quiz-tick {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* The pencil's tip runs along the question lines, down the choices, then lifts away for the next card. */
+@keyframes quiz-pencil {
+  0% {
+    transform: translate(10%, 34%);
+    opacity: 0;
+  }
+  8% {
+    transform: translate(10%, 34%);
+    opacity: 1;
+  }
+  22% {
+    transform: translate(88%, 34%);
+  }
+  28% {
+    transform: translate(10%, 44%);
+  }
+  40% {
+    transform: translate(62%, 44%);
+  }
+  50% {
+    transform: translate(12%, 58%);
+  }
+  58% {
+    transform: translate(16%, 69%);
+  }
+  66% {
+    transform: translate(12%, 80%);
+  }
+  76% {
+    transform: translate(14%, 62%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(70%, 10%);
+    opacity: 0;
+  }
+}
+
+@keyframes quiz-float {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    transform: translateY(-12px) scale(1);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-150px) rotate(14deg) scale(0.9);
+    opacity: 0;
+  }
+}

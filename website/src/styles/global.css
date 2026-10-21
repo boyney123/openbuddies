@@ -1,0 +1,564 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "./buddy.css";
+
+/*
+ * The brand, as in the app (../web/src/styles.css):
+ * Primary Navy #102A5C · Tutor Blue #2F80FF · Warm Coral #FF6B5E · Mint #34C98A · Soft Cloud #F5F7FB · Ink #1B2430
+ * Inter throughout: headings bold, subheadings semibold, body regular.
+ */
+:root {
+  color-scheme: light;
+  --navy: #102a5c;
+  --tutor-blue: #2f80ff;
+  --coral: #ff6b5e;
+  --mint: #34c98a;
+  --cloud: #f5f7fb;
+  --ink: #1b2430;
+  --sunny: #ffb020;
+  --grape: #8b5cf6;
+  --berry: #ec4899;
+  --teal: #14b8a6;
+
+  --muted: #5b6478;
+  --border: #e2e8f1;
+  --coral-soft: #ffe6e3;
+  --mint-soft: #ddf6ea;
+  --sunny-soft: #fff3d9;
+  --blue-soft: #e3eeff;
+  --grape-soft: #ede5fe;
+  --sky-top: #cfe2ff;
+  --sky-bottom: #f5f7fb;
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-navy: var(--navy);
+  --color-tutor-blue: var(--tutor-blue);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-sunny: var(--sunny);
+  --color-sunny-soft: var(--sunny-soft);
+  --color-grape: var(--grape);
+  --color-grape-soft: var(--grape-soft);
+  --color-berry: var(--berry);
+  --color-teal: var(--teal);
+  --color-blue-soft: var(--blue-soft);
+  --color-cloud: var(--cloud);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-bob: bob 5s ease-in-out infinite;
+  --animate-hop: hop 0.8s ease-in-out 2;
+  --animate-hop-loop: hop 0.8s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.7s ease-in-out 2;
+  --animate-look: look 2.2s ease-in-out infinite;
+  --animate-pop: pop 0.5s ease-out;
+  --animate-twinkle: twinkle 1.8s ease-in-out infinite;
+}
+
+/* ---------- The buddy (components/Buddy.astro) ---------- */
+
+/* The face and its moods are in buddy.css, shared with the docs. */
+
+/* Eyes that follow the pointer (scripts/buddies.ts sets --lx / --ly). */
+.buddy .f-track {
+  transform: translate(var(--lx, 0px), var(--ly, 0px));
+  transition: transform 0.25s ease-out;
+}
+.buddy[data-mood="look"] .f-blink {
+  animation: var(--animate-look);
+}
+/* Buddies on the hero's hills start hidden, then pop up one by one (scripts/site.ts). */
+[data-arrive] {
+  opacity: 0;
+}
+/* Buddies you can pick up (scripts/site.ts). Their speech bubbles hide while they're carried. */
+[data-carry] svg.buddy {
+  cursor: url("/cursors/grab.svg") 16 16, grab;
+  transition: scale 0.2s ease;
+}
+[data-carry]:hover svg.buddy {
+  scale: 1.06;
+}
+.carried svg.buddy {
+  cursor: url("/cursors/grabbing.svg") 16 16, grabbing;
+}
+.carried [data-bubble] {
+  opacity: 0 !important;
+}
+
+/* A buddy for everything (components/BuddyField.astro): buddies on the hill, and the one picked beside the phone. */
+.cast-buddy {
+  width: 3.5rem;
+  transition: scale 0.6s ease;
+}
+.cast-buddy[data-on] {
+  scale: 1.25;
+}
+@media (min-width: 48rem) {
+  .cast-buddy {
+    position: absolute;
+    bottom: 2.25rem;
+    left: var(--home);
+    width: 5.25rem;
+    translate: -50% 0;
+    transition:
+      left 0.9s cubic-bezier(0.5, 0, 0.3, 1),
+      bottom 0.9s cubic-bezier(0.5, 0, 0.3, 1),
+      scale 0.9s ease;
+  }
+  /* Picked: up onto a little cloud, right beside the phone. Its name tag stays down on the hill. */
+  .cast-buddy[data-on] {
+    bottom: 40%;
+    left: 16%;
+    scale: 1.6;
+  }
+  .cast-buddy::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 1.1rem;
+    z-index: -1;
+    height: 0.9rem;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow:
+      -0.6rem 0.2rem 0 -0.1rem #fff,
+      0.6rem 0.2rem 0 -0.1rem #fff;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .cast-buddy[data-on]::after {
+    opacity: 1;
+    transition-delay: 0.6s;
+  }
+  .cast-buddy[data-on] .cast-buddy__name {
+    opacity: 0;
+  }
+}
+
+/* The painting and quiz-making cards in its chat, as in the app (web/src/styles.css). */
+.paint-stroke {
+  animation: paint-stroke 7s ease-in-out infinite both;
+}
+.paint-brush {
+  animation: paint-brush 7s ease-in-out infinite;
+}
+.quiz-deal {
+  animation: quiz-deal 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+.quiz-deal .quiz-write {
+  animation: quiz-write 0.6s ease-out both;
+}
+.quiz-deal .quiz-choice {
+  animation: bubble-in 0.35s ease-out both;
+}
+.quiz-deal .quiz-tick {
+  animation: quiz-tick 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+.quiz-float {
+  animation: quiz-float 4.2s ease-in infinite both;
+}
+@keyframes paint-stroke {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+  }
+  22% {
+    stroke-dashoffset: 0;
+  }
+  86% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+@keyframes paint-brush {
+  0%,
+  100% {
+    transform: translate(18%, 62%) rotate(-12deg);
+  }
+  15% {
+    transform: translate(58%, 30%) rotate(8deg);
+  }
+  30% {
+    transform: translate(30%, 18%) rotate(-6deg);
+  }
+  45% {
+    transform: translate(62%, 58%) rotate(14deg);
+  }
+  60% {
+    transform: translate(20%, 40%) rotate(-10deg);
+  }
+  75% {
+    transform: translate(50%, 70%) rotate(6deg);
+  }
+}
+@keyframes quiz-deal {
+  from {
+    transform: translate(130%, -20%) rotate(24deg);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes quiz-write {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes quiz-tick {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes quiz-pencil {
+  0% {
+    transform: translate(10%, 34%);
+    opacity: 0;
+  }
+  8% {
+    transform: translate(10%, 34%);
+    opacity: 1;
+  }
+  22% {
+    transform: translate(88%, 34%);
+  }
+  28% {
+    transform: translate(10%, 44%);
+  }
+  40% {
+    transform: translate(62%, 44%);
+  }
+  50% {
+    transform: translate(12%, 58%);
+  }
+  58% {
+    transform: translate(16%, 69%);
+  }
+  66% {
+    transform: translate(12%, 80%);
+  }
+  76% {
+    transform: translate(14%, 62%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(70%, 10%);
+    opacity: 0;
+  }
+}
+@keyframes quiz-float {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    transform: translateY(-12px) scale(1);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-150px) rotate(14deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* ---------- Sky, clouds and hills ---------- */
+
+@keyframes cloud-drift {
+  from {
+    transform: translateX(-30vw);
+  }
+  to {
+    transform: translateX(130vw);
+  }
+}
+/* Drifting across its own box instead of the whole page (a small stage). */
+@keyframes cloud-drift-local {
+  from {
+    left: -25%;
+  }
+  to {
+    left: 110%;
+  }
+}
+.cloud-drift-local {
+  animation: cloud-drift-local var(--dur, 40s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.cloud-drift {
+  animation: cloud-drift var(--dur, 60s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+/* A buddy riding a cloud: a slow rise and fall with a little sway. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1.5deg);
+  }
+}
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  25% {
+    transform: translateY(2px) scale(1.06, 0.94);
+  }
+  50% {
+    transform: translateY(-14px) scale(0.97, 1.04);
+  }
+  75% {
+    transform: translateY(0) scale(1.04, 0.96);
+  }
+}
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-9deg);
+  }
+  45% {
+    transform: rotate(8deg);
+  }
+  70% {
+    transform: rotate(-5deg);
+  }
+  85% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes look {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  40% {
+    transform: translateX(-5px);
+  }
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1) rotate(45deg);
+    opacity: 1;
+  }
+}
+/* Chat bubbles arriving one after another (the demo chat). */
+@keyframes bubble-in {
+  from {
+    transform: translateY(10px) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* Hatching an egg (components/Footer.astro), as in the app's ../web/src/child/Hatch.tsx. */
+@keyframes egg-wobble {
+  0%,
+  75%,
+  100% {
+    transform: rotate(0);
+  }
+  15% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(9deg);
+  }
+  45% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes crack {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes shell-fly {
+  to {
+    transform: translate(-30px, -140px) rotate(-55deg);
+    opacity: 0;
+  }
+}
+@keyframes shell-drop {
+  to {
+    transform: translateY(26px);
+    opacity: 0;
+  }
+}
+@keyframes hatch-pop {
+  0% {
+    transform: translateY(40px) scale(0.2);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-18px) scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes confetti {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 60px)) rotate(240deg);
+    opacity: 0;
+  }
+}
+
+/* A message bubble travelling along the journey in How it works. */
+@keyframes message-travel {
+  0% {
+    left: 12.5%;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  90% {
+    left: 87.5%;
+    opacity: 1;
+  }
+  100% {
+    left: 87.5%;
+    opacity: 0;
+  }
+}
+.message-travel {
+  animation: message-travel 7s ease-in-out infinite;
+}
+
+/* Sections fade up as they scroll in (scripts/buddies.ts adds .in). */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer base {
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+  html {
+    scroll-behavior: smooth;
+    background: var(--cloud);
+  }
+  body {
+    @apply bg-cloud font-sans text-ink antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-bold text-navy;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 3px solid color-mix(in oklab, var(--tutor-blue) 60%, transparent);
+    outline-offset: 3px;
+  }
+}

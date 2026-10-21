@@ -1,0 +1,40 @@
+---
+title: "Let buddies look things up"
+description: "Set up a search provider and choose, per child, whether buddies can use the internet."
+sidebar:
+  order: 8
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+Buddies can look things up when a question needs facts from outside, like "how cold is it on Mars?". They never search
+for the answer to the homework.
+
+<Steps>
+
+1. Set up a search provider:
+
+   ```sh
+   npx openbuddies web setup
+   ```
+
+   Pick **Brave**, **Tavily** or your own **SearXNG**. It runs a test search and saves the key in `.env`. Brave gives
+   $5 of free credit a month, about 1,000 searches.
+
+2. Choose each child's setting:
+
+   ```sh
+   npx openbuddies children web <child> trusted
+   ```
+
+   - **off**: no looking things up.
+   - **trusted**: only trusted sites, such as BBC, Britannica, Wikipedia, NASA, Nat Geo Kids, Oak National Academy,
+     Khan Academy and the Met Office, plus any you add.
+   - **open**: any site, with SafeSearch strict and a blocklist.
+
+</Steps>
+
+Social media, video and homework-answer sites are always blocked. You can add or block sites, and each child has a
+limit of 30 lookups a day, under **Children** on your parent page.
+
+Try a search yourself with `npx openbuddies web test "how cold is it on mars"`.

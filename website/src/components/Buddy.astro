@@ -1,0 +1,208 @@
+---
+// A buddy, drawn exactly like the app's BuddyFace (../web/src/components/brand.tsx): the logo's speech bubble without
+// its tail, in one of eight colours, with the brand's face. The mood lives in data-mood, so a script can change it
+// (see styles/buddy.css). Colours are CSS variables, so the buddy maker can recolour it live.
+import { ACCESSORIES, BUDDY_COLORS, type Accessory, type BuddyColor, type Extra } from "../site";
+
+export type Mood = "idle" | "happy" | "wink" | "look" | "thinking" | "surprised" | "sad";
+
+interface Props {
+  color?: BuddyColor;
+  mood?: Mood;
+  wear?: (Accessory | Extra)[];
+  /** Draw every accessory, switched off unless it's in `wear` (for the buddy maker). */
+  allWear?: boolean;
+  /** The main buddy's gold star badge. */
+  star?: boolean;
+  /** Eyes follow the pointer. */
+  track?: boolean;
+  /** What a screen reader hears. An empty string hides a decorative buddy. */
+  label?: string;
+  class?: string;
+  id?: string;
+}
+
+const { color = "blue", mood = "idle", wear = [], allWear = false, star = false, track = false, label, class: className, id } = Astro.props;
+const c = BUDDY_COLORS[color];
+const N = "#102A5C";
+const BODY = "M26 24H64Q78 24 78 38V60Q78 74 64 74H26Q12 74 12 60V38Q12 24 26 24Z";
+// Glasses first, then things round the neck, then hats, so a hat sits over the headphones' band.
+const inSlot = (slot: string) => (Object.keys(ACCESSORIES) as Accessory[]).filter((a) => ACCESSORIES[a] === slot);
+const order: (Accessory | Extra)[] = [...inSlot("eyes"), "moustache", ...inSlot("neck"), ...inSlot("head"), "flatcap"];
+const shown = order.filter((a) => allWear || wear.includes(a));
+// Each buddy blinks on its own timing, so a row of buddies doesn't blink in unison.
+const blinkDelay = `${-(Math.random() * 4.5).toFixed(2)}s`;
+---
+
+<svg
+  viewBox="-6 -18 102 110"
+  class:list={["buddy overflow-visible", className]}
+  data-mood={mood}
+  data-track={track ? "" : undefined}
+  data-color={color}
+  id={id}
+  style={`--b:${c.main};--bi:${c.ink}`}
+  role={label === "" ? undefined : "img"}
+  aria-label={label === "" ? undefined : (label ?? "A buddy")}
+  aria-hidden={label === "" ? "true" : undefined}
+>
+  <path class="f-spark" d="M86 15L92 6M90 22L100 17" style="stroke:var(--b)" stroke-width="4.5" stroke-linecap="round"></path>
+  <path d={BODY} style="fill:var(--b)" stroke={N} stroke-width="6" stroke-linejoin="round"></path>
+  <ellipse class="f-cheek" cx="28" cy="58" rx="5" ry="3" fill="#fff" opacity="0.35"></ellipse>
+  <ellipse class="f-cheek" cx="62" cy="58" rx="5" ry="3" fill="#fff" opacity="0.35"></ellipse>
+
+  <g style="stroke:var(--bi)" stroke-width="4.5" fill="none" stroke-linecap="round">
+    <g class="f-happy-eyes">
+      <path d="M30 47Q34.5 41 39 47"></path>
+      <path d="M51 47Q55.5 41 60 47"></path>
+    </g>
+    <path class="f-wink-eye" d="M51 47Q55.5 41 60 47"></path>
+    <path class="f-grin" d="M36 57Q45 68 54 57"></path>
+    <circle class="f-think" cx="47" cy="61" r="3.5" style="fill:var(--bi)" stroke="none"></circle>
+    <path class="f-smile" d="M38 59Q45 66 52 59"></path>
+    <g class="f-sad">
+      <path d="M29 36L38 32.5M52 32.5L61 36"></path>
+      <path d="M38 64Q45 57 52 64"></path>
+    </g>
+    <g class="f-surprised">
+      <path d="M29 33Q34.5 29 40 33"></path>
+      <path d="M50 33Q55.5 29 61 33"></path>
+      <ellipse cx="45" cy="61" rx="4.5" ry="5.5" style="fill:var(--bi)"></ellipse>
+    </g>
+  </g>
+  <g class="f-surprised" style="fill:var(--bi)">
+    <circle cx="34.5" cy="45" r="5"></circle>
+    <circle cx="55.5" cy="45" r="5"></circle>
+    <circle cx="36" cy="43.5" r="1.6" fill="#fff"></circle>
+    <circle cx="57" cy="43.5" r="1.6" fill="#fff"></circle>
+  </g>
+  <g class="f-eyes f-track">
+    <g class="f-eyes-shift">
+      <g class="f-blink" style={`fill:var(--bi);animation-delay:${blinkDelay}`}>
+        <rect x="31" y="40" width="7" height="13" rx="3.5"></rect>
+        <rect class="f-eye-r" x="52" y="40" width="7" height="13" rx="3.5"></rect>
+      </g>
+    </g>
+  </g>
+
+  {star && <polygon points="66.0,59.5 67.4,63.1 71.2,63.3 68.3,65.7 69.2,69.4 66.0,67.4 62.8,69.4 63.7,65.7 60.8,63.3 64.6,63.1" fill="#FFB020" stroke={N} stroke-width="1.8" stroke-linejoin="round" />}
+
+  {
+    shown.map((a) => {
+      const off = !wear.includes(a) ? "" : undefined;
+      switch (a) {
+        case "cap":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-width="4" stroke-linejoin="round">
+              <path d="M18 27Q20 6 45 6Q66 6 70 24Z" fill="#FF6B5E" />
+              <path d="M62 22Q78 18 90 22Q90 27 84 27H62Z" fill="#E5544A" />
+              <circle cx="44" cy="6" r="3" fill={N} stroke="none" />
+            </g>
+          );
+        case "beanie":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-linejoin="round">
+              <path d="M17 28Q17 4 45 4Q73 4 73 28Z" fill="#34C98A" stroke-width="4" />
+              <rect x="14" y="22" width="62" height="10" rx="5" fill="#22A06B" stroke-width="4" />
+              <circle cx="45" cy="2" r="6" fill="#FFF3D9" stroke-width="3.5" />
+            </g>
+          );
+        case "crown":
+          return (
+            <g data-acc={a} data-off={off}>
+              <path d="M20 28L22 8L33 18L45 4L57 18L68 8L70 28Z" fill="#FFB020" stroke={N} stroke-width="4" stroke-linejoin="round" />
+              <circle cx="45" cy="19" r="3.2" fill="#FF6B5E" />
+              <circle cx="31" cy="23" r="2.4" fill="#8B5CF6" />
+              <circle cx="59" cy="23" r="2.4" fill="#34C98A" />
+            </g>
+          );
+        case "party":
+          return (
+            <g data-acc={a} data-off={off} transform="rotate(12 45 16)">
+              <path d="M32 26L47 -8L60 26Z" fill="#8B5CF6" stroke={N} stroke-width="4" stroke-linejoin="round" />
+              <path d="M37 15L56 17M41 5L52 7" stroke="#FFB020" stroke-width="3.5" stroke-linecap="round" />
+              <circle cx="47" cy="-9" r="4.5" fill="#FF6B5E" stroke={N} stroke-width="3" />
+            </g>
+          );
+        case "wizard":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-width="4" stroke-linejoin="round">
+              <path d="M30 22Q38 6 46 -14Q52 4 62 22Z" fill="#102A5C" />
+              <ellipse cx="46" cy="24" rx="27" ry="5" fill="#2A3F7A" />
+              <path d="M45 4l1.4 3 3.2.3-2.4 2.1.8 3.1-3-1.7-2.8 1.7.7-3.1-2.4-2.1 3.2-.3z" fill="#FFB020" stroke="none" />
+            </g>
+          );
+        case "headphones":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-width="4">
+              <path d="M14 42Q14 8 45 8Q76 8 76 42" fill="none" stroke-width="5" stroke-linecap="round" />
+              <rect x="6" y="36" width="12" height="20" rx="5" fill="#FF6B5E" />
+              <rect x="72" y="36" width="12" height="20" rx="5" fill="#FF6B5E" />
+            </g>
+          );
+        case "glasses":
+          return (
+            <g data-acc={a} data-off={off} style="stroke:var(--bi)" stroke-width="3.5">
+              <circle cx="34.5" cy="46" r="9" fill="rgba(255,255,255,0.25)" />
+              <circle cx="55.5" cy="46" r="9" fill="rgba(255,255,255,0.25)" />
+              <path d="M43.5 45Q45 43 46.5 45" fill="none" />
+            </g>
+          );
+        case "sunglasses":
+          return (
+            <g data-acc={a} data-off={off}>
+              <path d="M22 40H43V46Q43 54 34 54Q25 54 23 46Z M47 40H68L67 46Q65 54 56 54Q47 54 47 46Z" fill="#0B1020" style="stroke:var(--bi)" stroke-width="2" stroke-linejoin="round" />
+              <path d="M43 42H47" style="stroke:var(--bi)" stroke-width="3" />
+              <path d="M27 43H32M52 43H57" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.6" />
+            </g>
+          );
+        case "chain":
+          return (
+            <g data-acc={a} data-off={off}>
+              <path d="M22 70Q45 86 68 70" fill="none" stroke="#FFB020" stroke-width="4" stroke-dasharray="3 2.5" stroke-linecap="round" />
+              <circle cx="45" cy="80" r="5.5" fill="#FFB020" stroke={N} stroke-width="3" />
+            </g>
+          );
+        case "scarf":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-width="4" stroke-linejoin="round">
+              <path d="M14 64Q45 78 76 64L77 72Q45 86 13 72Z" fill="#FF6B5E" />
+              <path d="M58 74L62 90L70 88L66 72Z" fill="#E5544A" />
+            </g>
+          );
+        case "bowtie":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-linejoin="round">
+              <path d="M45 76L32 69V83Z M45 76L58 69V83Z" fill="#8B5CF6" stroke-width="3.5" />
+              <circle cx="45" cy="76" r="3.5" fill="#6D3FE0" stroke-width="3" />
+            </g>
+          );
+        case "moustache":
+          // Bushy brows and a distinguished grey moustache, for a grown-up. The brows bob when the eyes would blink.
+          return (
+            <g data-acc={a} data-off={off}>
+              <path class="f-brows" d="M29 35Q34 31 40 34M50 34Q56 31 61 35" style={`stroke:var(--bi);animation-delay:${blinkDelay}`} stroke-width="3.5" fill="none" stroke-linecap="round" />
+              <path d="M45 59Q40 54 34.5 56.5Q30 59 31.5 63.5Q36.5 60.5 41 61.8Q44 62.3 45 60.8Q46 62.3 49 61.8Q53.5 60.5 58.5 63.5Q60 59 55.5 56.5Q50 54 45 59Z" fill="#E8ECF2" stroke="#102A5C" stroke-width="2.5" stroke-linejoin="round" />
+            </g>
+          );
+        case "flatcap":
+          return (
+            <g data-acc={a} data-off={off} stroke={N} stroke-width="4" stroke-linejoin="round">
+              <path d="M15 29Q14 13 42 11Q70 10 76 25L78 29Z" fill="#8A6A4F" />
+              <path d="M60 26Q80 21 93 27Q93 32 84 32H58Z" fill="#6F533C" />
+              <path d="M24 22Q44 16 66 21" stroke="#B89272" stroke-width="2.5" fill="none" stroke-linecap="round" />
+              <circle cx="42" cy="11.5" r="2.5" fill={N} stroke="none" />
+            </g>
+          );
+        case "medal":
+          return (
+            <g data-acc={a} data-off={off}>
+              <path d="M38 66L45 78L52 66" fill="none" stroke="#2F80FF" stroke-width="5" />
+              <circle cx="45" cy="81" r="7" fill="#FFB020" stroke={N} stroke-width="3.5" />
+              <path d="M45 77.5l1.1 2.3 2.5.2-1.9 1.6.6 2.4-2.3-1.3-2.2 1.3.6-2.4-1.9-1.6 2.5-.2z" fill="#fff" />
+            </g>
+          );
+      }
+    })
+  }
+</svg>

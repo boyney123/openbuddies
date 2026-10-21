@@ -1,0 +1,21 @@
+# Dependencies and builds
+node_modules
+dist
+.astro
+.vite
+coverage
+
+# Secrets: API keys live in a household's .env, never in the repo
+.env
+.env.*
+
+# Household data, in case a household is ever made inside the checkout
+*.db
+*.db-wal
+*.db-shm
+vapid.json
+
+# Local output
+evals/reports
+*.log
+.DS_Store

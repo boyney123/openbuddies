@@ -1,0 +1,139 @@
+---
+// The last call to action, with an egg to hatch (like making a first buddy in the app), then the footer on the hills.
+import { SITE, type Accessory, type BuddyColor } from "../site";
+import Buddy from "./Buddy.astro";
+import Cloud from "./Cloud.astro";
+import Wordmark from "./Wordmark.astro";
+import GithubMark from "./GithubMark.astro";
+import Glyph from "./Glyph.astro";
+
+type Walker = { color: BuddyColor; wear: Accessory[]; w: string; x: number; hide?: boolean };
+// The crowd out on the hills. `hide` thins it out on phones.
+const crowd: { class: string; hill: string; buddies: Walker[] }[] = [
+  {
+    class: "opacity-90",
+    hill: "footer-far",
+    buddies: [
+      { color: "teal", wear: ["cap"], w: "w-9", x: 0.04 },
+      { color: "sunny", wear: ["party"], w: "w-8", x: 0.16, hide: true },
+      { color: "navy", wear: ["headphones"], w: "w-9", x: 0.27 },
+      { color: "mint", wear: ["crown"], w: "w-8", x: 0.38, hide: true },
+      { color: "coral", wear: ["glasses"], w: "w-9", x: 0.5 },
+      { color: "grape", wear: ["beanie"], w: "w-8", x: 0.62, hide: true },
+      { color: "blue", wear: ["wizard"], w: "w-9", x: 0.73 },
+      { color: "berry", wear: ["sunglasses"], w: "w-8", x: 0.84, hide: true },
+      { color: "sunny", wear: ["scarf"], w: "w-9", x: 0.96 },
+    ],
+  },
+  {
+    class: "",
+    hill: "footer-near",
+    buddies: [
+      { color: "coral", wear: ["beanie"], w: "w-14", x: 0.02 },
+      { color: "mint", wear: ["sunglasses", "chain"], w: "w-12", x: 0.11, hide: true },
+      { color: "grape", wear: ["bowtie"], w: "w-12", x: 0.2 },
+      { color: "sunny", wear: ["crown", "medal"], w: "w-14", x: 0.3, hide: true },
+      { color: "teal", wear: ["headphones"], w: "w-12", x: 0.39 },
+      { color: "blue", wear: ["medal"], w: "w-16", x: 0.49, hide: true },
+      { color: "berry", wear: ["party"], w: "w-11", x: 0.58 },
+      { color: "navy", wear: ["cap"], w: "w-13", x: 0.67, hide: true },
+      { color: "coral", wear: ["wizard", "glasses"], w: "w-12", x: 0.76 },
+      { color: "mint", wear: ["scarf"], w: "w-14", x: 0.86, hide: true },
+      { color: "grape", wear: ["crown"], w: "w-12", x: 0.97 },
+    ],
+  },
+];
+
+const EGG = "M50 6C24 6 10 46 10 72C10 98 28 114 50 114C72 114 90 98 90 72C90 46 76 6 50 6Z";
+const ZIG = "0,62 15,54 28,64 40,54 52,64 64,54 76,64 88,54 100,62";
+---
+
+<section class="relative overflow-hidden bg-gradient-to-b from-cloud to-[var(--sky-top)] px-4 pt-20 pb-0 md:pt-28">
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <Cloud class="cloud-drift absolute left-0" style="top:18%;width:140px;--dur:90s;--delay:-20s" />
+    <Cloud class="cloud-drift absolute left-0" style="top:40%;width:90px;--dur:70s;--delay:-50s" />
+  </div>
+  <div class="relative mx-auto max-w-3xl text-center">
+    <h2 class="reveal text-4xl tracking-tight md:text-6xl">Meet their first buddy</h2>
+    <p class="reveal mx-auto mt-4 max-w-xl text-lg text-muted">Tap the egg to hatch one.</p>
+
+    <div class="relative mx-auto mt-6 h-64 w-56" data-egg>
+      <button type="button" class="absolute inset-0 z-10" data-egg-button aria-label="Hatch a buddy"></button>
+      <svg viewBox="0 0 100 120" class="absolute inset-x-6 bottom-6 overflow-visible" data-egg-shell style="transform-origin:50% 95%" aria-hidden="true">
+        <defs>
+          <clipPath id="egg-top"><polygon points={`0,-40 100,-40 ${ZIG.split(" ").reverse().join(" ")}`}></polygon></clipPath>
+          <clipPath id="egg-bottom"><polygon points={`${ZIG} 100,130 0,130`}></polygon></clipPath>
+        </defs>
+        {
+          (["top", "bottom"] as const).map((half) => (
+            <g data-egg-half={half} clip-path={`url(#egg-${half})`} style="transform-origin:50% 60%">
+              <path d={EGG} fill="#fff" stroke="#102A5C" stroke-width="5" />
+              <circle cx="34" cy="40" r="7" fill="#BFD6FF" />
+              <circle cx="64" cy="30" r="5" fill="#FFC9C3" />
+              <circle cx="70" cy="80" r="8" fill="#B5EBD1" />
+              <circle cx="32" cy="88" r="6" fill="#FFE0A3" />
+              <circle cx="55" cy="58" r="4" fill="#D7C8FD" />
+            </g>
+          ))
+        }
+        <polyline points={ZIG} fill="none" stroke="#102A5C" stroke-width="3.5" stroke-linejoin="round" pathLength="1" data-egg-crack style="stroke-dasharray:1;stroke-dashoffset:1"></polyline>
+      </svg>
+      <div class="pointer-events-none absolute inset-x-4 bottom-4 opacity-0" data-egg-buddy>
+        <Buddy color="blue" mood="happy" star class="w-full" label="Your new buddy" />
+      </div>
+      <div class="pointer-events-none absolute top-1/2 left-1/2" data-egg-confetti aria-hidden="true"></div>
+      <span class="absolute bottom-3 left-1/2 h-3 w-28 -translate-x-1/2 rounded-full bg-navy/10" aria-hidden="true"></span>
+    </div>
+    <p class="h-6 text-sm font-semibold text-navy" data-egg-caption aria-live="polite"></p>
+
+    <div class="reveal mt-6 flex flex-col items-center justify-center gap-3 pb-40 sm:flex-row md:pb-48">
+      <a
+        href="/docs/"
+        class="group inline-flex items-center gap-2 rounded-full bg-tutor-blue px-6 py-3.5 text-[17px] font-bold text-white shadow-[0_10px_24px_-8px_rgb(47_128_255/0.7)] transition hover:-translate-y-0.5 hover:bg-[#1f6fee]"
+      >
+        Get started
+        <Glyph name="arrow-right" class="size-5 transition group-hover:translate-x-0.5" />
+      </a>
+      <a href={SITE.github} class="inline-flex items-center gap-2 rounded-full border-2 border-navy/10 bg-white px-6 py-3 text-[17px] font-bold text-navy transition hover:-translate-y-0.5 hover:border-navy/25">
+        <GithubMark class="size-5" />
+        Star on GitHub
+      </a>
+    </div>
+  </div>
+
+  {/* Hills, with buddies wandering about. */}
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-44" aria-hidden="true">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" class="absolute inset-0 h-full w-full">
+      <path id="footer-far" d="M0 80Q260 20 560 70T1100 50T1440 70V200H0Z" fill="#A9D9C2"></path>
+      <path id="footer-near" d="M0 120Q320 70 720 110T1440 100V200H0Z" fill="#7FCBA6"></path>
+    </svg>
+  </div>
+  {/* Two rows: a back row up the far hill (smaller, for depth) and a front row on the near one. */}
+  {
+    crowd.map((row) => (
+      <div class:list={["pointer-events-none absolute inset-x-0 bottom-0 h-44", row.class]} data-wander data-hill={row.hill} data-landing={row.hill === "footer-near" ? "" : undefined}>
+        {row.buddies.map((b) => (
+          <div class:list={["walker pointer-events-auto absolute bottom-0", b.w, b.hide && "hidden sm:block"]} data-x={b.x} data-carry>
+            <div class="flip transition-transform duration-300" style="transform-origin:50% 100%">
+              <Buddy color={b.color} wear={b.wear} class="w-full cursor-pointer" label="" />
+            </div>
+            <span class="absolute bottom-[13%] left-1/2 -z-10 h-1.5 w-3/4 -translate-x-1/2 translate-y-1/2 rounded-full bg-navy/15" />
+          </div>
+        ))}
+      </div>
+    ))
+  }
+</section>
+
+<footer class="bg-[#7FCBA6] px-4 pb-10 text-navy">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 border-t border-navy/10 pt-6 text-sm md:flex-row">
+    <Wordmark class="text-lg" />
+    <p class="font-medium text-navy/75">Free and open source. Made by David &amp; Jackson, for families.</p>
+    <nav class="flex gap-5 font-semibold" aria-label="Footer">
+      <a href="#safety" class="hover:underline">Safety</a>
+      <a href="#faq" class="hover:underline">FAQ</a>
+      <a href="/docs/" class="hover:underline">Docs</a>
+      <a href={SITE.github} class="hover:underline">GitHub</a>
+    </nav>
+  </div>
+</footer>

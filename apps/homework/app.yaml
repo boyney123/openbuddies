@@ -1,0 +1,13 @@
+# An OpenBuddies app: what the child sees on their home screen, and what the app may use. The buddy's instructions for
+# the app are in SKILL.md. Apps are YAML and Markdown only: never code.
+# Shown to children as Chat: talking with their buddy, homework help included. Its id stays "homework".
+name: Chat
+description: Talk to your buddy and get help with homework.
+art: chat
+icon: message-circle
+version: 1.0.0
+author: OpenBuddies
+kind: tutor
+# What the app uses, from the features OpenBuddies provides: hint_ladder, files, web, reminders, pictures.
+needs: [hint_ladder, files, web, reminders]
+default: on

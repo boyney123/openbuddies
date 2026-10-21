@@ -1,0 +1,10 @@
+name: Quizzes
+description: Take the quizzes your buddy makes for you.
+art: quiz
+icon: brain
+version: 1.0.0
+author: OpenBuddies
+# quiz: the buddy's quizzes, to take. Children ask for one in a chat ("make me a quiz about that").
+kind: quiz
+needs: []
+default: on

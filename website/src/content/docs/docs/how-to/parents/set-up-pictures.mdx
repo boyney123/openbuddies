@@ -1,0 +1,21 @@
+---
+title: "Turn on Picture Studio"
+description: "Choose an image model so children can make pictures with their buddy, and set a daily limit."
+sidebar:
+  order: 7
+---
+
+Picture Studio needs an image model from OpenAI or Google. Run:
+
+```sh
+npx openbuddies images setup
+```
+
+It asks which provider to use and for a key, and saves the key in your household's `.env` file.
+
+Each child can make 6 pictures a day by default. To change it, edit `pictures.daily` in the child's `rules.yaml`
+(see the [rules reference](/docs/reference/settings/)). Check what's set up any time with `npx openbuddies images`.
+
+Children ask for a picture in the chat ("I want a picture of a hotdog") and change it the same way ("now add a dog").
+The buddy kindly says no to real people, anything violent or rude, and brands. A famous character becomes an original
+one.

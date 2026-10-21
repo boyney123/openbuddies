@@ -1,0 +1,49 @@
+---
+title: "Commands"
+description: "Every openbuddies command and what it does."
+sidebar:
+  order: 1
+---
+
+Run commands from the OpenBuddies folder with `npx openbuddies <command>`. Every command takes `--home <dir>` to use
+a household folder somewhere other than the default (see [The household folder](/docs/reference/household-folder/)).
+
+## Setting up and running
+
+| Command | What it does |
+|---|---|
+| `init` | Interactive setup: you and your PIN, AI provider, models and key (checked), children and their help levels, and the folder. Installs a background service (launchd on macOS, a systemd user service on Linux). |
+| `start` | Starts the server, prints the parent and child addresses and a pairing QR code per child, and opens the parent page. Restarts an older version that's already running. |
+| `stop` | Stops the server. |
+| `status` | Shows whether it's running and which models it uses, with a warning for models OpenBuddies isn't tuned for. `status --check` runs the self-test: it lists every session's tools and fails if anything beyond the six tutor tools is present. |
+| `pair <child>` | A fresh single-use pairing QR code, valid for 10 minutes. |
+| `logs <child>` | Follows the child's chats in the terminal, with what the buddy decided each turn and how many drafts were blocked. |
+| `reset` | Back to a fresh install. Lists what will be deleted, offers a backup (yes by default), and asks you to type `reset`. `--yes` skips the questions but still backs up, unless you add `--no-backup`. |
+
+## Children and subjects
+
+| Command | What it does |
+|---|---|
+| `children list` | Lists children. |
+| `children add` | Adds a child, asking the same questions as `init`. Or pass `--name --age --year --mode`. |
+| `children mode <child> <level>` | Sets the help level: `strict`, `balanced` or `relaxed`. |
+| `children allowance <child> <tokens>` | Sets the daily AI allowance, or `default` for the household's. |
+| `children web <child> off\|trusted\|open` | Sets whether the child's buddies can look things up. |
+| `subjects list <child>` | Lists the child's subjects and their levels. |
+| `subjects add <child> <subject> [--mode <level>]` | Adds a subject, optionally with its own level. |
+| `subjects mode <child> <subject> <level>` | Gives a subject its own level. |
+| `subjects remove <child> <subject>` | Removes a subject. |
+
+## Apps, pictures and the internet
+
+| Command | What it does |
+|---|---|
+| `apps` | Lists the apps on each child's home screen. |
+| `apps gallery` | Lists apps you can add. |
+| `apps add <source>` | Adds an app from a gallery id, an `https://` link to a bundle, or a folder. Shows the app in full and asks first. |
+| `apps remove <app>` | Removes an app you added. |
+| `apps on <child> <app>` / `apps off <child> <app>` | Turns an app on or off for a child. |
+| `images` / `images setup` | Shows or sets up Picture Studio's image model (OpenAI or Google). |
+| `web` / `web setup` | Shows or sets up the search provider (Brave, Tavily or SearXNG). |
+| `web test <query>` | Runs a test search. |
+| `tailscale setup` / `status` / `off` | Sets up, checks or turns off Tailscale Serve for access away from home. |

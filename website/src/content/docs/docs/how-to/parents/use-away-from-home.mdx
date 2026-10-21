@@ -1,0 +1,33 @@
+---
+title: "Use it away from home"
+description: "Set up Tailscale so your family's devices can reach OpenBuddies anywhere, privately, over HTTPS."
+sidebar:
+  order: 9
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+Without extra setup, children's devices only work on your home Wi-Fi, and your parent page only opens on the home
+computer. [Tailscale](https://tailscale.com) gives you a private HTTPS address that only your own devices can reach.
+
+<Steps>
+
+1. On the home computer, run:
+
+   ```sh
+   npx openbuddies tailscale setup
+   ```
+
+   It asks before installing anything. It then signs you in (it shows a QR code, so a computer with no screen can be
+   signed in from your phone) and turns on Tailscale Serve.
+
+2. Install the Tailscale app on each phone and tablet, and sign in with the same account. OpenBuddies shows a QR code
+   for the download.
+
+3. Make new pairing codes with `npx openbuddies pair <child>`. They now use the HTTPS address.
+
+</Steps>
+
+HTTPS also lets devices add OpenBuddies to the home screen properly and turn on reminder notifications.
+
+Check it with `npx openbuddies tailscale status`, and turn it off with `npx openbuddies tailscale off`.

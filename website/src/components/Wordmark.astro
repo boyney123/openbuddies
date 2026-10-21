@@ -1,0 +1,14 @@
+---
+import { SITE } from "../site";
+import Art from "./Art.astro";
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<span class:list={["inline-flex items-center gap-2 leading-none font-extrabold tracking-tight", className]}>
+  <span aria-hidden="true" class="flex"><Art name="logo" class="h-[1.75em] w-auto" /></span>
+  <span><span class="text-navy">{SITE.wordmark[0]}</span><span class="text-coral">{SITE.wordmark[1]}</span></span>
+</span>

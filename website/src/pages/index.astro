@@ -1,0 +1,35 @@
+---
+// The page reads in the order a parent new to OpenBuddies wants to know things: what it is, why it matters, how it works,
+// what their child gets, what they control, why it's safe, who made it, and the questions left over. Setting it up lives
+// in the docs.
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Why from "../components/Why.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import Features from "../components/Features.astro";
+import BuddyField from "../components/BuddyField.astro";
+import TutorDemo from "../components/TutorDemo.astro";
+import Parents from "../components/Parents.astro";
+import Safety from "../components/Safety.astro";
+import About from "../components/About.astro";
+import Faq from "../components/Faq.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+  <Nav />
+  <main>
+    <Hero />
+    <Why />
+    <HowItWorks />
+    <Features />
+    <BuddyField />
+    <TutorDemo />
+    <Parents />
+    <Safety />
+    <About />
+    <Faq />
+  </main>
+  <Footer />
+</Layout>

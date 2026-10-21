@@ -1,0 +1,86 @@
+---
+title: "App format"
+description: "The files that make an app, every field in app.yaml, and the bundle and catalogue formats."
+sidebar:
+  order: 4
+---
+
+import { FileTree } from "@astrojs/starlight/components";
+
+An app is a folder of text. There's never any code in an app.
+
+<FileTree>
+- times-tables/
+  - app.yaml what it is and what it uses
+  - SKILL.md the buddy's instructions for this app
+  - README.md optional notes for parents and other app writers
+</FileTree>
+
+Nothing else is allowed. The folder name is the app's id: 2 to 40 lowercase letters, numbers and dashes.
+
+## app.yaml
+
+```yaml
+name: Times Tables
+description: Quick-fire times tables.
+art: chart
+icon: brain
+version: 1.0.0
+author: Your name
+kind: tutor
+needs: [reminders]
+```
+
+| Field | What it is |
+|---|---|
+| `name` | Up to 30 characters. |
+| `description` | One line under the name, up to 80 characters. |
+| `art` | The drawing on the app's card: `chat`, `quiz`, `books`, `question`, `notebook`, `easel`, `chart`, `folder` or `shield`. |
+| `icon` | A [Lucide](https://lucide.dev) icon name, used when there's no art. |
+| `version` | The app's version, like `1.0.0`. |
+| `author` | Who wrote it. |
+| `kind` | `tutor`: a chat with the buddy. `studio`: pictures made from the chat. `quiz`: the buddy's quizzes, to take. |
+| `needs` | The features it uses, from the list below. |
+
+### needs
+
+An app can only ask for features OpenBuddies already has. An app that asks for anything else is refused.
+
+| Need | What it means |
+|---|---|
+| `hint_ladder` | Homework-style help: a question first, then a nudge, then a worked example, never the answer. Without it, the buddy explains instead. |
+| `files` | The child's files with that buddy (homework photos and notes). |
+| `web` | Looking things up on the internet, if you allow it for the child. |
+| `reminders` | The child can ask for reminders and plans in the app. |
+| `pictures` | Making pictures. |
+
+## SKILL.md
+
+Plain Markdown instructions for the buddy, up to 20,000 characters. Write them for a patient tutor talking with a child
+of 8 to 16: what the app is for, how to run it (one question at a time, short replies) and what never to do.
+OpenBuddies' own rules always sit above them.
+
+## Bundle
+
+One app as a single JSON file, for sharing by link:
+
+```json
+{ "id": "times-tables", "files": { "app.yaml": "…", "SKILL.md": "…" } }
+```
+
+## Catalogue
+
+An `index.json` listing bundles. `sha256` is the fingerprint of the bundle file; a changed download is refused.
+`bundle` is relative to the catalogue.
+
+```json
+{
+  "name": "Mrs Smith's class apps",
+  "apps": [
+    { "id": "times-tables", "name": "Times Tables", "description": "Quick-fire times tables.",
+      "author": "Mrs Smith", "version": "1.0.0", "bundle": "times-tables.json", "sha256": "…" }
+  ]
+}
+```
+
+Links to bundles and catalogues must be `https://`.

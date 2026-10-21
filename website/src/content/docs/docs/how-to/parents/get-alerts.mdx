@@ -1,0 +1,22 @@
+---
+title: "Check alerts"
+description: "See when your child says something worrying."
+sidebar:
+  order: 10
+---
+
+import Screenshots from "../../../../../components/Screenshots.astro";
+import alerts from "../../../../../assets/screenshots/parent-alerts.png";
+
+If a child says something worrying, OpenBuddies raises an alert **before** the buddy replies. Alerts are under
+**Alerts** on your parent page, with a count beside it while any are unread.
+
+An alert is a short summary, never your child's own words. Open it to read the chat it came from.
+
+<Screenshots device="desktop" shots={[{ src: alerts, alt: "An alert: Sam seems frustrated or upset during Chat. You may want to check in." }]} />
+
+OpenBuddies doesn't send alerts to your phone yet, so check your parent page now and then.
+
+How readily worrying messages raise an alert is set for each child with `alerts.welfare.sensitivity` in their
+`rules.yaml`: `high` (the default) also alerts you when they seem upset, while `medium` and `low` alert you only when
+something sounds worrying.

@@ -1,0 +1,217 @@
+---
+import { SITE } from "../site";
+// The app's illustrations (../web/src/components/brand.tsx), drawn in the 120 x 100 frame with the navy outline.
+export type ArtName = "logo" | "books" | "question" | "chat" | "quiz" | "notebook" | "easel" | "folder" | "chart" | "shield" | "apps" | "house";
+
+interface Props {
+  name: ArtName;
+  class?: string;
+}
+const { name, class: className } = Astro.props;
+const N = "#102A5C";
+const uid = Math.random().toString(36).slice(2, 8);
+---
+
+<svg viewBox="0 0 120 100" class={className} aria-hidden={name === "logo" ? undefined : "true"} role={name === "logo" ? "img" : undefined} aria-label={name === "logo" ? SITE.name : undefined}>
+  {
+    name === "logo" && (
+      // Three buddies huddled together: coral and mint peeking from behind a blue one.
+      <>
+        <rect x="6" y="16" width="46" height="36" rx="12" fill="#FF6B5E" stroke={N} stroke-width="5" />
+        <rect x="16" y="26" width="5.5" height="9" rx="2.75" fill={N} />
+        <rect x="29" y="26" width="5.5" height="9" rx="2.75" fill={N} />
+        <path d="M18 41Q22.5 45 27 41" stroke={N} stroke-width="3.5" fill="none" stroke-linecap="round" />
+        <rect x="68" y="10" width="46" height="36" rx="12" fill="#34C98A" stroke={N} stroke-width="5" />
+        <rect x="83" y="19" width="5.5" height="9" rx="2.75" fill={N} />
+        <rect x="96" y="19" width="5.5" height="9" rx="2.75" fill={N} />
+        <path d="M86 34Q90.5 38 95 34" stroke={N} stroke-width="3.5" fill="none" stroke-linecap="round" />
+        <rect x="28" y="36" width="64" height="52" rx="16" fill="#2F80FF" stroke={N} stroke-width="6" />
+        <ellipse cx="43" cy="72" rx="5" ry="3" fill="#fff" opacity="0.4" />
+        <ellipse cx="77" cy="72" rx="5" ry="3" fill="#fff" opacity="0.4" />
+        <rect x="46" y="52" width="7.5" height="13" rx="3.75" fill={N} />
+        <rect x="66.5" y="52" width="7.5" height="13" rx="3.75" fill={N} />
+        <path d="M52 73Q60 80 68 73" stroke={N} stroke-width="5" fill="none" stroke-linecap="round" />
+        <path d="M55 12L58 3M63 15L71 10" stroke="#FFB020" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {name !== "logo" && <ellipse cx="60" cy="92" rx="42" ry="5" fill={N} opacity="0.08" />}
+  {
+    name === "books" && (
+      <>
+        {[
+          { y: 70, w: 88, x: 14, cover: N, r: 0 },
+          { y: 51, w: 80, x: 20, cover: "#FF6B5E", r: -3 },
+          { y: 32, w: 76, x: 24, cover: "#2F80FF", r: 4 },
+        ].map((b) => (
+          <g transform={`rotate(${b.r} ${b.x + b.w / 2} ${b.y + 9})`}>
+            <rect x={b.x} y={b.y} width={b.w} height={18} rx={4} fill={b.cover} />
+            <rect x={b.x + b.w - 14} y={b.y + 3} width={12} height={12} rx={2} fill="#fff" />
+            <path d={`M${b.x + b.w - 12} ${b.y + 7}h8M${b.x + b.w - 12} ${b.y + 11}h8`} stroke="#DDE4F2" stroke-width={1.5} />
+            <rect x={b.x + 8} y={b.y + 6} width={b.w * 0.35} height={2.5} rx={1.25} fill="#fff" opacity={0.35} />
+          </g>
+        ))}
+        <path d="M92 18L97 8M99 24L109 19" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "question" && (
+      <>
+        <rect x="52" y="30" width="50" height="40" rx="12" fill="#2F80FF" />
+        <path d="M22 18H74Q86 18 86 30V58Q86 70 74 70H44L30 82L32 70H22Q10 70 10 58V30Q10 18 22 18Z" fill="#FF6B5E" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        <path d="M38 36Q38 27 48 27Q58 27 58 35Q58 41 52 44Q48 46 48 51" stroke="#fff" stroke-width="6.5" fill="none" stroke-linecap="round" />
+        <circle cx="48" cy="60" r="4" fill="#fff" />
+        <path d="M92 18L97 8M99 24L109 19" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "chat" && (
+      <>
+        <path d="M64 30H100Q110 30 110 40V60Q110 70 100 70H96L98 80L86 70H64Q54 70 54 60V40Q54 30 64 30Z" fill="#FF6B5E" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        <path d="M76 46H94M76 55H88" stroke="#fff" stroke-width="4.5" stroke-linecap="round" />
+        <path d="M22 14H66Q78 14 78 26V50Q78 62 66 62H40L26 74L28 62H22Q10 62 10 50V26Q10 14 22 14Z" fill="#2F80FF" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        {[30, 44, 58].map((cx) => (
+          <circle cx={cx} cy="38" r="4.5" fill="#fff" />
+        ))}
+        <path d="M92 18L97 8M99 24L109 19" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "quiz" && (
+      <>
+        <g transform="rotate(-6 56 50)">
+          <rect x="22" y="10" width="64" height="76" rx="8" fill="#fff" stroke={N} stroke-width="5" />
+          <rect x="40" y="5" width="28" height="11" rx="4" fill="#8B5CF6" stroke={N} stroke-width="4" />
+          {[
+            { y: 34, right: false, line: 74 },
+            { y: 52, right: true, line: 70 },
+            { y: 70, right: false, line: 72 },
+          ].map((o) => (
+            <g>
+              <circle cx="36" cy={o.y} r="6" fill={o.right ? "#34C98A" : "#E3EEFF"} stroke={N} stroke-width="3" />
+              {o.right && <path d={`M33 ${o.y}L35.5 ${o.y + 2.5}L39.5 ${o.y - 2.5}`} stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />}
+              <path d={`M48 ${o.y}H${o.line}`} stroke="#C9D6EE" stroke-width="4" stroke-linecap="round" />
+            </g>
+          ))}
+        </g>
+        <path d="M95 40L98.8 48L107.5 48.9L101 54.6L102.9 63.2L95 58.8L87.1 63.2L89 54.6L82.5 48.9L91.2 48Z" fill="#FFB020" stroke={N} stroke-width="3.5" stroke-linejoin="round" />
+        <path d="M96 22L101 12M103 28L113 23" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "notebook" && (
+      <>
+        <rect x="26" y="12" width="56" height="74" rx="8" fill="#34C98A" stroke={N} stroke-width="5" />
+        <path d="M40 32H70M40 44H70M40 56H62" stroke="#fff" stroke-width="4.5" stroke-linecap="round" />
+        {[22, 38, 54, 70].map((y) => (
+          <rect x="20" y={y} width="12" height="6" rx="3" fill={N} />
+        ))}
+        <g transform="rotate(35 88 52)">
+          <rect x="82" y="22" width="13" height="50" rx="3" fill="#FFB020" stroke={N} stroke-width="4" />
+          <rect x="82" y="22" width="13" height="9" rx="3" fill="#FF6B5E" stroke={N} stroke-width="4" />
+          <path d="M82 72L88.5 84L95 72Z" fill="#F5E6C8" stroke={N} stroke-width="4" stroke-linejoin="round" />
+        </g>
+      </>
+    )
+  }
+  {
+    name === "easel" && (
+      <>
+        <path d="M34 88L48 20M86 88L72 20M60 70V90" stroke={N} stroke-width="5" stroke-linecap="round" />
+        <rect x="24" y="12" width="72" height="58" rx="6" fill="#fff" stroke={N} stroke-width="5" />
+        <clipPath id={`easel-${uid}`}>
+          <rect x="27" y="15" width="66" height="52" rx="3" />
+        </clipPath>
+        <g clip-path={`url(#easel-${uid})`}>
+          <rect x="27" y="15" width="66" height="52" fill="#E3EEFF" />
+          <circle cx="76" cy="30" r="8" fill="#FFB020" />
+          <path d="M20 70Q40 40 60 58Q76 44 100 64V72H20Z" fill="#34C98A" />
+          <path d="M38 52L46 40L54 52Z" fill="#FF6B5E" />
+        </g>
+        <g transform="rotate(-38 98 58)">
+          <rect x="94" y="36" width="8" height="36" rx="3" fill="#FFB020" stroke={N} stroke-width="3.5" />
+          <path d="M94 36Q98 22 102 36Z" fill="#FF6B5E" stroke={N} stroke-width="3.5" stroke-linejoin="round" />
+        </g>
+      </>
+    )
+  }
+  {
+    name === "folder" && (
+      <>
+        <path d="M16 34Q16 26 24 26H40Q44 26 47 29L52 34H96Q104 34 104 42V78Q104 86 96 86H24Q16 86 16 78Z" fill="#FF6B5E" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        <g transform="rotate(-10 46 36)">
+          <rect x="27" y="10" width="38" height="48" rx="5" fill="#fff" stroke={N} stroke-width="4.5" />
+          <path d="M35 21H57M35 30H57M35 39H50" stroke="#C9D6EE" stroke-width="4" stroke-linecap="round" />
+          <path d="M34 47L38 51L45 43" stroke="#34C98A" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <g transform="rotate(10 76 32)">
+          <rect x="57" y="14" width="38" height="34" rx="5" fill="#E3EEFF" stroke={N} stroke-width="4.5" />
+          <clipPath id={`photo-${uid}`}>
+            <rect x="59.5" y="16.5" width="33" height="29" rx="3" />
+          </clipPath>
+          <g clip-path={`url(#photo-${uid})`}>
+            <circle cx="83" cy="25" r="5" fill="#FFB020" />
+            <path d="M55 48L69 32L79 42L85 36L97 48Z" fill="#2F80FF" />
+          </g>
+        </g>
+        <path d="M12 58Q12 52 18 52H102Q109 52 108 59L104 79Q103 86 96 86H24Q17 86 16 79Z" fill="#FFB020" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        <rect x="46" y="64" width="28" height="8" rx="4" fill="#fff" opacity="0.55" />
+        <path d="M96 14L101 4M103 20L113 15" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "chart" && (
+      <>
+        <rect x="22" y="56" width="18" height="28" rx="5" fill="#FF6B5E" stroke={N} stroke-width="4.5" />
+        <rect x="48" y="40" width="18" height="44" rx="5" fill="#34C98A" stroke={N} stroke-width="4.5" />
+        <rect x="74" y="24" width="18" height="60" rx="5" fill="#2F80FF" stroke={N} stroke-width="4.5" />
+        <path d="M14 86H100" stroke={N} stroke-width="5" stroke-linecap="round" />
+        <path d="M83 4L86.5 11.5L94.5 12.3L88.5 17.6L90.3 25.5L83 21.4L75.7 25.5L77.5 17.6L71.5 12.3L79.5 11.5Z" fill="#FFB020" stroke={N} stroke-width="3" stroke-linejoin="round" />
+      </>
+    )
+  }
+  {
+    name === "house" && (
+      <>
+        <path d="M60 10L104 46H16Z" fill="#FF6B5E" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        <rect x="24" y="44" width="72" height="42" rx="4" fill="#fff" stroke={N} stroke-width="5" />
+        <rect x="80" y="16" width="10" height="18" rx="2" fill="#FFB020" stroke={N} stroke-width="4" />
+        <rect x="34" y="54" width="32" height="22" rx="4" fill="#2F80FF" stroke={N} stroke-width="4" />
+        <rect x="42" y="60" width="4" height="8" rx="2" fill={N} />
+        <rect x="54" y="60" width="4" height="8" rx="2" fill={N} />
+        <path d="M44 71Q50 74 56 71" stroke={N} stroke-width="2.5" fill="none" stroke-linecap="round" />
+        <rect x="72" y="58" width="16" height="28" rx="3" fill="#34C98A" stroke={N} stroke-width="4" />
+        <path d="M102 18L107 8M108 24L116 20" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "apps" && (
+      <>
+        <rect x="22" y="10" width="34" height="34" rx="10" fill="#2F80FF" stroke={N} stroke-width="4.5" />
+        <rect x="64" y="10" width="34" height="34" rx="10" fill="#FF6B5E" stroke={N} stroke-width="4.5" />
+        <rect x="22" y="52" width="34" height="34" rx="10" fill="#34C98A" stroke={N} stroke-width="4.5" />
+        <rect x="64" y="52" width="34" height="34" rx="10" fill="#fff" stroke={N} stroke-width="4.5" stroke-dasharray="7 5" />
+        <path d="M81 61V77M73 69H89" stroke={N} stroke-width="5" stroke-linecap="round" />
+        <path d="M33 27H45M39 21V33" stroke="#fff" stroke-width="4.5" stroke-linecap="round" />
+        <path d="M81 20L83.5 25.2L89 26L85 29.8L86 35.3L81 32.6L76 35.3L77 29.8L73 26L78.5 25.2Z" fill="#FFB020" />
+        <path d="M31 72L37 66L42 71L47 64" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M104 14L109 4M110 20L118 16" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+  {
+    name === "shield" && (
+      <>
+        <path d="M60 8L94 20V46Q94 72 60 88Q26 72 26 46V20Z" fill="#2F80FF" stroke={N} stroke-width="5" stroke-linejoin="round" />
+        <path d="M60 64Q42 52 42 41Q42 33 50 33Q56 33 60 39Q64 33 70 33Q78 33 78 41Q78 52 60 64Z" fill="#fff" />
+        <path d="M92 18L97 8M99 24L109 19" stroke="#FF6B5E" stroke-width="4.5" stroke-linecap="round" />
+      </>
+    )
+  }
+</svg>

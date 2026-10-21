@@ -1,0 +1,101 @@
+/*
+ * Mermaid diagrams (astro-mermaid, see astro.config.mjs) in the docs' colours. Mermaid draws with one fixed theme, so the
+ * colours come from Starlight's variables here and follow light and dark without redrawing. Mermaid scopes its own
+ * styles to the diagram's id, hence the !important.
+ */
+.sl-markdown-content pre.mermaid {
+  --mm-surface: var(--sl-color-gray-7, var(--sl-color-gray-6));
+  --mm-group: var(--sl-color-black);
+  --mm-fill: var(--sl-color-accent-low);
+  --mm-stroke: var(--sl-color-accent);
+  --mm-ink: var(--sl-color-white);
+  --mm-line: var(--sl-color-gray-3);
+  --mm-quiet: var(--sl-color-gray-2);
+
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 1.25rem !important;
+  background: var(--mm-surface) !important;
+  font-family: var(--sl-font);
+}
+
+/* While it's drawn: a calm placeholder in the docs' greys. */
+.sl-markdown-content pre.mermaid:not([data-processed]) {
+  color: transparent;
+  animation: mermaid-wait 1.4s ease-in-out infinite alternate;
+}
+@keyframes mermaid-wait {
+  to {
+    opacity: 0.55;
+  }
+}
+
+/* Each diagram is drawn at its own size (Mermaid caps it at its natural width), never stretched to fill the page. */
+.sl-markdown-content pre.mermaid svg {
+  font-family: var(--sl-font) !important;
+}
+.sl-markdown-content pre.mermaid foreignObject {
+  overflow: visible;
+}
+
+/* Steps: soft blue, rounded, with a Tutor Blue outline. */
+.sl-markdown-content pre.mermaid .node :is(rect, path, polygon, circle, ellipse) {
+  fill: var(--mm-fill) !important;
+  stroke: var(--mm-stroke) !important;
+  stroke-width: 2px !important;
+}
+.sl-markdown-content pre.mermaid .node rect.label-container {
+  rx: 14px;
+  ry: 14px;
+}
+.sl-markdown-content pre.mermaid :is(.nodeLabel, .label, .label text, .cluster-label) {
+  color: var(--mm-ink) !important;
+  fill: var(--mm-ink) !important;
+}
+
+/* `class X buddy`: the step the buddy (the AI) does, in solid Tutor Blue. */
+.sl-markdown-content pre.mermaid .node.buddy :is(rect, path, polygon) {
+  fill: var(--mm-stroke) !important;
+}
+.sl-markdown-content pre.mermaid .node.buddy .nodeLabel {
+  color: var(--sl-color-black) !important;
+}
+
+/* `class X quiet`: an outcome or a side road, drawn dashed. */
+.sl-markdown-content pre.mermaid .node.quiet :is(rect, path, polygon) {
+  fill: var(--mm-surface) !important;
+  stroke: var(--mm-line) !important;
+  stroke-dasharray: 5 4;
+}
+
+/* Groups (subgraphs), like "Your home computer". */
+.sl-markdown-content pre.mermaid .cluster rect {
+  fill: var(--mm-group) !important;
+  stroke: var(--sl-color-gray-5) !important;
+  stroke-width: 1.5px !important;
+  rx: 16px;
+  ry: 16px;
+}
+.sl-markdown-content pre.mermaid .cluster-label .nodeLabel {
+  color: var(--mm-quiet) !important;
+  font-weight: 700;
+}
+
+/* Arrows and their labels. */
+.sl-markdown-content pre.mermaid :is(.flowchart-link, .edgePath .path) {
+  stroke: var(--mm-line) !important;
+  stroke-width: 2px !important;
+}
+.sl-markdown-content pre.mermaid :is(.marker, .arrowheadPath, marker path) {
+  fill: var(--mm-line) !important;
+  stroke: var(--mm-line) !important;
+}
+.sl-markdown-content pre.mermaid :is(.edgeLabel, .edgeLabel p, .edgeLabel span, .labelBkg) {
+  color: var(--mm-quiet) !important;
+  background-color: var(--mm-surface) !important;
+}
+.sl-markdown-content pre.mermaid .edgeLabel rect {
+  fill: var(--mm-surface) !important;
+  opacity: 1 !important;
+}

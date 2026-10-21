@@ -1,0 +1,16 @@
+---
+title: "Start over"
+description: "Reset OpenBuddies to a fresh install, with a backup first."
+sidebar:
+  order: 12
+---
+
+```sh
+npx openbuddies reset
+```
+
+It lists exactly what will be deleted, offers to make a timestamped backup copy first (yes by default), and asks you to
+type `reset` to confirm. It stops this household's background service, turns off OpenBuddies' Tailscale Serve, and
+deletes the household folder.
+
+Then run `npx openbuddies init` to set up again.

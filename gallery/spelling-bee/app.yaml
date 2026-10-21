@@ -1,0 +1,8 @@
+name: Spelling Bee
+description: Practise your spelling list with your buddy.
+art: notebook
+icon: notebook-pen
+version: 1.0.0
+author: OpenBuddies
+kind: tutor
+needs: [files, reminders]

@@ -1,0 +1,32 @@
+---
+// A docs callout said by a buddy: Starlight's Aside, as a speech bubble from a buddy who looks the part. Styled in
+// styles/docs.css; the bubble keeps Starlight's colours for each type.
+import type { Accessory, BuddyColor } from "../site";
+import Buddy, { type Mood } from "./Buddy.astro";
+
+type AsideType = "note" | "tip" | "caution" | "danger";
+
+interface Props {
+  type?: AsideType;
+  title?: string;
+}
+
+const SPEAKERS: Record<AsideType, { color: BuddyColor; mood: Mood; wear: Accessory[]; title: string }> = {
+  note: { color: "blue", mood: "idle", wear: ["glasses"], title: "Good to know" },
+  tip: { color: "mint", mood: "wink", wear: ["cap"], title: "Top tip" },
+  caution: { color: "sunny", mood: "surprised", wear: [], title: "Careful" },
+  danger: { color: "coral", mood: "surprised", wear: [], title: "Stop and check" },
+};
+
+const { type = "note" } = Astro.props;
+const speaker = SPEAKERS[type];
+const title = Astro.props.title ?? speaker.title;
+---
+
+<aside aria-label={title} class={`buddy-aside starlight-aside starlight-aside--${type}`}>
+  <Buddy color={speaker.color} mood={speaker.mood} wear={speaker.wear} class="buddy-aside__buddy" label="" />
+  <div class="buddy-aside__bubble">
+    <p class="starlight-aside__title">{title}</p>
+    <div class="starlight-aside__content"><slot /></div>
+  </div>
+</aside>

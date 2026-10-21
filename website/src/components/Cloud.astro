@@ -1,0 +1,23 @@
+---
+// A fluffy cloud with a soft shadow underneath, for buddies to ride on and for the sky to drift by.
+interface Props {
+  class?: string;
+  style?: string;
+  /** A flatter cloud with a firm top, for a buddy to sit on. */
+  seat?: boolean;
+}
+const { class: className, style, seat = false } = Astro.props;
+---
+
+{
+  seat ? (
+    <svg viewBox="0 0 200 70" class={className} style={style} aria-hidden="true">
+      <path d="M30 66H172Q194 66 194 48Q194 32 176 30Q172 14 152 16Q140 2 120 10Q104 0 86 10Q66 2 54 18Q34 16 30 32Q8 34 8 50Q8 66 30 66Z" fill="#fff" />
+      <path d="M30 66H172Q194 66 194 48Q193 58 172 58H30Q10 58 8 50Q8 66 30 66Z" fill="#DCE7F8" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 60 26" class={className} style={style} aria-hidden="true">
+      <path d="M14 22H48Q58 22 58 15Q58 8 50 8Q48 1 39 2Q33 -2 26 4Q17 2 15 10Q6 10 6 16Q6 22 14 22Z" fill="#fff" />
+    </svg>
+  )
+}

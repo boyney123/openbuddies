@@ -1,0 +1,27 @@
+---
+title: "Take a quiz"
+description: "Ask your buddy for a quiz on anything you're learning, then take it."
+sidebar:
+  order: 5
+---
+
+import Screenshots from "../../../../../components/Screenshots.astro";
+import quizMade from "../../../../../assets/screenshots/kid-quiz-made.png";
+import quizTake from "../../../../../assets/screenshots/kid-quiz-take.png";
+import quizzes from "../../../../../assets/screenshots/kid-quizzes.png";
+
+1. In the chat, ask your buddy for a quiz, like "make me a quiz about fractions".
+2. Pick **Multiple choice** or **Type answers**.
+3. When it's ready, tap **Take it**.
+
+<Screenshots
+  shots={[
+    { src: quizMade, alt: "The buddy offers a quiz about adding fractions" },
+    { src: quizTake, alt: "A multiple choice question: what is 1/2 + 1/4?" },
+    { src: quizzes, alt: "Pip's quizzes, with Fraction Frenzy ready to take" },
+  ]}
+  caption="Ask for a quiz, take it, and find it again in Quizzes."
+/>
+
+All your quizzes are in **Quizzes** on the home screen, so you can take them again whenever you like. You can ask for a
+new one there too.

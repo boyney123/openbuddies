@@ -1,0 +1,43 @@
+---
+title: "Change how much help a child gets"
+description: "Set a child's help level, or give one subject a level of its own."
+sidebar:
+  order: 3
+---
+
+import Screenshots from "../../../../../components/Screenshots.astro";
+import children from "../../../../../assets/screenshots/parent-children.png";
+
+Each child has one help level, which every subject follows unless you give a subject its own.
+
+| Level | What the buddy does |
+|---|---|
+| **Strict** | Never gives homework answers. Questions, hints and worked examples of similar problems only. |
+| **Balanced** | Shows the answer after real effort. |
+| **Relaxed** | Explains freely. |
+
+## Change a child's help level
+
+```sh
+npx openbuddies children mode <child> strict
+```
+
+Or open your parent page, go to **Children**, and pick a level.
+
+<Screenshots
+  device="desktop"
+  shots={[{ src: children, alt: "A child's settings: help level, daily AI allowance, internet, daily check-in and subjects" }]}
+  caption="Each child's settings, under Children on your parent page."
+/>
+
+## Give one subject its own level
+
+```sh
+npx openbuddies subjects add <child> history --mode relaxed
+npx openbuddies subjects mode <child> maths strict
+```
+
+Children can add subjects themselves when they make a buddy. A new subject starts as **Strict**, and you can change
+or remove it under **Children**. See every subject with `npx openbuddies subjects list <child>`.
+
+To understand how the levels work turn by turn, read [Help levels and the hint ladder](/docs/explanation/help-levels/).

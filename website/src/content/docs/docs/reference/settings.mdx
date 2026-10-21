@@ -1,0 +1,91 @@
+---
+title: "Settings files"
+description: "Every setting in openbuddies.yaml and in each child's rules.yaml."
+sidebar:
+  order: 3
+---
+
+Both files are YAML and reload when you save them. Most settings can also be changed on your parent page.
+
+## openbuddies.yaml
+
+The household's settings, in the root of the [household folder](/docs/reference/household-folder/).
+
+```yaml
+parent:
+  name: David
+  title: Dad              # what your children call you
+  pin_hash: …             # your PIN, hashed (argon2id)
+models:                   # provider/model
+  tutor: anthropic/claude-sonnet-5-5
+  check: anthropic/claude-haiku-5-5
+port: 4747
+budget:
+  daily_tokens_per_child: 400000
+session_idle_minutes: 30  # a new sitting starts after this long without a message
+apps:
+  catalogues: []          # https links to app catalogues
+```
+
+| Setting | Default | What it does |
+|---|---|---|
+| `models.tutor` | chosen in `init` | The model that talks with your child, as `provider/model`: `anthropic/claude-sonnet-5-5`, `openai/gpt-5.5`, `openrouter/google/gemini-3.5-flash`… |
+| `models.check` | chosen in `init` | The smaller model used for the safety checks: `anthropic/claude-haiku-5-5`, `openai/gpt-5.4-mini`… |
+
+The two models can come from different providers. Each provider needs its key in `.env` (see
+[Environment variables](/docs/reference/environment/)). OpenBuddies is tuned for the Anthropic and OpenAI models above. With any
+other model, `openbuddies status` shows a warning: the safety checks depend on the check model, so try it with the evals
+(`pnpm eval -- --tutor <model> --check <model>`) before your child uses it.
+| `port` | `4747` | The port the server listens on. |
+| `budget.daily_tokens_per_child` | `400000` | Each child's daily allowance, unless their `rules.yaml` sets one. |
+| `session_idle_minutes` | `30` | Minutes without a message before a new sitting starts. |
+| `apps.catalogues` | none | App catalogues you've added. |
+
+## rules.yaml
+
+One per child, in `children/<child>/rules.yaml`.
+
+```yaml
+default_mode: strict
+subjects:
+  history:
+    mode: relaxed
+hint_ladder: [ask, nudge, worked_example, check]
+max_leak_retries: 2
+alerts:
+  welfare:
+    sensitivity: high
+hours:
+  weekdays: "16:00-19:30"
+  weekends: "09:00-18:00"
+daily_tokens: 300000
+web:
+  mode: trusted
+  sites: [bbc.co.uk]
+  blocked: []
+  daily_lookups: 30
+apps:
+  spelling-bee: on
+pictures:
+  daily: 6
+heartbeat:
+  mode: on
+  at: "16:30"
+```
+
+| Setting | Default | What it does |
+|---|---|---|
+| `default_mode` | chosen in `init` | The child's help level: `strict`, `balanced` or `relaxed`. |
+| `subjects.<subject>.mode` | the child's level | A help level for one subject. Subjects not listed use `default_mode`. |
+| `hint_ladder` | `[ask, nudge, worked_example, check]` | The steps of help, in order. |
+| `max_leak_retries` | `2` | How many times a reply that gives the answer away is rewritten before a safe fallback is sent. |
+| `alerts.welfare.sensitivity` | `high` | How readily worrying messages alert you: `high`, `medium` or `low`. |
+| `hours.weekdays` / `hours.weekends` | any time | When the child can use OpenBuddies, as `HH:MM-HH:MM`. |
+| `daily_tokens` | the household budget | This child's daily AI allowance. At least 10,000. |
+| `web.mode` | `open` | Looking things up: `off`, `trusted` or `open`. |
+| `web.sites` | none | Extra trusted sites. |
+| `web.blocked` | none | Sites that are never used. |
+| `web.daily_lookups` | `30` | Lookups a day. |
+| `apps.<app>` | off for added apps | Turns an added app `on` or `off` for this child. Built-in apps are on. |
+| `pictures.daily` | `6` | Pictures a day in Picture Studio. |
+| `heartbeat.mode` / `heartbeat.at` | `on`, `16:30` | The daily check-in, when a buddy may say something useful (a test tomorrow, say). |

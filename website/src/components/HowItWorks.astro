@@ -1,0 +1,89 @@
+---
+import { SITE } from "../site";
+// How it works, in plain words: three steps, then what happens to every message on its way to and from the buddy.
+import Art from "./Art.astro";
+import Buddy from "./Buddy.astro";
+import Icon, { type IconName } from "./Icon.astro";
+
+const journey: { icon: IconName | "buddy"; title: string; body: string }[] = [
+  { icon: "chat", title: "Your child asks", body: "From their phone, tablet or laptop." },
+  { icon: "buddy", title: "The buddy replies", body: "Following your rules for that child and subject." },
+  { icon: "shield", title: "The reply is checked", body: "A separate check makes sure it doesn't give homework answers away." },
+  { icon: "eye", title: "Saved for you", body: "Read every chat on your parent page." },
+];
+---
+
+<section id="how" class="relative overflow-hidden bg-white px-4 py-20 md:py-28">
+  <div class="mx-auto max-w-6xl">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-sm font-bold tracking-wider text-coral uppercase">How it works</p>
+      <h2 class="mt-2 text-4xl tracking-tight md:text-5xl">It runs at home. You hold the keys.</h2>
+      <p class="mt-4 text-lg text-muted">Every message goes through your home computer, and your rules, first.</p>
+    </div>
+
+    <ol class="mt-14 grid gap-5 md:grid-cols-3">
+      <li class="reveal rounded-[2rem] bg-cloud p-6">
+        <div class="flex h-36 items-center justify-center rounded-3xl bg-coral-soft">
+          <Art name="house" class="h-28 w-auto" />
+        </div>
+        <p class="mt-5 text-sm font-bold text-coral">Step 1</p>
+        <h3 class="mt-1 text-xl">You set it up at home</h3>
+        <p class="mt-2 leading-relaxed text-muted">
+          Install it on a computer that stays at home, then choose the rules: how much help each child gets, which apps
+          they have, and how much AI a day.
+        </p>
+      </li>
+      <li class="reveal rounded-[2rem] bg-cloud p-6" style="transition-delay:80ms">
+        <div class="relative flex h-36 items-end justify-center gap-1 overflow-hidden rounded-3xl bg-blue-soft pb-2">
+          <div class="w-16 animate-bob" style="animation-duration:4s;animation-delay:-1s"><Buddy color="coral" wear={["party"]} mood="happy" class="w-full" label="" /></div>
+          <div class="w-24 animate-bob" style="animation-duration:5s"><Buddy color="blue" star mood="happy" class="w-full" label="" /></div>
+          <div class="w-16 animate-bob" style="animation-duration:4.5s;animation-delay:-2s"><Buddy color="mint" wear={["headphones"]} mood="wink" class="w-full" label="" /></div>
+        </div>
+        <p class="mt-5 text-sm font-bold text-coral">Step 2</p>
+        <h3 class="mt-1 text-xl">Your child makes buddies</h3>
+        <p class="mt-2 leading-relaxed text-muted">
+          They scan a code on their phone, hatch a buddy and give it a name, a colour and a personality. Then they chat,
+          draw, quiz and learn with it.
+        </p>
+      </li>
+      <li class="reveal rounded-[2rem] bg-cloud p-6" style="transition-delay:160ms">
+        <div class="flex h-36 items-center justify-center rounded-3xl bg-mint-soft">
+          <Art name="shield" class="h-28 w-auto" />
+        </div>
+        <p class="mt-5 text-sm font-bold text-coral">Step 3</p>
+        <h3 class="mt-1 text-xl">You stay in the loop</h3>
+        <p class="mt-2 leading-relaxed text-muted">
+          Every chat is on your parent page. Change a rule and it applies straight away. If something worrying comes up,
+          you get an alert there.
+        </p>
+      </li>
+    </ol>
+
+    {/* The journey of one message, with a little bubble travelling along it. */}
+    <div class="reveal mt-16 rounded-[2rem] border border-line bg-cloud p-6 md:p-10">
+      <h3 class="text-center text-xl md:text-2xl">What happens when your child sends a message</h3>
+      <div class="relative mt-10">
+        <div class="absolute top-8 right-[12.5%] left-[12.5%] hidden border-t-[3px] border-dashed border-navy/15 md:block" aria-hidden="true"></div>
+        <div class="message-travel absolute top-8 left-[12.5%] hidden -translate-x-1/2 -translate-y-1/2 md:block" aria-hidden="true">
+          <span class="block h-4 w-6 rounded-full rounded-bl-sm bg-coral shadow-md"></span>
+        </div>
+        <ol class="relative grid gap-6 md:grid-cols-4 md:gap-4">
+          {
+            journey.map((j, i) => (
+              <li class="flex items-start gap-4 md:flex-col md:items-center md:text-center">
+                <span class="relative flex size-16 shrink-0 items-center justify-center rounded-3xl border border-line bg-white shadow-sm">
+                  {j.icon === "buddy" ? <Buddy color="blue" mood="happy" class="size-12" label="" /> : <Icon name={j.icon} class="size-10" />}
+                  <span class="absolute -top-2 -right-2 flex size-6 items-center justify-center rounded-full bg-navy text-xs font-bold text-white">{i + 1}</span>
+                </span>
+                <div>
+                  <p class="font-bold text-navy">{j.title}</p>
+                  <p class="mt-1 text-[15px] leading-snug text-muted">{j.body}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

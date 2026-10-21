@@ -1,0 +1,119 @@
+---
+title: "Set up OpenBuddies for your family"
+description: "Install OpenBuddies on a home computer, run the setup, and pair your child's phone so they can hatch their first buddy."
+sidebar:
+  order: 1
+---
+
+import { Steps } from "@astrojs/starlight/components";
+import BuddyAside from "../../../../components/BuddyAside.astro";
+
+In this tutorial you'll install OpenBuddies on a computer at home, set up your household, and pair your child's phone.
+By the end, your child will have hatched their first buddy and you'll be reading their first chat on your parent page.
+
+It takes about 15 minutes.
+
+## What you'll need
+
+- **A computer that stays at home**, running macOS or Linux. An old laptop is fine. Your child never needs to touch it.
+- **Node.js 22 or newer** and **pnpm** on that computer.
+- **An AI key** from [Anthropic](https://console.anthropic.com) or [OpenAI](https://platform.openai.com), which
+  OpenBuddies is tuned for, or another provider such as Google or OpenRouter. You pay them
+  for what your family uses.
+- **Your child's phone, tablet or laptop**, on the same Wi-Fi as the computer.
+
+<BuddyAside type="caution" title="Read your AI provider's rules first">
+  AI providers have rules for products used by people under 18. Read yours, for example the
+  [Anthropic Usage Policy](https://www.anthropic.com/legal/aup) or the
+  [OpenAI Usage Policies](https://openai.com/policies/usage-policies), before your child starts.
+</BuddyAside>
+
+## Install OpenBuddies
+
+<Steps>
+
+1. Open a terminal on the home computer and download OpenBuddies:
+
+   ```sh
+   git clone https://github.com/boyney123/openbuddies.git
+   cd openbuddies
+   ```
+
+2. Install and build it:
+
+   ```sh
+   pnpm install && pnpm build
+   ```
+
+</Steps>
+
+## Set up your household
+
+<Steps>
+
+1. Start the setup:
+
+   ```sh
+   npx openbuddies init
+   ```
+
+2. Tell it about you: your name, what your child calls you (say, "Dad"), and a parent PIN of 4 to 8 digits. The PIN
+   protects your parent page.
+
+3. Choose your AI provider (**Anthropic** or **OpenAI** are recommended; **Another provider** lists the rest), keep
+   the suggested models unless you know you want others, and paste your AI key. OpenBuddies checks the key works before
+   going on. It's saved in the household folder and never leaves this computer.
+
+4. Add your child: their first name, age and school year, and how much help OpenBuddies should give them:
+
+   - **Strict**: never gives homework answers.
+   - **Balanced**: shows the answer after real effort.
+   - **Relaxed**: explains freely.
+
+   Pick **Strict** if you're not sure. You can change it any time. Add more children if you have them.
+
+5. Accept the suggested folder (`~/openbuddies`), and say yes to starting OpenBuddies automatically when the computer
+   starts.
+
+</Steps>
+
+You've now got a **household folder**: everything OpenBuddies knows about your family lives there.
+
+## Start it and pair your child's phone
+
+<Steps>
+
+1. Start OpenBuddies:
+
+   ```sh
+   npx openbuddies start
+   ```
+
+   Your parent page opens in the browser, and the terminal shows a QR code for each child.
+
+2. On your child's phone, open the camera and scan their QR code. The code works once and expires in 10 minutes. If it
+   runs out, make a new one with `npx openbuddies pair <child>`.
+
+3. Hand the phone over. Your child hatches their first buddy: they give it a name and a colour, and can say what it's
+   like ("a funny pirate") and what it's best at.
+
+4. Let them say hello and ask their buddy something.
+
+</Steps>
+
+## Read the chat
+
+Go back to your parent page, enter your PIN, and open **Sessions**. You'll see the chat your child just had, every
+message, with notes on what the buddy decided at each turn. To find your way around, see
+[Find your way around your parent page](/docs/how-to/parents/your-parent-page/) and
+[Read your child's chats](/docs/how-to/parents/read-your-childs-chats/).
+
+That's it: your family is set up.
+
+## Next steps
+
+- Want OpenBuddies to work away from home? [Use it away from home](/docs/how-to/parents/use-away-from-home/).
+- Turn on [Picture Studio](/docs/how-to/parents/set-up-pictures/) or [looking things up](/docs/how-to/parents/set-up-web-search/).
+- Give each child the apps you want: [Add an app](/docs/how-to/parents/add-an-app/).
+- Curious how the buddy stays on the right side of your rules? Read
+  [How a message is handled](/docs/explanation/how-a-message-is-handled/).

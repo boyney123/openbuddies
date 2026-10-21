@@ -1,0 +1,21 @@
+---
+title: "Environment variables"
+description: "The keys and switches OpenBuddies reads from .env or the environment."
+sidebar:
+  order: 6
+---
+
+Keys go in the household's `.env` file, which only you can read. The setup commands write them for you.
+
+| Variable | What it's for |
+|---|---|
+| `<PROVIDER>_API_KEY` | The key for each AI provider your models use, named after it: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `OPENROUTER_API_KEY`, `MISTRAL_API_KEY`… |
+| `OPENAI_API_KEY` | Also Picture Studio's OpenAI image model. |
+| `GEMINI_API_KEY` | Your Google key: Gemini models, and Picture Studio's Google image model. |
+| `IMAGE_PROVIDER` | Picks the image provider when more than one is set up. |
+| `IMAGE_MODEL` | Picks the image model. |
+| `BRAVE_API_KEY` | Brave Search, for looking things up. |
+| `TAVILY_API_KEY` | Tavily, for looking things up. |
+| `SEARXNG_BASE_URL` | Your own SearXNG server, for looking things up. |
+| `OPENBUDDIES_SEARCH_PROVIDER` | Picks the search provider when more than one is set up. Otherwise the first one set up is used, then the next if it fails. |
+| `OPENBUDDIES_HOME` | Where the household folder is (in your shell, not `.env`). |

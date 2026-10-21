@@ -1,0 +1,26 @@
+---
+title: "Set a daily AI allowance"
+description: "Limit how much AI each child can use in a day, so there are no surprises on your bill."
+sidebar:
+  order: 4
+---
+
+import BuddyAside from "../../../../../components/BuddyAside.astro";
+
+Every model call for a child counts towards their daily allowance: the chat itself, the safety checks, reading photos
+and updating the buddy's memory. When it's used up, the buddy rests until tomorrow and no model is called.
+
+The household default is 400,000 tokens a day per child. To change one child's allowance:
+
+```sh
+npx openbuddies children allowance <child> 300000
+```
+
+Set it back to the household default with `npx openbuddies children allowance <child> default`.
+
+On your parent page under **Children**, you can pick **Light** (150k), **Normal** (400k), **Plenty** (1M) or a number of
+your own. The smallest allowance is 10,000 tokens.
+
+<BuddyAside type="tip">
+  Also set a monthly spending limit in your AI provider's console, as a backstop.
+</BuddyAside>

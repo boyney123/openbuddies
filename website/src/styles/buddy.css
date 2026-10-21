@@ -1,0 +1,87 @@
+/*
+ * The buddy's face (components/Buddy.astro), shared by the site (global.css) and the docs (Starlight's customCss).
+ */
+
+/* Which parts of the face show, by mood. The default is idle. */
+.buddy .f-happy-eyes,
+.buddy .f-wink-eye,
+.buddy .f-grin,
+.buddy .f-think,
+.buddy .f-surprised,
+.buddy .f-sad {
+  display: none;
+}
+.buddy[data-mood="happy"] :is(.f-eyes, .f-smile),
+.buddy[data-mood="wink"] :is(.f-eye-r, .f-smile),
+.buddy[data-mood="thinking"] .f-smile,
+.buddy[data-mood="surprised"] :is(.f-eyes, .f-smile),
+.buddy[data-mood="sad"] :is(.f-smile, .f-cheek, .f-spark) {
+  display: none;
+}
+.buddy[data-mood="happy"] :is(.f-happy-eyes, .f-grin),
+.buddy[data-mood="wink"] :is(.f-wink-eye, .f-grin),
+.buddy[data-mood="thinking"] .f-think,
+.buddy[data-mood="surprised"] .f-surprised,
+.buddy[data-mood="sad"] .f-sad {
+  display: inline;
+}
+/* A sad buddy looks down. */
+.buddy[data-mood="sad"] .f-eyes-shift {
+  transform: translateY(3px);
+}
+.buddy[data-mood="thinking"] .f-eyes-shift {
+  transform: translate(3px, -3px);
+}
+.buddy[data-mood="happy"] .f-cheek,
+.buddy[data-mood="wink"] .f-cheek {
+  opacity: 0.55;
+}
+.buddy .f-eyes-shift {
+  transition: transform 0.3s ease;
+}
+.buddy .f-blink {
+  transform-origin: 45px 46px;
+  transform-box: view-box;
+  animation: blink 4.5s infinite;
+}
+/* A grown-up's bushy brows (the moustache) bob up and down, twice, in time with the blink. */
+.buddy .f-brows {
+  animation: brows 4.5s infinite;
+}
+/* Accessories the buddy maker can switch on and off. */
+.buddy [data-acc][data-off] {
+  display: none;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes brows {
+  0%,
+  86%,
+  100% {
+    transform: translateY(0);
+  }
+  89%,
+  95% {
+    transform: translateY(-4px);
+  }
+  92%,
+  98% {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buddy :is(.f-blink, .f-brows) {
+    animation: none;
+  }
+}

@@ -1,0 +1,63 @@
+---
+// Why we made it: kids should get to use AI, in a safe place their parents control, as a tutor and a friend rather than
+// an answer machine. The usual AI apps weren't made with them in mind.
+import { SITE } from "../site";
+import Buddy from "./Buddy.astro";
+import Icon from "./Icon.astro";
+
+const rows = [
+  { usual: "Made for grown-ups, with grown-up content", ours: "Made for kids, with buddies they design themselves" },
+  { usual: "Will happily do the homework for them", ours: "Helps them think it through, at the level you choose" },
+  { usual: "You can't see what they talk about", ours: "You can read every message, any time" },
+  { usual: "Chats kept on a company's servers", ours: "Everything stays on your computer at home" },
+  { usual: "The same rules for everyone", ours: "Your rules, set child by child" },
+];
+---
+
+<section id="why" class="relative px-4 py-20 md:py-28">
+  <div class="mx-auto max-w-5xl">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="text-sm font-bold tracking-wider text-coral uppercase">Why {SITE.name}</p>
+      <h2 class="mt-2 text-4xl tracking-tight md:text-5xl">AI for kids, safely, on your terms.</h2>
+      <p class="mt-4 text-lg text-muted">
+        We want our kids to grow up using AI, in a safe place that we control as parents. Their buddy is a tutor and a
+        friend, not an answer machine, and you set the rules that let you feel good about it.
+      </p>
+    </div>
+
+    <div class="reveal mt-14 grid gap-5 md:grid-cols-2">
+      <div class="relative rounded-[2rem] border border-line bg-white/60 p-6 md:p-8">
+        <div class="absolute -top-12 right-6 w-20 -rotate-6 opacity-90" aria-hidden="true">
+          <Buddy color="blue" mood="sad" class="w-full saturate-[.35]" label="" />
+        </div>
+        <h3 class="text-lg text-muted">Most AI apps</h3>
+        <ul class="mt-5 space-y-4">
+          {
+            rows.map((r) => (
+              <li class="flex items-start gap-3 text-[16px] text-muted">
+                <Icon name="cross" class="mt-0.5 size-6 shrink-0" />
+                {r.usual}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="relative rounded-[2rem] border-2 border-tutor-blue/25 bg-white p-6 shadow-[0_24px_50px_-28px_rgb(47_128_255/0.6)] md:p-8">
+        <div class="absolute -top-12 right-6 w-20 animate-bob" style="animation-duration:4.5s" aria-hidden="true">
+          <Buddy color="blue" mood="happy" star wear={["crown"]} class="w-full" label="" />
+        </div>
+        <h3 class="text-lg">With {SITE.name}</h3>
+        <ul class="mt-5 space-y-4">
+          {
+            rows.map((r) => (
+              <li class="flex items-start gap-3 text-[16px] font-semibold text-navy">
+                <Icon name="check" class="mt-0.5 size-6 shrink-0" />
+                {r.ours}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

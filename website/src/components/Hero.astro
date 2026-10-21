@@ -1,0 +1,184 @@
+---
+import { SITE, type Accessory, type BuddyColor } from "../site";
+import Buddy, { type Mood } from "./Buddy.astro";
+import Cloud from "./Cloud.astro";
+import GithubMark from "./GithubMark.astro";
+import Glyph from "./Glyph.astro";
+import Icon from "./Icon.astro";
+
+// Little clouds drifting across the whole sky, behind everything.
+const sky = [
+  { top: "12%", w: 120, dur: "70s", delay: "-10s", o: 0.9 },
+  { top: "22%", w: 70, dur: "90s", delay: "-55s", o: 0.7 },
+  { top: "40%", w: 150, dur: "110s", delay: "-30s", o: 0.8 },
+  { top: "58%", w: 90, dur: "80s", delay: "-70s", o: 0.6 },
+  { top: "8%", w: 60, dur: "65s", delay: "-40s", o: 0.6 },
+];
+
+type Rider = { color: BuddyColor; wear: Accessory[]; mood?: Mood; pos: string; w: string; dur: string; delay: string };
+// Buddies riding clouds either side of the headline (wide screens).
+const riders: Rider[] = [
+  { color: "coral", wear: ["party"], pos: "top:2%;left:1%", w: "w-44", dur: "6s", delay: "-3.2s" },
+  { color: "berry", wear: ["glasses", "bowtie"], mood: "look", pos: "top:40%;left:7%", w: "w-32", dur: "6.5s", delay: "-0.5s" },
+  { color: "teal", wear: ["beanie"], pos: "top:74%;left:0%", w: "w-36", dur: "5.2s", delay: "-2.4s" },
+  { color: "grape", wear: ["wizard"], mood: "wink", pos: "top:0%;right:2%", w: "w-36", dur: "7s", delay: "-2s" },
+  { color: "mint", wear: ["headphones"], pos: "top:36%;right:8%", w: "w-44", dur: "5.5s", delay: "-4s" },
+  { color: "sunny", wear: ["crown"], mood: "happy", pos: "top:72%;right:1%", w: "w-32", dur: "6.2s", delay: "-1.2s" },
+];
+// Fewer, smaller ones above the headline on phones and tablets.
+const small = [riders[0], riders[3], riders[4]];
+
+// Lots of little buddies wandering the hills: a far row, small and faded, and a nearer one, spread right across.
+// Every other one stays home on phones.
+type Wanderer = { color: BuddyColor; wear: Accessory[]; x: number; hide?: boolean };
+const COLORS: BuddyColor[] = ["grape", "mint", "coral", "navy", "sunny", "teal", "berry", "blue"];
+const OUTFITS: Accessory[][] = [["party"], [], ["cap"], ["beanie"], ["crown"], ["headphones"], ["glasses"], ["wizard"], ["scarf"], ["sunglasses"], ["medal"], ["bowtie"]];
+const crowd = (n: number, offset: number): Wanderer[] =>
+  Array.from({ length: n }, (_, i) => ({
+    color: COLORS[(i * 3 + offset) % COLORS.length],
+    wear: OUTFITS[(i * 5 + offset) % OUTFITS.length],
+    x: (i + 0.5) / n,
+    hide: i % 2 === 1,
+  }));
+const hillside: { class: string; hill: string; w: string; buddies: Wanderer[] }[] = [
+  { class: "opacity-75", hill: "hero-far", w: "w-6 md:w-8", buddies: crowd(16, 0) },
+  { class: "opacity-90", hill: "hero-near", w: "w-9 md:w-11", buddies: crowd(14, 5) },
+];
+
+---
+
+<section id="top" class="relative overflow-hidden bg-gradient-to-b from-[var(--sky-top)] via-[#e6efff] to-cloud pt-24 md:pt-28">
+  {/* The sun, peeking from the corner. */}
+  <div class="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-sunny/30 blur-2xl" aria-hidden="true"></div>
+
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    {sky.map((c) => <Cloud class="cloud-drift absolute left-0" style={`top:${c.top};width:${c.w}px;opacity:${c.o};--dur:${c.dur};--delay:${c.delay}`} />)}
+  </div>
+
+  <div class="relative mx-auto max-w-7xl px-4">
+    {/* Buddies on clouds, left and right of the headline. */}
+    <div class="pointer-events-none absolute inset-x-0 top-6 bottom-0 hidden lg:block" aria-hidden="true">
+      {
+        riders.map((r) => (
+          <div class={`absolute ${r.w} animate-bob`} style={`${r.pos};animation-duration:${r.dur};animation-delay:${r.delay}`} data-seat>
+            <div class="relative z-10 mx-auto -mb-[22%] w-[62%] pointer-events-auto" data-carry>
+              <div class="flip"><Buddy color={r.color} wear={r.wear} mood={r.mood} track class="w-full cursor-pointer" label="" /></div>
+            </div>
+            <Cloud seat class="relative w-full drop-shadow-[0_10px_14px_rgb(16_42_92/0.1)]" />
+          </div>
+        ))
+      }
+      {
+        [
+          { l: "17%", t: "28%", s: 18, d: "0s" },
+          { l: "4%", t: "62%", s: 14, d: "-0.6s" },
+          { l: "82%", t: "26%", s: 16, d: "-1.1s" },
+          { l: "92%", t: "62%", s: 12, d: "-0.3s" },
+        ].map((s) => (
+          <svg class="absolute animate-twinkle" style={`left:${s.l};top:${s.t};width:${s.s}px;animation-delay:${s.d}`} viewBox="0 0 20 20">
+            <path d="M10 0Q11 9 20 10Q11 11 10 20Q9 11 0 10Q9 9 10 0Z" fill="#FFB020" />
+          </svg>
+        ))
+      }
+    </div>
+
+    {/* On smaller screens, three buddies above the headline. */}
+    <div class="mx-auto mb-2 flex max-w-md items-end justify-between px-2 pt-4 lg:hidden" aria-hidden="true">
+      {
+        small.map((r, i) => (
+          <div class:list={["animate-bob", i === 1 ? "w-28 -translate-y-3" : "w-24"]} style={`animation-duration:${r.dur};animation-delay:${r.delay}`} data-seat>
+            <div class="relative z-10 mx-auto -mb-[22%] w-[62%] pointer-events-auto" data-carry>
+              <div class="flip"><Buddy color={r.color} wear={r.wear} mood={r.mood} class="w-full cursor-pointer" label="" /></div>
+            </div>
+            <Cloud seat class="relative w-full" />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-3xl pt-2 text-center lg:pt-10">
+      <p class="inline-flex items-center gap-2 rounded-full border border-white bg-white/70 px-3 py-1.5 text-[13px] font-semibold text-navy shadow-sm backdrop-blur">
+        <span class="size-2 rounded-full bg-mint"></span>
+        Free &amp; open source · Runs on your own computer
+      </p>
+      <h1 class="mt-5 text-[2.6rem] leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+        AI for kids.
+        <span class="relative inline-block text-tutor-blue">
+          You're in control.
+          <svg class="absolute -bottom-2 left-0 hidden h-3 w-full sm:block" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M3 8Q50 2 100 7T197 5" stroke="#FF6B5E" stroke-width="5" fill="none" stroke-linecap="round"></path>
+          </svg>
+        </span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+        Kids make AI buddies to chat, draw, quiz and learn with. You see every message and set the rules. It all runs at
+        home.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a
+          href="/docs/"
+          class="group inline-flex items-center gap-2 rounded-full bg-tutor-blue px-6 py-3.5 text-[17px] font-bold text-white shadow-[0_10px_24px_-8px_rgb(47_128_255/0.7)] transition hover:-translate-y-0.5 hover:bg-[#1f6fee]"
+        >
+          Get started
+          <Glyph name="arrow-right" class="size-5 transition group-hover:translate-x-0.5" />
+        </a>
+        <a
+          href={SITE.github}
+          class="inline-flex items-center gap-2 rounded-full border-2 border-navy/10 bg-white px-6 py-3 text-[17px] font-bold text-navy transition hover:-translate-y-0.5 hover:border-navy/25"
+        >
+          <GithubMark class="size-5" />
+          See the code
+        </a>
+      </div>
+      <ul class="mt-8 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[15px] font-medium text-navy/80">
+        {
+          ["Self-hosted", "Read every chat", "Your data stays at home"].map((t) => (
+            <li class="inline-flex items-center gap-1.5">
+              <Icon name="check" class="size-5" />
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  {/* The hills under the hero, busy with buddies. */}
+  <div class="relative mt-2 h-64 md:-mt-6 md:h-72" aria-hidden="true">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" class="absolute inset-x-0 bottom-0 h-44 w-full md:h-52">
+      <path id="hero-far" d="M0 90Q240 30 520 80T1040 60T1440 80V200H0Z" fill="#D5E4FC"></path>
+      <path id="hero-near" d="M0 130Q300 80 700 120T1440 110V200H0Z" fill="#BED6FC"></path>
+      <path d="M0 170Q360 140 760 165T1440 160V200H0Z" fill="#F5F7FB"></path>
+    </svg>
+    {
+      [
+        { l: "9%", b: 112, s: 30 },
+        { l: "12%", b: 106, s: 20 },
+        { l: "70%", b: 120, s: 26 },
+        { l: "86%", b: 104, s: 22 },
+        { l: "89%", b: 100, s: 16 },
+      ].map((t) => (
+        <svg class="absolute" style={`left:${t.l};bottom:${t.b}px;width:${t.s}px`} viewBox="0 0 20 28">
+          <rect x="9" y="16" width="2.5" height="12" rx="1.2" fill="#1E51A5" />
+          <circle cx="10" cy="10" r="9" fill="#AFCBFA" />
+        </svg>
+      ))
+    }
+
+    {/* Buddies out on the hills, wandering about (scripts/site.ts). */}
+    {
+      hillside.map((row) => (
+        <div class:list={["pointer-events-none absolute inset-x-0 bottom-0 h-44 md:h-52", row.class]} data-wander data-hill={row.hill} data-landing={row.hill === "hero-near" ? "" : undefined}>
+          {row.buddies.map((b) => (
+            <div class:list={["walker pointer-events-auto absolute bottom-0", row.w, b.hide && "hidden sm:block"]} data-x={b.x} data-carry data-arrive>
+              <div class="flip transition-transform duration-300" style="transform-origin:50% 100%">
+                <Buddy color={b.color} wear={b.wear} class="w-full cursor-pointer" label="" />
+              </div>
+              <span class="absolute bottom-[13%] left-1/2 -z-10 h-1 w-3/4 -translate-x-1/2 translate-y-1/2 rounded-full bg-navy/10" />
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>

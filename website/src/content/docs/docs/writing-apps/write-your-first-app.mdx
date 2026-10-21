@@ -1,0 +1,100 @@
+---
+title: "Write your first app"
+description: "Make a Times Tables app for your child's home screen, try it with their buddy, and turn it on."
+sidebar:
+  order: 1
+---
+
+import { Steps, FileTree } from "@astrojs/starlight/components";
+
+Everything on your child's home screen is an app, and an app is just two text files: one says what it is, the other
+tells the buddy how to help. In this tutorial you'll write a quick-fire Times Tables app, try it, and turn it on for
+your child.
+
+You'll need a household that's already set up. If you haven't done that yet, follow
+[Set up OpenBuddies for your family](/docs/tutorials/set-up-your-household/) first.
+
+## Make the folder
+
+Apps you add live in the `apps` folder inside your household folder. The folder's name is the app's id.
+
+<Steps>
+
+1. Make a folder for the app:
+
+   ```sh
+   mkdir -p ~/openbuddies/apps/times-tables
+   ```
+
+2. You'll end up with this:
+
+   <FileTree>
+   - openbuddies/
+     - apps/
+       - times-tables/
+         - app.yaml what it is and what it uses
+         - SKILL.md how the buddy helps
+   </FileTree>
+
+</Steps>
+
+## Say what the app is
+
+Create `~/openbuddies/apps/times-tables/app.yaml`:
+
+```yaml
+name: Times Tables
+description: Quick-fire times tables.
+art: chart
+icon: brain
+version: 1.0.0
+author: Your name
+kind: tutor
+needs: [reminders]
+```
+
+That gives the app a name and a line under it on the home screen, picks a drawing for its card, and makes it a chat
+with the buddy (`kind: tutor`). `needs: [reminders]` lets your child ask for a reminder to practise.
+
+## Tell the buddy how to help
+
+Create `~/openbuddies/apps/times-tables/SKILL.md`:
+
+```md
+# Times Tables
+
+## Role
+You help the child practise their times tables. Ask which table they want to practise, or offer to mix them up.
+
+## How to practise
+- One question at a time, like "What's 7 × 8?".
+- If they're right, cheer briefly and ask the next one.
+- If not, give a tip (7 × 8 is 7 × 4, doubled) and let them try again before showing the answer.
+- After ten questions, tell them their score and offer to practise the tricky ones.
+
+## Keep it short
+One or two short sentences each time. Make it feel like a game.
+```
+
+You don't need to repeat OpenBuddies' safety rules here: they always sit above your instructions.
+
+## Turn it on and try it
+
+<Steps>
+
+1. OpenBuddies spots the new folder straight away. Turn the app on for your child:
+
+   ```sh
+   npx openbuddies apps on <child> times-tables
+   ```
+
+   Or open your parent page, go to **Apps**, and switch it on for them there.
+
+2. On your child's phone, the **Times Tables** card is now on the home screen. Open it and say "let's do the 7s".
+
+3. Back on your parent page, open **Sessions** to read how it went.
+
+</Steps>
+
+Well done: you've written an app. To give it to other families, see [Share an app](/docs/how-to/parents/share-an-app/), and for
+every field and option, see the [app format reference](/docs/reference/app-format/).

@@ -1,0 +1,42 @@
+---
+import { SITE } from "../site";
+import Wordmark from "./Wordmark.astro";
+import GithubMark from "./GithubMark.astro";
+
+const links = [
+  { href: "#how", label: "How it works" },
+  { href: "#kids", label: "For kids" },
+  { href: "#parents", label: "For parents" },
+  { href: "#safety", label: "Safety" },
+  { href: "#about", label: "About" },
+  { href: "#faq", label: "FAQ" },
+  { href: "/docs/", label: "Docs" },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50 px-4 pt-3" data-nav>
+  <nav
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-white/70 bg-white/75 py-2 pr-2 pl-4 shadow-[0_8px_30px_-12px_rgb(16_42_92/0.25)] backdrop-blur-md"
+    aria-label="Main"
+  >
+    <a href="#top" class="flex items-center text-xl" aria-label={`${SITE.name} home`}><Wordmark /></a>
+    <ul class="hidden items-center gap-1 text-[15px] font-semibold text-navy/80 md:flex">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} class="rounded-full px-3 py-2 transition hover:bg-blue-soft hover:text-navy">
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href={SITE.github}
+      class="inline-flex items-center gap-2 rounded-full bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0b1f47]"
+    >
+      <GithubMark class="size-4" />
+      <span>GitHub</span>
+    </a>
+  </nav>
+</header>

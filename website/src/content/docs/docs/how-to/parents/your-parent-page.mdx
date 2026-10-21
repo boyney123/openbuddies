@@ -1,0 +1,42 @@
+---
+title: "Find your way around your parent page"
+description: "Open your parent page, and see what's in Sessions, Alerts, Children, Apps and Devices."
+sidebar:
+  order: -1
+---
+
+import Screenshots from "../../../../../components/Screenshots.astro";
+import overview from "../../../../../assets/screenshots/parent-overview.png";
+
+Your parent page is where you see what your children have been doing with their buddies, and set the rules.
+
+## Open it
+
+`npx openbuddies start` opens it for you. On the home computer, you can also go to
+[localhost:4747/parent](http://localhost:4747/parent) (or the port you chose during setup). To open it from your phone
+when you're out, see [Use it away from home](/docs/how-to/parents/use-away-from-home/).
+
+Enter your parent PIN to unlock it.
+
+## What's on it
+
+<Screenshots
+  device="desktop"
+  shots={[{ src: overview, alt: "The parent page overview: a card for each child, and their latest sessions" }]}
+  caption="Sessions: a card for each child, and the latest chats."
+/>
+
+- **Sessions** is where you start. Each child has a card showing their sessions this week, problems solved and time
+  spent learning, with their latest chats underneath. Open a child or a chat to read it:
+  [Read your child's chats](/docs/how-to/parents/read-your-childs-chats/).
+- **Alerts** lists anything worrying a child has said, with a count while any are unread:
+  [Check alerts](/docs/how-to/parents/get-alerts/).
+- **Children** is where you set each child's rules: their [help level](/docs/how-to/parents/change-help-level/), their
+  [daily AI allowance](/docs/how-to/parents/set-daily-allowance/), what they can look up online, and their subjects.
+  You can [add a child](/docs/how-to/parents/add-a-child/) here too.
+- **Apps** shows the apps on each child's home screen, and the gallery of apps you can add:
+  [Add an app](/docs/how-to/parents/add-an-app/).
+- **Devices** shows each child's paired phones and tablets. Pair a new one, or revoke one that's lost:
+  [Pair a phone or tablet](/docs/how-to/parents/pair-a-device/).
+
+When you're done, **Log out** is at the bottom of the menu.
