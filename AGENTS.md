@@ -1,19 +1,23 @@
 # Agents guide
 
-## Project status: work in progress
+## Project status: live
 
-OpenBuddies hasn't gone live. Nothing here is set in stone, and no one depends on the current code, data or formats yet.
+OpenBuddies is published and families are using it. Their household folders (settings, rules, `.env`, the database,
+buddies' files and memory) must keep working when they upgrade, and they upgrade by installing the latest version and
+running `openbuddies start`. So:
 
-When refactoring or changing things:
+- **Never edit or delete an existing migration.** Every database change is a new numbered file in `migrations/`. A
+  migration that has run is never run again, so an edited one silently leaves upgraded households on the old schema.
+- **Keep reading old settings.** A change to `openbuddies.yaml`, `rules.yaml`, `profile.yaml`, app files or `.env`
+  names keeps loading the old form and upgrades it when it loads (or when saved), so the server still starts.
+- **Don't break commands or their options** without good reason. When one has to change, keep the old form working
+  with a short message pointing to the new one.
+- **Keep the child app and the server in step.** A device can load the new web app while the old server is still
+  running, or the other way round, until the parent restarts.
+- **Delete what isn't used.** Remove dead code rather than leaving it commented out or behind a flag. Code that reads
+  an old format is still used.
 
-- **No backwards compatibility needed.** Change or replace code, APIs, file formats and CLI commands freely. Don't
-  keep old code paths, shims, deprecated aliases or "legacy" fallbacks.
-- **No data migrations needed.** It's fine to edit the existing SQL migrations in place, or to start them over, instead
-  of adding new migration files. Households created before a change can be thrown away
-  (`openbuddies reset`, then `openbuddies init`).
-- **Delete what isn't used.** Remove dead code rather than leaving it commented out or behind a flag.
-
-This changes once OpenBuddies has real users. That will be stated here.
+When a breaking change is truly needed, say so in the change, give it an upgrade path, and note it for the release.
 
 ## Keep the docs up to date
 

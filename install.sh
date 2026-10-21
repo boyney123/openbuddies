@@ -104,6 +104,7 @@ has_household=0
 { [ -f "$HOME/.openbuddiesrc" ] || [ -f "$HOME/openbuddies/openbuddies.yaml" ]; } && has_household=1
 if [ "$has_household" = 1 ]; then
   say "Your household is already set up. Run 'openbuddies start' to restart OpenBuddies on the new version."
+  say "(Next time, 'openbuddies update' does all of this, and keeps a copy of your household first.)"
 elif [ "$RUN_INIT" = 1 ] && { true </dev/tty; } 2>/dev/null; then
   echo
   "$INSTALL_DIR/bin/openbuddies" init </dev/tty

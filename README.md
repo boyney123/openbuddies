@@ -55,6 +55,7 @@ You'll need a computer that stays at home (macOS or Linux), Node.js 22 or newer,
 npm install -g openbuddies
 openbuddies init      # set up your household (about 2 minutes)
 openbuddies start     # your parent page opens; scan the QR code with your child's phone
+openbuddies update    # later: move to the newest version, keeping a copy of your household first
 ```
 
 ## Learn more

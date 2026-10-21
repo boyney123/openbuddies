@@ -267,6 +267,17 @@ program
     await runReset(home(), { yes: opts.yes, backup: opts.backup });
   });
 
+program
+  .command("update")
+  .description("update OpenBuddies to the latest version: keeps a copy of your household first, and goes back if the new version doesn't start")
+  .option("-y, --yes", "don't ask")
+  .option("--to <version>", "update (or go back) to this version instead of the latest")
+  .option("--no-backup", "don't keep a copy of the household first")
+  .action(async (opts) => {
+    const { runUpdate } = await import("./update.js");
+    await runUpdate(home(), { yes: opts.yes, to: opts.to, backup: opts.backup });
+  });
+
 const children = program.command("children").description("list or add children, or change how much help one gets");
 
 children

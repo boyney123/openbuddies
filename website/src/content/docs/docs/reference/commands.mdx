@@ -18,6 +18,7 @@ a household folder somewhere other than the default (see [The household folder](
 | `status` | Shows whether it's running and which models it uses, with a warning for models OpenBuddies isn't tuned for. `status --check` runs the self-test: it lists every session's tools and fails if anything beyond the six tutor tools is present. |
 | `pair <child>` | A fresh single-use pairing QR code, valid for 10 minutes. |
 | `logs <child>` | Follows the child's chats in the terminal, with what the buddy decided each turn and how many drafts were blocked. |
+| `update` | Updates to the latest version: stops OpenBuddies, keeps a copy of the household, installs, and starts again. If the new version doesn't start, it goes back to the previous version and the copy. `--to <version>` picks a version, `--yes` doesn't ask, `--no-backup` skips the copy. |
 | `reset` | Back to a fresh install. Lists what will be deleted, offers a backup (yes by default), and asks you to type `reset`. `--yes` skips the questions but still backs up, unless you add `--no-backup`. |
 
 ## Children and subjects

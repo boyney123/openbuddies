@@ -1,0 +1,30 @@
+---
+title: "Update OpenBuddies"
+description: "Move to the latest version, keeping everything, with a way back if anything goes wrong."
+sidebar:
+  order: 11
+---
+
+```sh
+openbuddies update
+```
+
+It checks for a new version and tells you which one it found. Say yes, and it:
+
+1. Stops OpenBuddies. Your child's buddy is away for a minute or so.
+2. Keeps a copy of your household folder next to it, such as `~/openbuddies-before-0.2.0-…`.
+3. Installs the new version and starts it again.
+
+Your children, buddies, chats, files and settings all carry over, and paired phones stay paired. Your child just
+reloads the app.
+
+If the new version doesn't start, `openbuddies update` puts the previous version and the copy of your household back,
+starts that, and tells you what went wrong. The household as the new version left it is kept too, so you can
+[report the problem](https://github.com/boyney123/openbuddies/issues).
+
+The three newest copies are kept, and older ones are removed after each successful update.
+
+To go back to an earlier version, name it: `openbuddies update --to 0.1.0`. See every version on the
+[releases page](https://github.com/boyney123/openbuddies/releases).
+
+Running the install command again also updates OpenBuddies. Then run `openbuddies start` to restart on the new version.

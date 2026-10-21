@@ -14,7 +14,7 @@ OpenBuddies, see the docs on the website (`website/`).
    from nodejs.org, checks it against `SHASUMS256.txt`, and unpacks it into `~/.openbuddies/node`, linked from
    `~/.openbuddies/bin`.
 2. **OpenBuddies:** `npm install --global --prefix ~/.openbuddies openbuddies@latest` (`OPENBUDDIES_PACKAGE` takes a
-   tarball, for testing). Re-running it updates.
+   tarball, for testing). Re-running it updates; `openbuddies update` is the safer way (copy first, rollback).
 3. **PATH:** adds `~/.openbuddies/bin` to `~/.zshrc`, `~/.bash_profile` (macOS bash), `~/.bashrc` or `~/.profile`, once.
 4. **Setup:** runs `openbuddies init` on the terminal (`/dev/tty`, since the script itself arrives on stdin), unless a
    household already exists (`~/.openbuddiesrc` or `~/openbuddies`), `--no-init` was passed or there's no terminal.
@@ -32,6 +32,7 @@ later. `npm install -g openbuddies` works too, for people who manage Node themse
 | `openbuddies stop` / `status` | Stop, or show state (including the models, with a warning for ones OpenBuddies isn't tuned for). `status --check` is the self-test: lists every session's tools and fails if anything beyond the six tutor tools is present. |
 | `openbuddies pair <child>` | Fresh single-use QR code (expires in 10 minutes). |
 | `openbuddies logs <child>` | Tail transcripts in the terminal, with intent/action tags and blocked-draft counts. |
+| `openbuddies update [--to <version>] [--yes] [--no-backup]` | Latest version from npm (or `--to`): stops the server, copies the household to `<folder>-before-<version>-<time>` (newest 3 kept), `npm install --global --prefix <where it's installed>`, starts the new version and checks the running server reports it. If it doesn't come up: reinstalls the previous version, moves the household aside to `<folder>-failed-<version>` and puts the copy back, then starts that. Refuses source checkouts. |
 | `openbuddies reset` | Back to a fresh install. Lists exactly what will be deleted, offers a timestamped backup copy (default yes), and needs you to type `reset`. Stops and removes this household's service only, turns off OpenBuddies' Tailscale Serve, and deletes the folder. `--yes` skips the prompts (still backs up unless `--no-backup`). |
 | `openbuddies children list\|add\|mode\|allowance` | List children, add one (asks the same questions as `init`, or pass `--name --age --year --mode`), change a child's help level, or set their daily AI allowance (`openbuddies children allowance sam 300000`, or `default`). Also on the parent page under **Children**. |
 | `openbuddies subjects list\|add\|mode\|remove <child> …` | Manage a child's subjects and how strict each is, e.g. `openbuddies subjects add sam design & technology --mode balanced`. Also on the parent page under **Children**. |
@@ -414,8 +415,8 @@ responds to: "I'm stuck on 2/3 + 1/4", "I don't know", "show me an example", "is
 OpenBuddies already running for that household, rebuilds the web app into `dist/web` whenever its code changes (refresh
 the phone to see it), and restarts the server whenever its code changes. Children, paired phones, buddies and chats all
 carry over. It uses the same household as the CLI (`--home <dir>`, `$OPENBUDDIES_HOME`, `~/.openbuddiesrc`, `~/openbuddies`).
-Ctrl+C stops it; `openbuddies start` brings back the normal background server. If a change touches the database
-migrations, the household needs `openbuddies reset` and `init` (see AGENTS.md).
+Ctrl+C stops it; `openbuddies start` brings back the normal background server. A new migration in `migrations/` runs
+on the next start, as it will for families when they upgrade; existing migrations are never edited (see AGENTS.md).
 
 `evals/homework.yaml` holds 37 cases: repeated demands, claimed permission, guess-before-working, salami-slicing,
 role-play, format-shifting (decimal, French, poem, backwards), essay writing, fake server tags, bounding questions,
